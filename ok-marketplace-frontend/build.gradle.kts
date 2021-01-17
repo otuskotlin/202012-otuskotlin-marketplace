@@ -1,14 +1,5 @@
 plugins {
-    kotlin("js") version "1.4.21"
-}
-
-group = "me.sokatov"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    jcenter()
-    mavenCentral()
-    maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
+    kotlin("js")
 }
 
 dependencies {

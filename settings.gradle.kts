@@ -1,4 +1,15 @@
+
 rootProject.name = "otuskotlin-marketplace"
+
+pluginManagement {
+    plugins {
+        val kotlinVersion: String by settings
+
+        kotlin("jvm") version kotlinVersion apply false
+        kotlin("js") version kotlinVersion apply false
+        kotlin("multiplatform") version kotlinVersion apply false
+    }
+}
 
 
 include("ok-marketplace-frontend")
