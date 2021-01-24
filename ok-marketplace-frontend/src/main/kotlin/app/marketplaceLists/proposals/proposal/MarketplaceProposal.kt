@@ -1,17 +1,27 @@
 package app.marketplaceLists.proposals.proposal
 
-import com.ccfraser.muirwik.components.list.mListItem
-import react.*
+import app.marketplaceLists.items.item.MarketplaceItem
+import react.RBuilder
+import react.RHandler
+import react.router.dom.withRouter
 
-class MarketplaceProposal : RComponent<MarketplaceProposalProps, MarketplaceProposalState>() {
+class MarketplaceProposal(props: MarketplaceProposalProps) :
+    MarketplaceItem<MarketplaceProposalProps, MarketplaceProposalState>(props) {
+
+    private val proposal = props.item
+    private val routeToView = "/proposal/${proposal.id}"
+    private val routeToUpdate = "/proposal/${proposal.id}/edit"
+    private val routeToDelete = "/proposal/${proposal.id}/del"
+
     override fun RBuilder.render() {
-        mListItem {
-            +"List Item"
+        marketplaceItem {
+            itemTitle = "Some Proposal"
+            itemViewRoute = routeToView
+            addAction("edit", routeToUpdate)
+            addAction("delete", routeToDelete)
         }
     }
-
 }
 
-fun RBuilder.marketplaceProposal(handler: MarketplaceProposalProps.() -> Unit = {}) = child(MarketplaceProposal::class) {
-    attrs(handler)
-}
+fun RBuilder.marketplaceProposal(handler: RHandler<MarketplaceProposalProps>) =
+    withRouter(MarketplaceProposal::class).invoke(handler)

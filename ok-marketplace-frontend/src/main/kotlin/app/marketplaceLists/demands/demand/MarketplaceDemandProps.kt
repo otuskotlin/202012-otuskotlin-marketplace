@@ -1,8 +1,8 @@
 package app.marketplaceLists.demands.demand
 
-import react.RProps
-import react.router.dom.RouteResultProps
+import app.marketplaceLists.items.item.IMarketplaceItemProps
+import models.DemandModel
 
-interface MarketplaceDemandProps : RouteResultProps<RProps> {
-
+interface MarketplaceDemandProps : IMarketplaceItemProps {
+    override var item: DemandModel
 }

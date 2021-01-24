@@ -15,9 +15,9 @@ class MarketplaceLists(props: MarketplaceListsProps) : RComponent<RProps, Market
             mGridItem() {
                 attrs {
                     xs = MGridSize.cells12
-                    sm = MGridSize.cells12
-                    md = MGridSize.cells5
-                    lg = MGridSize.cells3
+                    sm = MGridSize.cells6
+                    md = MGridSize.cells6
+                    lg = MGridSize.cells6
                 }
                 marketplaceDemands()
             }
@@ -25,9 +25,9 @@ class MarketplaceLists(props: MarketplaceListsProps) : RComponent<RProps, Market
             mGridItem() {
                 attrs {
                     xs = MGridSize.cells12
-                    sm = MGridSize.cells12
-                    md = MGridSize.cells7
-                    lg = MGridSize.cells9
+                    sm = MGridSize.cells6
+                    md = MGridSize.cells6
+                    lg = MGridSize.cells6
                 }
                 marketplaceProposals {}
             }

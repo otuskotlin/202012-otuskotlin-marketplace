@@ -1,7 +1,8 @@
 package app.marketplaceLists.proposals.proposal
 
-import react.RProps
+import app.marketplaceLists.items.item.IMarketplaceItemProps
+import models.ProposalModel
 
-class MarketplaceProposalProps : RProps {
-
+interface MarketplaceProposalProps : IMarketplaceItemProps {
+    override var item: ProposalModel
 }
