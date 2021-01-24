@@ -1,4 +1,4 @@
-package app.marketplaceLists.items.item
+package app.marketplaceLists
 
 import models.IMarketplaceItem
 import react.RProps

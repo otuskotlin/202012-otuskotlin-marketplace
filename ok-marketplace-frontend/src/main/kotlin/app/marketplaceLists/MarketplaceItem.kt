@@ -1,4 +1,4 @@
-package app.marketplaceLists.items.item
+package app.marketplaceLists
 
 import com.ccfraser.muirwik.components.MTypographyVariant
 import com.ccfraser.muirwik.components.button.mIconButton
@@ -81,10 +81,12 @@ abstract class MarketplaceItem<P: IMarketplaceItemProps, S: RState>(
             get() = _actions.toList()
 
         fun addAction(iconName: String, route: String) {
-            _actions.add(MarketplaceItemAction(
+            _actions.add(
+                MarketplaceItemAction(
                 iconName = iconName,
                 route = route
-            ))
+            )
+            )
         }
 
     }

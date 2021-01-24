@@ -1,6 +1,6 @@
 package app.marketplaceLists.demands.demand
 
-import app.marketplaceLists.items.item.MarketplaceItem
+import app.marketplaceLists.MarketplaceItem
 import react.RBuilder
 import react.RHandler
 import react.router.dom.withRouter

@@ -2,14 +2,19 @@ package app
 
 import com.ccfraser.muirwik.components.*
 import app.header.marketplaceHeader
-import app.marketplaceDemandView.MarketplaceDemandView
+import app.marketplaceViews.MarketplaceViews
 //import app.marketplaceDemandView.MarketplaceDemandView
 //import app.marketplaceDemandView.marketplaceDemandView
 import app.marketplaceLists.MarketplaceLists
+import app.marketplaceViews.demand.MarketplaceDemandView
+import app.marketplaceViews.demand.MarketplaceDemandViewProps
+import app.marketplaceViews.demand.MarketplaceDemandViewRequest
+import app.marketplaceViews.demand.marketplaceDemandView
+import app.marketplaceViews.proposal.MarketplaceProposalViewRequest
+import app.marketplaceViews.proposal.marketplaceProposalView
 //import app.marketplaceLists.marketplaceLists
 import kotlinx.css.*
 import react.*
-import react.router.dom.browserRouter
 import react.router.dom.hashRouter
 import react.router.dom.route
 import react.router.dom.switch
@@ -32,14 +37,18 @@ class Marketplace(props: MarketplaceProps) : RComponent<MarketplaceProps, Market
                     margin(all = 0.px)
                     padding(all = 0.px)
                     width = 100.vw
-//                    height = 100.pc
                     overflow = Overflow.hidden
                 }
 
                 hashRouter {
                     switch {
                         route("/", exact = true, component = MarketplaceLists::class)
-                        route("/demand", component = MarketplaceDemandView::class)
+                        route<MarketplaceDemandViewRequest>("/demand/:demandId") { request ->
+                            marketplaceDemandView(props = request)
+                        }
+                        route<MarketplaceProposalViewRequest>("/proposal/:proposalId") { request ->
+                            marketplaceProposalView(props = request)
+                        }
                     }
                 }
             }

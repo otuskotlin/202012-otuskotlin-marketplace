@@ -1,6 +1,6 @@
 package app.marketplaceLists.demands.demand
 
-import app.marketplaceLists.items.item.IMarketplaceItemProps
+import app.marketplaceLists.IMarketplaceItemProps
 import models.DemandModel
 
 interface MarketplaceDemandProps : IMarketplaceItemProps {

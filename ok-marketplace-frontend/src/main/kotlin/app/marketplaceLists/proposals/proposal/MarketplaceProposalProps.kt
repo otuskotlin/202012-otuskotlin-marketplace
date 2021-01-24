@@ -1,6 +1,6 @@
 package app.marketplaceLists.proposals.proposal
 
-import app.marketplaceLists.items.item.IMarketplaceItemProps
+import app.marketplaceLists.IMarketplaceItemProps
 import models.ProposalModel
 
 interface MarketplaceProposalProps : IMarketplaceItemProps {

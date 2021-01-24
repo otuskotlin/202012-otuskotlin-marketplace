@@ -1,7 +1,6 @@
 package app.marketplaceLists.proposals
 
-import app.marketplaceLists.items.MarketplaceItems
-import com.ccfraser.muirwik.components.gridlist.mGridList
+import app.marketplaceLists.MarketplaceItems
 import app.marketplaceLists.proposals.proposal.marketplaceProposal
 import models.ProposalIdModel
 import models.ProposalModel
