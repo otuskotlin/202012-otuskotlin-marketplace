@@ -1,4 +1,4 @@
-package demands.demand
+package app.marketplaceLists.demands.demand
 
 import com.ccfraser.muirwik.components.*
 import com.ccfraser.muirwik.components.button.mIconButton
@@ -6,9 +6,19 @@ import com.ccfraser.muirwik.components.card.*
 import kotlinx.css.*
 import kotlinx.css.properties.*
 import react.*
+import react.dom.link
+import react.router.dom.*
 import styled.css
 
-class MarketplaceDemand(props: MarketplaceDemandProps) : RComponent<MarketplaceDemandProps, MarketplaceDemandState>(props) {
+class MarketplaceDemand(props: MarketplaceDemandProps) :
+    RComponent<MarketplaceDemandProps, MarketplaceDemandState>(props) {
+
+//    private val history = useHistory()
+//
+//    fun handleViewClick() {
+//        history.push("/demand")
+//    }
+
     override fun RBuilder.render() {
         mCard(raised = true) {
             css {
@@ -36,21 +46,18 @@ class MarketplaceDemand(props: MarketplaceDemandProps) : RComponent<MarketplaceD
                 mTypography(variant = MTypographyVariant.h6) {
                     +"Some demand"
                 }
-//                mDivider(variant = MDividerVariant.inset)
+                val callbackView = withRouter<RProps> {
+                    val history = useHistory()
+                    history.push("/demand")
+                }
                 mCardActions {
-//                    mCardActionArea {
-//                        mIcon("edit")
-//                        attrs {
-//                            onClick = {
-//                                console.log("Edit button is clicked")
-//                            }
-//                        }
-//                    }
+//                    val match = useRouteMatch<RProps>()
                     mIconButton("edit", onClick = {
                         console.log("Edit button is clicked")
                     })
                     mIconButton("preview", onClick = {
                         console.log("View button is clicked")
+                        props.history.push("/demand")
                     })
                     mIconButton("list", onClick = {
                         console.log("Offers button is clicked")
@@ -62,13 +69,5 @@ class MarketplaceDemand(props: MarketplaceDemandProps) : RComponent<MarketplaceD
 
 }
 
-class MarketplaceDemandState : RState {
-
-}
-
-class MarketplaceDemandProps : RProps {
-
-}
-
-fun RBuilder.marketplaceDemand(props: MarketplaceDemandProps = MarketplaceDemandProps()) =
-    child(MarketplaceDemand::class.rClass, props = props) {}
+fun RBuilder.marketplaceDemand(handler: RHandler<MarketplaceDemandProps>) =
+    withRouter(MarketplaceDemand::class).invoke(handler)

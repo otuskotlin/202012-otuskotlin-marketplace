@@ -1,4 +1,4 @@
-package header
+package app.header
 
 import com.ccfraser.muirwik.components.*
 import com.ccfraser.muirwik.components.button.mIconButton

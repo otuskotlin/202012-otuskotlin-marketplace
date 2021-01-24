@@ -4,10 +4,15 @@ plugins {
 
 dependencies {
     testImplementation(kotlin("test-js"))
-    implementation("org.jetbrains:kotlin-react:16.13.1-pre.113-kotlin-1.4.0")
-    implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.113-kotlin-1.4.0")
-    implementation("org.jetbrains:kotlin-styled:1.0.0-pre.113-kotlin-1.4.0")
-    implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.113-kotlin-1.4.0")
+    val wrapperVersion = "pre.141"
+    val reactVersion = "17.0.1-$wrapperVersion"
+    val routerVersion ="5.2.0-$wrapperVersion"
+    val kotlinVersion = "1.4.21"
+
+    implementation("org.jetbrains:kotlin-react:$reactVersion-kotlin-$kotlinVersion")
+    implementation("org.jetbrains:kotlin-react-dom:$reactVersion-kotlin-$kotlinVersion")
+    implementation("org.jetbrains:kotlin-styled:$routerVersion-kotlin-$kotlinVersion")
+    implementation("org.jetbrains:kotlin-react-router-dom:$routerVersion-kotlin-$kotlinVersion")
     implementation("com.ccfraser.muirwik:muirwik-components:0.6.2")
 }
 
