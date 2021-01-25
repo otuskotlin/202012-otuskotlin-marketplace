@@ -2,18 +2,14 @@ package app
 
 import com.ccfraser.muirwik.components.*
 import app.header.marketplaceHeader
-import app.marketplaceViews.MarketplaceViews
-//import app.marketplaceDemandView.MarketplaceDemandView
-//import app.marketplaceDemandView.marketplaceDemandView
 import app.marketplaceLists.MarketplaceLists
-import app.marketplaceViews.demand.MarketplaceDemandView
-import app.marketplaceViews.demand.MarketplaceDemandViewProps
-import app.marketplaceViews.demand.MarketplaceDemandViewRequest
-import app.marketplaceViews.demand.marketplaceDemandView
-import app.marketplaceViews.proposal.MarketplaceProposalViewRequest
-import app.marketplaceViews.proposal.marketplaceProposalView
-//import app.marketplaceLists.marketplaceLists
+import demands.MarketplaceDemandRouteProps
+import demands.update.marketplaceDemandUpdate
+import demands.view.marketplaceDemandView
+import proposals.view.marketplaceProposalView
 import kotlinx.css.*
+import proposals.MarketplaceProposalRouteParams
+import proposals.update.marketplaceProposalUpdate
 import react.*
 import react.router.dom.hashRouter
 import react.router.dom.route
@@ -43,18 +39,23 @@ class Marketplace(props: MarketplaceProps) : RComponent<MarketplaceProps, Market
                 hashRouter {
                     switch {
                         route("/", exact = true, component = MarketplaceLists::class)
-                        route<MarketplaceDemandViewRequest>("/demand/:demandId") { request ->
+                        route<MarketplaceDemandRouteProps>("/demand/:demandId", exact = true) { request ->
                             marketplaceDemandView(props = request)
                         }
-                        route<MarketplaceProposalViewRequest>("/proposal/:proposalId") { request ->
+                        route<MarketplaceDemandRouteProps>("/demand/:demandId/edit", exact = true) { request ->
+                            marketplaceDemandUpdate(props = request)
+                        }
+                        route<MarketplaceProposalRouteParams>("/proposal/:proposalId", exact = true) { request ->
                             marketplaceProposalView(props = request)
+                        }
+                        route<MarketplaceProposalRouteParams>("/proposal/:proposalId/edit", exact = true) { request ->
+                            marketplaceProposalUpdate(props = request)
                         }
                     }
                 }
             }
         }
     }
-
 }
 
 fun RBuilder.marketplace(handler: MarketplaceProps.() -> Unit) = child(Marketplace::class) {

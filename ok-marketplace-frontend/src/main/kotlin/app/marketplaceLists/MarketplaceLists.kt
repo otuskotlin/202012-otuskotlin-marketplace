@@ -1,8 +1,8 @@
 package app.marketplaceLists
 
 import com.ccfraser.muirwik.components.*
-import app.marketplaceLists.demands.marketplaceDemands
-import app.marketplaceLists.proposals.marketplaceProposals
+import demands.list.marketplaceDemands
+import proposals.list.marketplaceProposals
 import react.*
 
 class MarketplaceLists(props: MarketplaceListsProps) : RComponent<RProps, MarketplaceListsState>(props) {
