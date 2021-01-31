@@ -27,23 +27,22 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
                 justify = MGridJustify.flexStart
             ) {
                 // Иконка
-                console.log("AVATAR", item, item.avatar, item.id)
                 if (item.avatar.isNotBlank()) {
                     mGridItem { mAvatar(src = item.avatar) }
                 }
                 mGridItem {
                     // Title
                     h1 {
-                        routeLink("/demand/demand-Converter") {
-                            +"Конвертер"
+                        routeLink(item.linkView) {
+                            +(item.title.takeIf { it.isNotBlank() } ?: "Untitled")
                         }
 
                         // Управление статьей
                         span {
-                            routeLink("/demand/deman-Converter/edit") {
+                            routeLink(item.linkEdit) {
                                 mIcon("edit")
                             }
-                            routeLink("/demand/deman-Converter/delete") {
+                            routeLink(item.linkDelete) {
                                 mIcon("delete")
                             }
                         }

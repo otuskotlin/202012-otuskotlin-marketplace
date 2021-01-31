@@ -1,5 +1,9 @@
 package services
 
+import items.demands.update.MarketplaceDemandUpdate
+import items.demands.view.MarketplaceDemandView
+import items.proposals.update.MarketplaceProposalUpdate
+import items.proposals.view.MarketplaceProposalView
 import models.*
 
 class MarketplaceBackendService {
@@ -10,6 +14,10 @@ class MarketplaceBackendService {
         return DemandModel(
             id = id,
             avatar = "imgs/converter.jpeg",
+            title = "Demand $id",
+            linkView = MarketplaceDemandView.makeLink(id),
+            linkEdit = MarketplaceDemandUpdate.makeLink(id),
+            linkDelete = "",
         )
     }
 
@@ -19,6 +27,10 @@ class MarketplaceBackendService {
         return ProposalModel(
             id = id,
             avatar = "imgs/converter.jpeg",
+            title = "Proposal $id",
+            linkView = MarketplaceProposalView.makeLink(id),
+            linkEdit = MarketplaceProposalUpdate.makeLink(id),
+            linkDelete = "",
         )
     }
 

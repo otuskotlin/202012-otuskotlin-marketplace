@@ -2,6 +2,7 @@ package items.demands.view
 
 import MarketplaceDsl
 import items.base.view.marketplaceView
+import models.DemandIdModel
 import react.*
 
 @MarketplaceDsl
@@ -14,6 +15,12 @@ class MarketplaceDemandView(props: MarketplaceDemandViewProps): RComponent<Marke
                 item = demand
             }
         }
+    }
+
+    companion object {
+        const val linkMask = "/demand/:demandId"
+        fun makeLink(id: String) = "/demand/$id"
+        fun makeLink(id: DemandIdModel) = makeLink(id.id)
     }
 }
 

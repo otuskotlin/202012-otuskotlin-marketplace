@@ -1,5 +1,9 @@
 import items.demands.MarketplaceDemandRouteParams
+import items.demands.update.MarketplaceDemandUpdate
+import items.demands.view.MarketplaceDemandView
 import items.proposals.MarketplaceProposalRouteParams
+import items.proposals.update.MarketplaceProposalUpdate
+import items.proposals.view.MarketplaceProposalView
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.*
@@ -21,18 +25,17 @@ suspend fun main() {
             hashRouter {
                 switch {
                     route("/", exact = true, component = PageHome::class)
-                    route<MarketplaceDemandRouteParams>("/demand/:demandId", exact = true) {
+                    route<MarketplaceDemandRouteParams>(MarketplaceDemandView.linkMask, exact = true) {
                         pageDemandView(it)
                     }
 
-                    route<MarketplaceDemandRouteParams>("/demand/:demandId/edit", exact = true) {
+                    route<MarketplaceDemandRouteParams>(MarketplaceDemandUpdate.linkMask, exact = true) {
                         pageDemandUpdate(it)
                     }
-                    route<MarketplaceProposalRouteParams>("/proposal/:proposalId", exact = true) {
-                        console.log("proposal!!!!!!!!!!", it)
+                    route<MarketplaceProposalRouteParams>(MarketplaceProposalView.linkMask, exact = true) {
                         pageProposalView(it)
                     }
-                    route<MarketplaceProposalRouteParams>("/proposal/:proposalId/edit", exact = true) {
+                    route<MarketplaceProposalRouteParams>(MarketplaceProposalUpdate.linkMask, exact = true) {
                         pageProposalUpdate(it)
                     }
                 }
