@@ -28,7 +28,6 @@ suspend fun main() {
                     route<MarketplaceDemandRouteParams>(MarketplaceDemandView.linkMask, exact = true) {
                         pageDemandView(it)
                     }
-
                     route<MarketplaceDemandRouteParams>(MarketplaceDemandUpdate.linkMask, exact = true) {
                         pageDemandUpdate(it)
                     }

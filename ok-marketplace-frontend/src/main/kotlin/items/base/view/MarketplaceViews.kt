@@ -3,6 +3,8 @@ package items.base.view
 import com.ccfraser.muirwik.components.*
 import com.ccfraser.muirwik.components.styles.Breakpoint
 import com.ccfraser.muirwik.components.table.*
+import layouts.tags.TagsProps
+import layouts.tags.tagsLayout
 import models.IMarketplaceItem
 import react.RBuilder
 import react.RComponent
@@ -52,31 +54,7 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
 
             // Tags
             h2 { +"Тэги" }
-            mGridContainer(
-                alignContent = MGridAlignContent.flexStart,
-                spacing = MGridSpacing.spacing1,
-                alignItems = MGridAlignItems.flexStart,
-                justify = MGridJustify.flexStart
-            ) {
-                mGridItem {
-                    mChip(
-                        label = "Металлургия",
-                        avatar = mAvatar(addAsChild = false) { mIcon("build_outlined") },
-                    )
-                }
-                mGridItem {
-                    mChip(
-                        label = "Оборудование",
-                        avatar = mAvatar(addAsChild = false) { mIcon("build_outlined") },
-                    )
-                }
-                mGridItem {
-                    mChip(
-                        label = "Б/У",
-                        avatar = mAvatar(addAsChild = false) { mIcon("build_outlined") },
-                    )
-                }
-            }
+            tagsLayout(TagsProps(tags = item.tags))
 
             // Description
             h2 { +"Описание" }

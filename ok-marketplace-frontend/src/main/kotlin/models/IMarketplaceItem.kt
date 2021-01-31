@@ -15,6 +15,9 @@ interface IMarketplaceItem {
     @property:JsName("linkDelete")
     val linkDelete: String
 
+    @property:JsName("tags")
+    val tags: MutableSet<TagModel>
+
     companion object {
         val NONE = object : IMarketplaceItem {
             override val id: IMarketplaceItemId = IMarketplaceItemId.NONE
@@ -23,6 +26,8 @@ interface IMarketplaceItem {
             override val linkView: String = ""
             override val linkEdit: String = ""
             override val linkDelete: String = ""
+            override val tags: MutableSet<TagModel>
+                get() = mutableSetOf()
         }
     }
 }

@@ -18,6 +18,11 @@ class MarketplaceBackendService {
             linkView = MarketplaceDemandView.makeLink(id),
             linkEdit = MarketplaceDemandUpdate.makeLink(id),
             linkDelete = "",
+            tags = mutableSetOf(
+                TagModel(TagIdModel("tag-1"), title = "Tag-1", avatar = TagAvatarModel("edit", TagAvatarModel.TagAvatarType.ICON)),
+                TagModel(TagIdModel("tag-2"), title = "Tag-2", avatar = TagAvatarModel("list", TagAvatarModel.TagAvatarType.ICON)),
+                TagModel(TagIdModel("tag-3"), title = "Tag-3", avatar = TagAvatarModel("view", TagAvatarModel.TagAvatarType.ICON)),
+            )
         )
     }
 
@@ -31,6 +36,11 @@ class MarketplaceBackendService {
             linkView = MarketplaceProposalView.makeLink(id),
             linkEdit = MarketplaceProposalUpdate.makeLink(id),
             linkDelete = "",
+            tags = mutableSetOf(
+                TagModel(TagIdModel("tag-1"), title = "Tag-1", avatar = TagAvatarModel("edit", TagAvatarModel.TagAvatarType.ICON)),
+                TagModel(TagIdModel("tag-2"), title = "Tag-2", avatar = TagAvatarModel("list", TagAvatarModel.TagAvatarType.ICON)),
+                TagModel(TagIdModel("tag-3"), title = "Tag-3", avatar = TagAvatarModel("view", TagAvatarModel.TagAvatarType.ICON)),
+            )
         )
     }
 
