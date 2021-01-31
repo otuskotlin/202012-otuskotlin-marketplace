@@ -7,5 +7,6 @@ data class DemandModel(
     override val linkView: String = "",
     override val linkEdit: String = "",
     override val linkDelete: String = "",
-    override val tags: MutableSet<TagModel> = mutableSetOf()
+    override val tags: MutableSet<TagModel> = mutableSetOf(),
+    override val techDets: MutableSet<TechDetModel> = mutableSetOf(),
 ): IMarketplaceItem

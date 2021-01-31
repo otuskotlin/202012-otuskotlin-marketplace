@@ -5,6 +5,8 @@ import com.ccfraser.muirwik.components.styles.Breakpoint
 import com.ccfraser.muirwik.components.table.*
 import layouts.tags.TagsProps
 import layouts.tags.tagsLayout
+import layouts.techdets.TechDetsProps
+import layouts.techdets.techDetsLayout
 import models.IMarketplaceItem
 import react.RBuilder
 import react.RComponent
@@ -69,110 +71,10 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
                 }
             }
 
-            h2 { +"Спецификация" }
-            mPaper {
-                mGridContainer(
-                    spacing = MGridSpacing.spacing2,
-                    alignItems = MGridAlignItems.flexStart,
-                    alignContent = MGridAlignContent.stretch,
-                    justify = MGridJustify.flexStart
-                ) {
-                    mGridItem(
-                        lg = MGridSize.cells3,
-                        md = MGridSize.cells4,
-                        sm = MGridSize.cells6,
-                        xs = MGridSize.cells12
-                    ) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableRow {
-                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                    }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Цена" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"25 000 000 Руб" }
-                                    }
-                                    mTableRow {
-                                        mTableCell { +"Цена с доставкой" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"26 000 000 Руб" }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mGridItem(
-                        lg = MGridSize.cells3,
-                        md = MGridSize.cells4,
-                        sm = MGridSize.cells6,
-                        xs = MGridSize.cells12
-                    ) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableRow {
-                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                    }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Масса" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"15 т" }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mGridItem(
-                        lg = MGridSize.cells3,
-                        md = MGridSize.cells4,
-                        sm = MGridSize.cells6,
-                        xs = MGridSize.cells12
-                    ) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableRow {
-                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                    }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Материал корпуса" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"Сталь" }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mGridItem(
-                        lg = MGridSize.cells3,
-                        md = MGridSize.cells4,
-                        sm = MGridSize.cells6,
-                        xs = MGridSize.cells12
-                    ) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableRow {
-                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                    }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Материал футеровки" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"Шамотный кирпич" }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            if (item.techDets.isNotEmpty()) {
+                h2 { +"Спецификация" }
+                mPaper {
+                    techDetsLayout(TechDetsProps(techDets = item.techDets))
                 }
             }
 
@@ -211,6 +113,7 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
     class MarketplaceViewConf {
         var item: IMarketplaceItem? = IMarketplaceItem.NONE
     }
+
 }
 
 fun RBuilder.marketplaceView(block: MarketplaceViews.MarketplaceViewConf.() -> Unit) =

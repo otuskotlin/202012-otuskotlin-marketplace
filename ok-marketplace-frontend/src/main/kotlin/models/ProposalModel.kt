@@ -8,5 +8,6 @@ data class ProposalModel(
     override val linkEdit: String = "",
     override val linkDelete: String = "",
     override val tags: MutableSet<TagModel> = mutableSetOf(),
+    override val techDets: MutableSet<TechDetModel> = mutableSetOf(),
 ): IMarketplaceItem {
 }

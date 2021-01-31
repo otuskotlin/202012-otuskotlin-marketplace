@@ -18,11 +18,8 @@ class MarketplaceBackendService {
             linkView = MarketplaceDemandView.makeLink(id),
             linkEdit = MarketplaceDemandUpdate.makeLink(id),
             linkDelete = "",
-            tags = mutableSetOf(
-                TagModel(TagIdModel("tag-1"), title = "Tag-1", avatar = TagAvatarModel("edit", TagAvatarModel.TagAvatarType.ICON)),
-                TagModel(TagIdModel("tag-2"), title = "Tag-2", avatar = TagAvatarModel("list", TagAvatarModel.TagAvatarType.ICON)),
-                TagModel(TagIdModel("tag-3"), title = "Tag-3", avatar = TagAvatarModel("view", TagAvatarModel.TagAvatarType.ICON)),
-            )
+            tags = tags,
+            techDets = techDets
         )
     }
 
@@ -36,11 +33,8 @@ class MarketplaceBackendService {
             linkView = MarketplaceProposalView.makeLink(id),
             linkEdit = MarketplaceProposalUpdate.makeLink(id),
             linkDelete = "",
-            tags = mutableSetOf(
-                TagModel(TagIdModel("tag-1"), title = "Tag-1", avatar = TagAvatarModel("edit", TagAvatarModel.TagAvatarType.ICON)),
-                TagModel(TagIdModel("tag-2"), title = "Tag-2", avatar = TagAvatarModel("list", TagAvatarModel.TagAvatarType.ICON)),
-                TagModel(TagIdModel("tag-3"), title = "Tag-3", avatar = TagAvatarModel("view", TagAvatarModel.TagAvatarType.ICON)),
-            )
+            tags = tags,
+            techDets = techDets
         )
     }
 
@@ -62,3 +56,68 @@ class MarketplaceBackendService {
         )
     )
 }
+
+private val tags = mutableSetOf(
+TagModel(TagIdModel("tag-1"), title = "Tag-1", avatar = TagAvatarModel("edit", TagAvatarModel.TagAvatarType.ICON)),
+TagModel(TagIdModel("tag-2"), title = "Tag-2", avatar = TagAvatarModel("list", TagAvatarModel.TagAvatarType.ICON)),
+TagModel(TagIdModel("tag-3"), title = "Tag-3", avatar = TagAvatarModel("view", TagAvatarModel.TagAvatarType.ICON)),
+)
+
+private val unitKg = UnitTypeModel(
+    id = UnitTypeIdModel("unit-1"),
+    name = "Килограмм",
+    symbol = "kg",
+    synonyms = mutableSetOf("Kilogram", "Kg", "Кг"),
+    symbols = mutableSetOf("kg", "кг")
+)
+
+private val techDets = mutableSetOf(
+    TechDetModel(
+        id = TechDetIdModel("td-1"),
+        param = TechParamModel(
+            id = TechParamIdModel("tp-1"),
+            name = "Минимальная масса",
+            description = "Минимальная масса объекта. Собственная масса объекта",
+            units = mutableSetOf(unitKg),
+        ),
+        value = "25",
+        unit = unitKg,
+        comparableValue = 25_000.0
+    ),
+    TechDetModel(
+        id = TechDetIdModel("td-2"),
+        param = TechParamModel(
+            id = TechParamIdModel("tp-2"),
+            name = "Максимальная масса",
+            description = "Максимальная масса объекта. Собственная масса объекта",
+            units = mutableSetOf(unitKg),
+        ),
+        value = "250",
+        unit = unitKg,
+        comparableValue = 250_000.0
+    ),
+    TechDetModel(
+        id = TechDetIdModel("td-3"),
+        param = TechParamModel(
+            id = TechParamIdModel("tp-3"),
+            name = "Максимальная масса",
+            description = "Средняя масса объекта. Собственная масса объекта",
+            units = mutableSetOf(unitKg),
+        ),
+        value = "125",
+        unit = unitKg,
+        comparableValue = 125_000.0
+    ),
+    TechDetModel(
+        id = TechDetIdModel("td-4"),
+        param = TechParamModel(
+            id = TechParamIdModel("tp-4"),
+            name = "Максимальная масса",
+            description = "Нетто масса объекта. Масса объекта вместе с тарой",
+            units = mutableSetOf(unitKg),
+        ),
+        value = "300",
+        unit = unitKg,
+        comparableValue = 300_000.0
+    ),
+)
