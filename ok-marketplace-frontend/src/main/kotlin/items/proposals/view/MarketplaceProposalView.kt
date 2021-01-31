@@ -1,19 +1,22 @@
 package items.proposals.view
 
-import items.base.view.MarketplaceViews
-import items.proposals.MarketplaceProposalRouteParams
+import items.base.view.marketplaceView
 import react.RBuilder
+import react.RComponent
 import react.RState
 import react.rClass
-import react.router.dom.RouteResultProps
 
-class MarketplaceProposalView(props: MarketplaceProposalViewProps) : MarketplaceViews<MarketplaceProposalViewProps, RState>(props) {
+class MarketplaceProposalView(props: MarketplaceProposalViewProps) : RComponent<MarketplaceProposalViewProps, RState>(props) {
     override fun RBuilder.render() {
-        marketplaceView {
-            itemTitle = "View proposal: ${props.match.params.proposalId}"
+        val proposal = props.proposal
+        console.log("MarketplaceProposalView", props, proposal)
+        if (proposal != null) {
+            marketplaceView() {
+                item = proposal
+            }
         }
     }
 }
 
-fun RBuilder.marketplaceProposalView(props: RouteResultProps<MarketplaceProposalRouteParams>) =
+fun RBuilder.marketplaceProposalView(props: MarketplaceProposalViewProps) =
     child(MarketplaceProposalView::class.rClass, props = props) { }

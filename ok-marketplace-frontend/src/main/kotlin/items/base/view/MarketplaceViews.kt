@@ -3,6 +3,7 @@ package items.base.view
 import com.ccfraser.muirwik.components.*
 import com.ccfraser.muirwik.components.styles.Breakpoint
 import com.ccfraser.muirwik.components.table.*
+import models.IMarketplaceItem
 import react.RBuilder
 import react.RComponent
 import react.RState
@@ -10,15 +11,15 @@ import react.dom.h1
 import react.dom.h2
 import react.dom.p
 import react.dom.span
+import react.rClass
 import react.router.dom.routeLink
 
-abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P) : RComponent<P, S>() {
+class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceViewsProps, RState>(props) {
 
-    fun RBuilder.marketplaceView(conf: MarketplaceViewConf.() -> Unit) {
-        val viewConf = MarketplaceViewConf().apply(conf)
+    override fun RBuilder.render() {
+        val item = props.item ?: return
 
         mContainer(maxWidth = Breakpoint.xl) {
-
             mGridContainer(
                 alignContent = MGridAlignContent.flexStart,
                 spacing = MGridSpacing.spacing1,
@@ -26,7 +27,10 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                 justify = MGridJustify.flexStart
             ) {
                 // Иконка
-                mGridItem { mAvatar(src = "imgs/converter.jpeg") }
+                console.log("AVATAR", item, item.avatar, item.id)
+                if (item.avatar.isNotBlank()) {
+                    mGridItem { mAvatar(src = item.avatar) }
+                }
                 mGridItem {
                     // Title
                     h1 {
@@ -96,12 +100,19 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                     alignContent = MGridAlignContent.stretch,
                     justify = MGridJustify.flexStart
                 ) {
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
+                    mGridItem(
+                        lg = MGridSize.cells3,
+                        md = MGridSize.cells4,
+                        sm = MGridSize.cells6,
+                        xs = MGridSize.cells12
+                    ) {
                         mTableContainer {
                             mTable {
                                 mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    mTableRow {
+                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
+                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    }
                                 }
                                 mTableBody {
                                     mTableRow {
@@ -116,12 +127,19 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                             }
                         }
                     }
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
+                    mGridItem(
+                        lg = MGridSize.cells3,
+                        md = MGridSize.cells4,
+                        sm = MGridSize.cells6,
+                        xs = MGridSize.cells12
+                    ) {
                         mTableContainer {
                             mTable {
                                 mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    mTableRow {
+                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
+                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    }
                                 }
                                 mTableBody {
                                     mTableRow {
@@ -132,12 +150,19 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                             }
                         }
                     }
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
+                    mGridItem(
+                        lg = MGridSize.cells3,
+                        md = MGridSize.cells4,
+                        sm = MGridSize.cells6,
+                        xs = MGridSize.cells12
+                    ) {
                         mTableContainer {
                             mTable {
                                 mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    mTableRow {
+                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
+                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    }
                                 }
                                 mTableBody {
                                     mTableRow {
@@ -148,12 +173,19 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                             }
                         }
                     }
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
+                    mGridItem(
+                        lg = MGridSize.cells3,
+                        md = MGridSize.cells4,
+                        sm = MGridSize.cells6,
+                        xs = MGridSize.cells12
+                    ) {
                         mTableContainer {
                             mTable {
                                 mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    mTableRow {
+                                        mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
+                                        mTableCell(variant = MTableCellVariant.head) { +"Значение" }
+                                    }
                                 }
                                 mTableBody {
                                     mTableRow {
@@ -172,22 +204,26 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                 mTableContainer {
                     mTable {
                         mTableHead {
-                            mTableCell(variant = MTableCellVariant.head) { +"#" }
-                            mTableCell(variant = MTableCellVariant.head) { +"Name" }
-                            mTableCell(variant = MTableCellVariant.head) { +"Производитель" }
-                            mTableCell(variant = MTableCellVariant.head) { +"Поставщик" }
+                            mTableRow {
+                                mTableCell(variant = MTableCellVariant.head) { +"#" }
+                                mTableCell(variant = MTableCellVariant.head) { +"Name" }
+                                mTableCell(variant = MTableCellVariant.head) { +"Производитель" }
+                                mTableCell(variant = MTableCellVariant.head) { +"Поставщик" }
+                            }
                         }
                         mTableBody {
-                            mTableCell { +"1" }
-                            mTableCell { +"Большой сталелитейный конвертер" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                        }
-                        mTableBody {
-                            mTableCell { +"2" }
-                            mTableCell { +"Средний сталелитейный конвертер" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                            mTableCell { +"ООО \"МетКонв\"" }
+                            mTableRow {
+                                mTableCell { +"1" }
+                                mTableCell { +"Большой сталелитейный конвертер" }
+                                mTableCell { +"ООО \"МетКонв\"" }
+                                mTableCell { +"ООО \"МетКонв\"" }
+                            }
+                            mTableRow {
+                                mTableCell { +"2" }
+                                mTableCell { +"Средний сталелитейный конвертер" }
+                                mTableCell { +"ООО \"МетКонв\"" }
+                                mTableCell { +"ООО \"МетКонв\"" }
+                            }
                         }
                     }
                 }
@@ -196,6 +232,15 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
     }
 
     class MarketplaceViewConf {
-        var itemTitle: String = ""
+        var item: IMarketplaceItem? = IMarketplaceItem.NONE
     }
 }
+
+fun RBuilder.marketplaceView(block: MarketplaceViews.MarketplaceViewConf.() -> Unit) =
+    MarketplaceViews.MarketplaceViewConf().also {
+        it.block()
+        val props = MarketplaceViewsProps(item = it.item)
+        console.log("RBuilder.marketplaceView", props)
+        this@marketplaceView.child(MarketplaceViews::class.rClass, props = props) {
+        }
+    }

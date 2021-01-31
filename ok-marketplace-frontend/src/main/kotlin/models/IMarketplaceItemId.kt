@@ -1,6 +1,7 @@
 package models
 
 interface IMarketplaceItemId {
+    @property:JsName("id")
     val id: String
 
     override fun toString(): String

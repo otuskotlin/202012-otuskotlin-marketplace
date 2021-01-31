@@ -1,8 +1,9 @@
 package items.proposals.view
 
-import items.base.view.IMarketplaceViewsProps
-import items.proposals.MarketplaceProposalRouteParams
-import react.router.dom.RouteResultProps
+import models.ProposalModel
+import react.RProps
 
-interface MarketplaceProposalViewProps: RouteResultProps<MarketplaceProposalRouteParams>, IMarketplaceViewsProps {
+data class MarketplaceProposalViewProps(
+    val proposal: ProposalModel?
+): RProps {
 }
