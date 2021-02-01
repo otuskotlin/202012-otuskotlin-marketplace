@@ -13,10 +13,7 @@ import models.IMarketplaceItem
 import react.RBuilder
 import react.RComponent
 import react.RState
-import react.dom.h1
-import react.dom.h2
-import react.dom.p
-import react.dom.span
+import react.dom.*
 import react.rClass
 import react.router.dom.routeLink
 
@@ -25,6 +22,7 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
     override fun RBuilder.render() {
         val item = props.item ?: return
         val offers = props.offers
+        val description = item.description
 
         mContainer(maxWidth = Breakpoint.xl) {
             mGridContainer(
@@ -62,14 +60,13 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
             tagsLayout(TagsProps(tags = item.tags))
 
             // Description
-            h2 { +"Описание" }
-            mPaper(variant = MPaperVariant.outlined) {
-                mContainer(maxWidth = Breakpoint.xl) {
-                    p {
-                        +"Это конвертер. Огромная бочка для плавки металла"
-                    }
-                    p {
-                        +"Требуется для установки в цеху"
+            if (description.isNotBlank()) {
+                h2 { +"Описание" }
+                mPaper(variant = MPaperVariant.outlined) {
+                    mContainer(maxWidth = Breakpoint.xl) {
+                        div {
+                            consumer.onTagContentUnsafe { +description }
+                        }
                     }
                 }
             }

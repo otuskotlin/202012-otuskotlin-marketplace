@@ -15,6 +15,10 @@ class MarketplaceBackendService {
             id = id,
             avatar = "imgs/converter.jpeg",
             title = "Demand $id",
+            description = """
+                <p>Требуется товар $id. Требуемая спецификация представлена ниже.</p>
+                <p>Будем использовать самостоятельно</p>
+            """.trimIndent(),
             linkView = MarketplaceDemandView.makeLink(id),
             linkEdit = MarketplaceDemandUpdate.makeLink(id),
             linkDelete = "",
@@ -30,6 +34,10 @@ class MarketplaceBackendService {
             id = id,
             avatar = "imgs/converter.jpeg",
             title = "Proposal $id",
+            description = """
+                <p>Предлагаем товар $id. Технические параметры представлены ниже.</p>
+                <p>Допускается перепродажа.</p>
+            """.trimIndent(),
             linkView = MarketplaceProposalView.makeLink(id),
             linkEdit = MarketplaceProposalUpdate.makeLink(id),
             linkDelete = "",

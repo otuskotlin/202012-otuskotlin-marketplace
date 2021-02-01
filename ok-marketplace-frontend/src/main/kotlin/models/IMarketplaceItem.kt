@@ -7,6 +7,8 @@ interface IMarketplaceItem {
     val avatar: String
     @property:JsName("title")
     val title: String
+    @property:JsName("description")
+    val description: String
 
     @property:JsName("linkView")
     val linkView: String
@@ -26,6 +28,7 @@ interface IMarketplaceItem {
             override val id: IMarketplaceItemId = IMarketplaceItemId.NONE
             override val avatar: String = ""
             override val title: String = ""
+            override val description: String = ""
             override val linkView: String = ""
             override val linkEdit: String = ""
             override val linkDelete: String = ""

@@ -11,10 +11,12 @@ import react.rClass
 class MarketplaceProposalView(props: MarketplaceProposalViewProps) : RComponent<MarketplaceProposalViewProps, RState>(props) {
     override fun RBuilder.render() {
         val proposal = props.proposal
+        val demands = props.demands
         console.log("MarketplaceProposalView", props, proposal)
         if (proposal != null) {
             marketplaceView() {
                 item = proposal
+                offers = demands
             }
         }
     }
