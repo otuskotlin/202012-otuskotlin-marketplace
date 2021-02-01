@@ -48,11 +48,31 @@ class MarketplaceBackendService {
     )
 
     suspend fun proposals(filter: ProposalFilterModel): ResponseProposalsModel = ResponseProposalsModel(
-        demands = listOf(
+        proposals = listOf(
             proposal(id = ProposalIdModel("proposal-1"))!!,
             proposal(id = ProposalIdModel("proposal-2"))!!,
             proposal(id = ProposalIdModel("proposal-3"))!!,
             proposal(id = ProposalIdModel("proposal-4"))!!,
+        )
+    )
+
+    suspend fun demandOffers(id: DemandIdModel): ResponseDemandOffersModel? = ResponseDemandOffersModel(
+        demandId = id,
+        proposals = listOf(
+            proposal(id = ProposalIdModel("proposal-1"))!!,
+            proposal(id = ProposalIdModel("proposal-2"))!!,
+            proposal(id = ProposalIdModel("proposal-3"))!!,
+            proposal(id = ProposalIdModel("proposal-4"))!!,
+        )
+    )
+
+    suspend fun proposalOffers(id: ProposalIdModel): ResponseProposalOffersModel? = ResponseProposalOffersModel(
+        proposalId = id,
+        demands = listOf(
+            demand(id = DemandIdModel("demand-1"))!!,
+            demand(id = DemandIdModel("demand-2"))!!,
+            demand(id = DemandIdModel("demand-3"))!!,
+            demand(id = DemandIdModel("demand-4"))!!,
         )
     )
 }

@@ -4,7 +4,7 @@ import models.IMarketplaceItem
 import react.RProps
 
 data class MarketplaceViewsProps(
-    @JsName("item")
-    var item: IMarketplaceItem?
+    var item: IMarketplaceItem?,
+    var offers: List<IMarketplaceItem>? = null,
 ): RProps {
 }

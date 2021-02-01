@@ -3,6 +3,8 @@ package items.base.view
 import com.ccfraser.muirwik.components.*
 import com.ccfraser.muirwik.components.styles.Breakpoint
 import com.ccfraser.muirwik.components.table.*
+import layouts.offers.OffersProps
+import layouts.offers.offersLayout
 import layouts.tags.TagsProps
 import layouts.tags.tagsLayout
 import layouts.techdets.TechDetsProps
@@ -22,6 +24,7 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
 
     override fun RBuilder.render() {
         val item = props.item ?: return
+        val offers = props.offers
 
         mContainer(maxWidth = Breakpoint.xl) {
             mGridContainer(
@@ -78,33 +81,10 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
                 }
             }
 
-            h2 { +"Предложения" }
-            mPaper {
-                mTableContainer {
-                    mTable {
-                        mTableHead {
-                            mTableRow {
-                                mTableCell(variant = MTableCellVariant.head) { +"#" }
-                                mTableCell(variant = MTableCellVariant.head) { +"Name" }
-                                mTableCell(variant = MTableCellVariant.head) { +"Производитель" }
-                                mTableCell(variant = MTableCellVariant.head) { +"Поставщик" }
-                            }
-                        }
-                        mTableBody {
-                            mTableRow {
-                                mTableCell { +"1" }
-                                mTableCell { +"Большой сталелитейный конвертер" }
-                                mTableCell { +"ООО \"МетКонв\"" }
-                                mTableCell { +"ООО \"МетКонв\"" }
-                            }
-                            mTableRow {
-                                mTableCell { +"2" }
-                                mTableCell { +"Средний сталелитейный конвертер" }
-                                mTableCell { +"ООО \"МетКонв\"" }
-                                mTableCell { +"ООО \"МетКонв\"" }
-                            }
-                        }
-                    }
+            if (offers?.isNotEmpty() == true) {
+                h2 { +"Предложения" }
+                mPaper {
+                    offersLayout(OffersProps(items = offers))
                 }
             }
         }
@@ -112,6 +92,7 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
 
     class MarketplaceViewConf {
         var item: IMarketplaceItem? = IMarketplaceItem.NONE
+        var offers: List<IMarketplaceItem>? = null
     }
 
 }
@@ -119,7 +100,7 @@ class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceVie
 fun RBuilder.marketplaceView(block: MarketplaceViews.MarketplaceViewConf.() -> Unit) =
     MarketplaceViews.MarketplaceViewConf().also {
         it.block()
-        val props = MarketplaceViewsProps(item = it.item)
+        val props = MarketplaceViewsProps(item = it.item, offers = it.offers)
         console.log("RBuilder.marketplaceView", props)
         this@marketplaceView.child(MarketplaceViews::class.rClass, props = props) {
         }

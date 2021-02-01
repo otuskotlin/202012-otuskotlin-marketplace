@@ -1,10 +1,11 @@
 package items.demands.view
 
 import models.DemandModel
+import models.ProposalModel
 import react.RProps
 
 data class MarketplaceDemandViewProps(
-    @JsName("demand")
-    var demand: DemandModel?
+    var demand: DemandModel?,
+    var proposals: List<ProposalModel>? = null
 ): RProps {
 }

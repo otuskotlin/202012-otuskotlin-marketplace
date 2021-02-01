@@ -1,5 +1,5 @@
 package models
 
 data class ResponseProposalsModel(
-    val demands: List<ProposalModel>
+    val proposals: List<ProposalModel>
 )
