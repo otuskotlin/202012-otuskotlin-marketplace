@@ -9,5 +9,5 @@ data class ModelMarketplaceItem(
     val linkEdit: String = "",
     val linkDelete: String = "",
     val tags: MutableSet<ModelTag> = mutableSetOf(),
-    //val techDets: MutableSet<ModelTechDet> = mutableSetOf(),
+    val techDets: MutableSet<ModelTechDet> = mutableSetOf(),
 )
