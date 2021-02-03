@@ -16,3 +16,4 @@ pluginManagement {
 
 include("ok-marketplace-frontend")
 include("ok-marketplace-kmp-transport")
+include("ok-marketplace-be-common")
