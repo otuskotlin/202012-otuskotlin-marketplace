@@ -1,8 +1,11 @@
 package items.demands.view
 
-import items.base.view.IMarketplaceViewsProps
-import items.demands.MarketplaceDemandRouteParams
-import react.router.dom.RouteResultProps
+import models.DemandModel
+import models.ProposalModel
+import react.RProps
 
-interface MarketplaceDemandViewProps: RouteResultProps<MarketplaceDemandRouteParams>, IMarketplaceViewsProps {
+data class MarketplaceDemandViewProps(
+    var demand: DemandModel?,
+    var proposals: List<ProposalModel>? = null
+): RProps {
 }
