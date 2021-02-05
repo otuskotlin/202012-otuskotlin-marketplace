@@ -15,13 +15,17 @@ kotlin {
     *  https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#setting-up-targets */
     js {
         browser {}
+        nodejs {}
     }
     jvm {}
 
     sourceSets {
+        val coroutinesVersion: String by project
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {
