@@ -41,17 +41,24 @@ components:
   schemas:
 
     MpRequestDemandOffersList:
-      type: object
-      properties:
-        id:
-          type: string
+      title: Запрос для получения предложений для Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            demandId:
+              type: string
 
     MpResponseDemandOffersList:
-      type: object
       title: Результат запроса списка предложений для Потребности
-      properties:
-        proposals:
-          type: array
-          items:
-            $ref: './marketplace-proposal-api.yaml#/components/schemas/MpProposal'
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demandProposals:
+              type: array
+              items:
+                $ref: './marketplace-proposal-api.yaml#/components/schemas/MpProposal'
 

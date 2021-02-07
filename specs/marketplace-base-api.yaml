@@ -41,38 +41,28 @@ components:
 
 
     MpRequestBase:
-      allOf:
-        - $ref: '#/components/schemas/BaseMessage'
-        - type: object
-          properties:
-            id:
-              type: string
-              title: Идентификатор запроса
-              description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
-            onResponse:
-              type: string
-              title: Сформирован на response.id
-              description: Идентификатор ответа, на который сформирован текущий запрос
-            debug:
-              type: object
-              title: Отладочные параметры запроса
+      type: object
+      properties:
+        requestId:
+          type: string
+          title: Идентификатор запроса
+          description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
+        onResponse:
+          type: string
+          title: Сформирован на response.id
+          description: Идентификатор ответа, на который сформирован текущий запрос
 
     MpResponseBase:
-      allOf:
-        - $ref: '#/components/schemas/BaseMessage'
-        - type: object
-          properties:
-            id:
-              type: string
-              title: Идентификатор запроса
-              description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
-            onRequest:
-              type: string
-              title: Сформирован на request.id
-              description: Идентификатор запроса, на который сформирован текущий ответ
-            debug:
-              type: object
-              title: Отладочные параметры запроса
+      type: object
+      properties:
+        responseId:
+          type: string
+          title: Идентификатор запроса
+          description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
+        onRequest:
+          type: string
+          title: Сформирован на request.id
+          description: Идентификатор запроса, на который сформирован текущий ответ
 
     MpItem:
       allOf:
@@ -123,11 +113,11 @@ components:
       allOf:
         - $ref: '#/components/schemas/MpItemCreate'
         - type: object
-        properties:
-          id:
-            type: string
-            title: Идентификатор
-            example: '12343-34534-67867'
+          properties:
+            id:
+              type: string
+              title: Идентификатор
+              example: '12343-34534-67867'
 
     MpItemPermission:
       type: string

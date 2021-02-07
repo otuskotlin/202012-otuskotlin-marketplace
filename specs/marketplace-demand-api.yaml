@@ -126,13 +126,18 @@ components:
     MpRequestDemandList:
       title: Запрос списка Потребностей
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpDemandListFilter'
-          
-          
+        - type: object
+          properties:
+            filterData:
+              $ref: '#/components/schemas/MpDemandListFilter'
+
+
     MpResponseDemandList:
       title: Ответ на запрос списка Потребностей
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -154,12 +159,17 @@ components:
     MpRequestDemandCreate:
       title: Запрос создания Потребности
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpDemandCreate'
+        - type: object
+          properties:
+            createData:
+              $ref: '#/components/schemas/MpDemandCreate'
 
     MpResponseDemandCreate:
       title: Ответ на запрос создания Потребности
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -173,14 +183,22 @@ components:
 
 
     MpRequestDemandRead:
-      type: object
-      properties:
-        id:
-          type: string
+      title: Запрос на чтение Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            read:
+              type: object
+              properties:
+                id:
+                  type: string
 
     MpResponseDemandRead:
       title: Ответ на запрос информации о Потребности
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -191,11 +209,22 @@ components:
     MpRequestDemandUpdate:
       title: Запрос изменения Потребности
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpDemandUpdate'
+        - type: object
+          properties:
+            updateData:
+              $ref: '#/components/schemas/MpDemandUpdate'
 
     MpResponseDemandUpdate:
-      type: object
+      title: Ответ на запрос изменения информации о Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demand:
+              $ref: '#/components/schemas/MpDemand'
 
     MpDemandUpdate:
       title: Запрос обновления Потребности
@@ -204,14 +233,21 @@ components:
 
 
     MpRequestDemandDelete:
-      type: object
-      properties:
-        id:
-          type: string
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            delete:
+              type: object
+              properties:
+                id:
+                  type: string
 
     MpResponseDemandDelete:
       title: Ответ на запрос удаления Потребности
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:

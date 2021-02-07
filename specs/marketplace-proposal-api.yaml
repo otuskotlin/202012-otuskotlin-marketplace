@@ -12,8 +12,6 @@ servers:
 tags:
   - name: proposal
     description: Рабоа с Потребностями
-  - name: proposal
-    description: Работа с Предложениями
 paths:
   /proposal/list:
     post:
@@ -40,7 +38,7 @@ paths:
     post:
       tags:
         - proposal
-      summary: Создание Предожения
+      summary: Создание Предложения
       operationId: proposalCreate
       requestBody:
         description: Запрос
@@ -61,7 +59,7 @@ paths:
     post:
       tags:
         - proposal
-      summary: Получение информации о Предожения
+      summary: Получение информации о Предложения
       operationId: proposalRead
       requestBody:
         description: Запрос
@@ -82,7 +80,7 @@ paths:
     post:
       tags:
         - proposal
-      summary: Обновление Предожения
+      summary: Обновление Предложения
       operationId: proposalUpdate
       requestBody:
         description: Запрос
@@ -103,7 +101,7 @@ paths:
     post:
       tags:
         - proposal
-      summary: Удаление Предожения
+      summary: Удаление Предложения
       operationId: proposalDelete
       requestBody:
         description: Запрос
@@ -126,13 +124,18 @@ components:
     MpRequestProposalList:
       title: Запрос списка Потребностей
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpProposalListFilter'
-          
-          
+        - type: object
+          properties:
+            filterData:
+              $ref: '#/components/schemas/MpProposalListFilter'
+
+
     MpResponseProposalList:
       title: Ответ на запрос списка Потребностей
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -147,19 +150,24 @@ components:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemFilter'
 
     MpProposal:
-      title: Предожение
+      title: Предложение
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItem'
 
     MpRequestProposalCreate:
-      title: Запрос создания Предожения
+      title: Запрос создания Предложения
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpProposalCreate'
+        - type: object
+          properties:
+            createData:
+              $ref: '#/components/schemas/MpProposalCreate'
 
     MpResponseProposalCreate:
-      title: Ответ на запрос создания Предожения
+      title: Ответ на запрос создания Предложения
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -167,20 +175,28 @@ components:
               $ref: '#/components/schemas/MpProposal'
 
     MpProposalCreate:
-      title: Запрос создания Предожения
+      title: Запрос создания Предложения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemCreate'
 
 
     MpRequestProposalRead:
-      type: object
-      properties:
-        id:
-          type: string
+      title: Запрос на чтение Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            read:
+              type: object
+              properties:
+                id:
+                  type: string
 
     MpResponseProposalRead:
-      title: Ответ на запрос информации о Предожении
+      title: Ответ на запрос информации о Предложения
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -189,29 +205,47 @@ components:
 
 
     MpRequestProposalUpdate:
-      title: Запрос изменения Предожения
+      title: Запрос изменения Предложения
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpProposalUpdate'
+        - type: object
+          properties:
+            updateData:
+              $ref: '#/components/schemas/MpProposalUpdate'
 
     MpResponseProposalUpdate:
-      type: object
+      title: Ответ на запрос изменения информации о Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
 
     MpProposalUpdate:
-      title: Запрос обновления Предожения
+      title: Запрос обновления Предложения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemUpdate'
 
 
     MpRequestProposalDelete:
-      type: object
-      properties:
-        id:
-          type: string
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            delete:
+              type: object
+              properties:
+                id:
+                  type: string
 
     MpResponseProposalDelete:
-      title: Ответ на запрос удаления Предожения
+      title: Ответ на запрос удаления Предложения
       allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
@@ -219,4 +253,4 @@ components:
               $ref: '#/components/schemas/MpProposal'
             deleted:
               type: boolean
-              title: Предожение удалено - true, false
+              title: Предложение удалена - true, false

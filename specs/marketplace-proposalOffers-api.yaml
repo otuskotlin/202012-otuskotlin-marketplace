@@ -11,13 +11,13 @@ servers:
   - url: http://localhost:8080/v1
 tags:
   - name: proposalOffers
-    description: Работа с предложениями для Потребности
+    description: Работа с предложениями для Предложения
 paths:
   /proposal-offers/list:
     post:
       tags:
         - proposalOffers
-      summary: Получить список Потребностей
+      summary: Получить список Предложений
       operationId: proposalOffersList
       requestBody:
         description: Запрос
@@ -39,17 +39,24 @@ components:
   schemas:
 
     MpRequestProposalOffersList:
-      type: object
-      properties:
-        id:
-          type: string
+      title: Запрос для получения предложений для Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            proposalId:
+              type: string
 
     MpResponseProposalOffersList:
-      type: object
-      title: Результат запроса списка предложений для Потребности
-      properties:
-        demands:
-          type: array
-          items:
-            $ref: './marketplace-demand-api.yaml#/components/schemas/MpProposal'
+      title: Результат запроса списка предложений для Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposalDemands:
+              type: array
+              items:
+                $ref: './marketplace-demand-api.yaml#/components/schemas/MpDemand'
 
