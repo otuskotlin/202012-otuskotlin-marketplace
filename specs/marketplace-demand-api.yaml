@@ -154,13 +154,22 @@ components:
   schemas:
 
     RequestDemandList:
-      type: object
-      properties:
-        id:
-          type: string
+      title: Запрос списка Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/RequestBase'
+        - type: object
+          properties:
+            id:
+              type: string
 
     ResponseDemandList:
-      type: object
+      title: Ответ на запрос списка Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/ResponseBase'
+        - type: object
+          properties:
+            id:
+              type: string
 
 
     RequestDemandCreate:

@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: demand
+    description: Рабоа с Потребностями
+paths:
+  /tmp:
+    get:
+      tags:
+        - demand
+      summary: Получить список Потребностей
+      responses:
+        200:
+          description: Успех
+          content: {}
+
+components:
+  schemas:
+
+
+    BaseMessage:
+      type: object
+      title: Базовая структура сообщения
+      properties:
+        type:
+          type: string
+          title: Тип запроса
+          description: 'Идентификатор типа запроса. Используется в качестве дескриминатора при десериализации.
+            Наиболее востребован при пересылке через Websocket и другие транспорты без явного выделения канала.'
+      discriminator:
+        propertyName: type
+
+
+    RequestBase:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            id:
+              type: string
+              title: Идентификатор запроса
+              description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
+            onResponse:
+              type: string
+              title: Сформирован на response.id
+              description: Идентификатор ответа, на который сформирован текущий запрос
+            debug:
+              type: object
+              title: Отладочные параметры запроса
+
+    ResponseBase:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            id:
+              type: string
+              title: Идентификатор запроса
+              description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
+            onRequest:
+              type: string
+              title: Сформирован на request.id
+              description: Идентификатор запроса, на который сформирован текущий ответ
+            debug:
+              type: object
+              title: Отладочные параметры запроса
+
