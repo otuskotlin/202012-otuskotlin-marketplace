@@ -1,9 +1,11 @@
 package ru.otus.otuskotlin.marketplace.transport.kmp.models.requests
 
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.QueryMode
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.DebugDto
 
-interface IRequestMP<T> {
-    val requestId: String?
-    val mode: QueryMode?
-    val requestData: T?
+interface IRequestMP {
+    val type: String?
+    val id: String?
+    val onResponse: String?
+    val startTime: String?
+    val debug: DebugDto?
 }

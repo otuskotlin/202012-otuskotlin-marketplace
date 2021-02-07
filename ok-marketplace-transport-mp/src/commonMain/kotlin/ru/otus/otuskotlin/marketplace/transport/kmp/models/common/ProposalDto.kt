@@ -4,13 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProposalDto(
-    val id: ProposalIdDto? = null,
+    val id: String? = null,
     val avatar: String? = null,
     val title: String? = null,
-    val descriptor: String? = null,
-    val linkView: String? = null,
-    val linkEdit: String? = null,
-    val linkDelete: String? = null,
+    val description: String? = null,
     val tags: Set<TagDto>? = null,
     val techDets: Set<TechDetsDto>? = null,
 )

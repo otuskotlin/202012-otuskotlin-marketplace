@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UnitTypeDto(
-    val id: UnitTypeIdDto? = null,
+    val id: String? = null,
     val name: String? = null,
     val description: String? = null,
     val synonyms: Set<String>? = null,

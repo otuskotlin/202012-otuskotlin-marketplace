@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TechParamDto(
-    val id: TechParamIdDto? = null,
+    val id: String? = null,
     val name: String? = null,
     val description: String? = null,
     val priority: Double? = null,
