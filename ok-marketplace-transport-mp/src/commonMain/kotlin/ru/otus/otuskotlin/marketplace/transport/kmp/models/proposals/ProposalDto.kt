@@ -1,6 +1,8 @@
-package ru.otus.otuskotlin.marketplace.transport.kmp.models.common
+package ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals
 
 import kotlinx.serialization.Serializable
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TagDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
 
 @Serializable
 data class ProposalDto(

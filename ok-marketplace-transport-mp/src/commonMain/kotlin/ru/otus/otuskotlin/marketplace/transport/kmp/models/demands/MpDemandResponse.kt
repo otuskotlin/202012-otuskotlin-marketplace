@@ -1,14 +1,15 @@
-package ru.otus.otuskotlin.marketplace.transport.kmp.models.responses
+package ru.otus.otuskotlin.marketplace.transport.kmp.models.demands
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.DebugDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.DemandDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ErrorDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpResponse
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 
 @Serializable
-data class MpDemandResponse<T>(
-    override val type: String? = this::class.simpleName,
+@SerialName("MpDemandResponse")
+data class MpDemandResponse(
     override val id: String? = null,
     override val onRequest: String?,
     override val endTime: String?,
@@ -16,4 +17,4 @@ data class MpDemandResponse<T>(
     override val errors: List<ErrorDto>? = null,
     override val status: ResponseStatusDto? = null,
     val responseDemand: DemandDto? = null,
-    ): IResponseMP
+    ): IMpResponse
