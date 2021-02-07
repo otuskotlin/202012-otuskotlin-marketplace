@@ -1,15 +1,17 @@
 package ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals
 
 import kotlinx.serialization.Serializable
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TagDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpItemDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpItemPermission
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
 
 @Serializable
 data class ProposalDto(
-    val id: String? = null,
-    val avatar: String? = null,
-    val title: String? = null,
-    val description: String? = null,
-    val tags: Set<TagDto>? = null,
-    val techDets: Set<TechDetsDto>? = null,
-)
+    override val id: String? = null,
+    override val avatar: String? = null,
+    override val title: String? = null,
+    override val description: String? = null,
+    override val tagIds: Set<String>? = null,
+    override val techDets: Set<TechDetsDto>? = null,
+    override val permissions: Set<MpItemPermission>? = null,
+): IMpItemDto
