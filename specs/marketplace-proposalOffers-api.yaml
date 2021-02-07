@@ -10,23 +10,21 @@ info:
 servers:
   - url: http://localhost:8080/v1
 tags:
-  - name: demandOffers
+  - name: proposalOffers
     description: Работа с предложениями для Потребности
-  - name: proposal
-    description: Работа с Предложениями
 paths:
-  /demand-offers/list:
+  /proposal-offers/list:
     post:
       tags:
-        - demandOffers
+        - proposalOffers
       summary: Получить список Потребностей
-      operationId: demandOffersList
+      operationId: proposalOffersList
       requestBody:
         description: Запрос
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MpRequestDemandOffersList'
+              $ref: '#/components/schemas/MpRequestProposalOffersList'
         required: true
       responses:
         200:
@@ -34,24 +32,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MpResponseDemandOffersList'
+                $ref: '#/components/schemas/MpResponseProposalOffersList'
 
 
 components:
   schemas:
 
-    MpRequestDemandOffersList:
+    MpRequestProposalOffersList:
       type: object
       properties:
         id:
           type: string
 
-    MpResponseDemandOffersList:
+    MpResponseProposalOffersList:
       type: object
       title: Результат запроса списка предложений для Потребности
       properties:
-        proposals:
+        demands:
           type: array
           items:
-            $ref: './marketplace-proposal-api.yaml#/components/schemas/MpProposal'
+            $ref: './marketplace-demand-api.yaml#/components/schemas/MpProposal'
 

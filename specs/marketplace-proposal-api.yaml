@@ -10,23 +10,23 @@ info:
 servers:
   - url: http://localhost:8080/v1
 tags:
-  - name: demand
+  - name: proposal
     description: Рабоа с Потребностями
   - name: proposal
     description: Работа с Предложениями
 paths:
-  /demand/list:
+  /proposal/list:
     post:
       tags:
-        - demand
+        - proposal
       summary: Получить список Потребностей
-      operationId: demandList
+      operationId: proposalList
       requestBody:
         description: Запрос
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MpRequestDemandList'
+              $ref: '#/components/schemas/MpRequestProposalList'
         required: true
       responses:
         200:
@@ -34,20 +34,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MpResponseDemandList'
+                $ref: '#/components/schemas/MpResponseProposalList'
 
-  /demand/create:
+  /proposal/create:
     post:
       tags:
-        - demand
-      summary: Создание Потребности
-      operationId: demandCreate
+        - proposal
+      summary: Создание Предожения
+      operationId: proposalCreate
       requestBody:
         description: Запрос
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MpRequestDemandCreate'
+              $ref: '#/components/schemas/MpRequestProposalCreate'
         required: true
       responses:
         200:
@@ -55,20 +55,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MpResponseDemandCreate'
+                $ref: '#/components/schemas/MpResponseProposalCreate'
 
-  /demand/read:
+  /proposal/read:
     post:
       tags:
-        - demand
-      summary: Получение информации о Потребности
-      operationId: demandRead
+        - proposal
+      summary: Получение информации о Предожения
+      operationId: proposalRead
       requestBody:
         description: Запрос
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MpRequestDemandRead'
+              $ref: '#/components/schemas/MpRequestProposalRead'
         required: true
       responses:
         200:
@@ -76,20 +76,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MpResponseDemandRead'
+                $ref: '#/components/schemas/MpResponseProposalRead'
 
-  /demand/update:
+  /proposal/update:
     post:
       tags:
-        - demand
-      summary: Обновление Потребности
-      operationId: demandUpdate
+        - proposal
+      summary: Обновление Предожения
+      operationId: proposalUpdate
       requestBody:
         description: Запрос
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MpRequestDemandUpdate'
+              $ref: '#/components/schemas/MpRequestProposalUpdate'
         required: true
       responses:
         200:
@@ -97,20 +97,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MpResponseDemandUpdate'
+                $ref: '#/components/schemas/MpResponseProposalUpdate'
 
-  /demand/delete:
+  /proposal/delete:
     post:
       tags:
-        - demand
-      summary: Удаление Потребности
-      operationId: demandDelete
+        - proposal
+      summary: Удаление Предожения
+      operationId: proposalDelete
       requestBody:
         description: Запрос
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MpRequestDemandDelete'
+              $ref: '#/components/schemas/MpRequestProposalDelete'
         required: true
       responses:
         200:
@@ -118,105 +118,105 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MpResponseDemandDelete'
+                $ref: '#/components/schemas/MpResponseProposalDelete'
 
 components:
   schemas:
 
-    MpRequestDemandList:
+    MpRequestProposalList:
       title: Запрос списка Потребностей
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpDemandListFilter'
+        - $ref: '#/components/schemas/MpProposalListFilter'
           
           
-    MpResponseDemandList:
+    MpResponseProposalList:
       title: Ответ на запрос списка Потребностей
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
-            demands:
+            proposals:
               type: array
               items:
-                $ref: '#/components/schemas/MpDemand'
+                $ref: '#/components/schemas/MpProposal'
 
-    MpDemandListFilter:
+    MpProposalListFilter:
       title: Фильтр для поиска Потребностей
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemFilter'
 
-    MpDemand:
-      title: Потребность
+    MpProposal:
+      title: Предожение
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItem'
 
-    MpRequestDemandCreate:
-      title: Запрос создания Потребности
+    MpRequestProposalCreate:
+      title: Запрос создания Предожения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpDemandCreate'
+        - $ref: '#/components/schemas/MpProposalCreate'
 
-    MpResponseDemandCreate:
-      title: Ответ на запрос создания Потребности
+    MpResponseProposalCreate:
+      title: Ответ на запрос создания Предожения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
-            demand:
-              $ref: '#/components/schemas/MpDemand'
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
 
-    MpDemandCreate:
-      title: Запрос создания Потребности
+    MpProposalCreate:
+      title: Запрос создания Предожения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemCreate'
 
 
-    MpRequestDemandRead:
+    MpRequestProposalRead:
       type: object
       properties:
         id:
           type: string
 
-    MpResponseDemandRead:
-      title: Ответ на запрос информации о Потребности
+    MpResponseProposalRead:
+      title: Ответ на запрос информации о Предожении
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
-            demand:
-              $ref: '#/components/schemas/MpDemand'
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
 
 
-    MpRequestDemandUpdate:
-      title: Запрос изменения Потребности
+    MpRequestProposalUpdate:
+      title: Запрос изменения Предожения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
-        - $ref: '#/components/schemas/MpDemandUpdate'
+        - $ref: '#/components/schemas/MpProposalUpdate'
 
-    MpResponseDemandUpdate:
+    MpResponseProposalUpdate:
       type: object
 
-    MpDemandUpdate:
-      title: Запрос обновления Потребности
+    MpProposalUpdate:
+      title: Запрос обновления Предожения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemUpdate'
 
 
-    MpRequestDemandDelete:
+    MpRequestProposalDelete:
       type: object
       properties:
         id:
           type: string
 
-    MpResponseDemandDelete:
-      title: Ответ на запрос удаления Потребности
+    MpResponseProposalDelete:
+      title: Ответ на запрос удаления Предожения
       allOf:
         - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
         - type: object
           properties:
-            demand:
-              $ref: '#/components/schemas/MpDemand'
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
             deleted:
               type: boolean
-              title: Потребность удалена - true, false
+              title: Предожение удалено - true, false
