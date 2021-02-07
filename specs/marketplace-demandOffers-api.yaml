@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: demandOffers
+    description: Работа с предложениями для Потребности
+  - name: proposal
+    description: Работа с Предложениями
+paths:
+  /demand-offers/list:
+    post:
+      tags:
+        - demandOffers
+      summary: Получить список Потребностей
+      operationId: demandOffersList
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDemandOffersList'
+            examples:
+              application/json:
+                $ref: '#/components/examples/RequestDemandOffersListExample'
+        required: true
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDemandOffersList'
+              examples:
+                ok:
+                  $ref: '#/components/examples/ResponseDemandOffersListExampleOk'
+
+
+components:
+  schemas:
+
+    RequestDemandOffersList:
+      type: object
+      properties:
+        id:
+          type: string
+
+    ResponseDemandOffersList:
+      type: object
+
+
+  examples:
+
+    RequestDemandOffersListExample:
+      summary: Запрос на получение списка предложений для Потребности
+      value:
+        id: '5987-345-457-678'
+
+    ResponseDemandOffersListExampleOk:
+      summary: Положительный ответ
+      value:
+        id: '5987-345-457-678'

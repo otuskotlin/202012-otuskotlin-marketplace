@@ -1,0 +1,244 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: demand
+    description: Рабоа с Потребностями
+  - name: proposal
+    description: Работа с Предложениями
+paths:
+  /demand/list:
+    post:
+      tags:
+        - demand
+      summary: Получить список Потребностей
+      operationId: demandList
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDemandList'
+            examples:
+              application/json:
+                $ref: '#/components/examples/RequestDemandListExample'
+        required: true
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDemandList'
+              examples:
+                ok:
+                  $ref: '#/components/examples/ResponseDemandListExampleOk'
+
+  /demand/create:
+    post:
+      tags:
+        - demand
+      summary: Создание Потребности
+      operationId: demandCreate
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDemandCreate'
+            examples:
+              application/json:
+                $ref: '#/components/examples/RequestDemandListExample'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDemandCreate'
+              examples:
+                application/json:
+                  $ref: '#/components/examples/ResponseDemandCreateExampleOk'
+
+  /demand/read:
+    post:
+      tags:
+        - demand
+      summary: Получение информации о Потребности
+      operationId: demandRead
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDemandRead'
+            examples:
+              application/json:
+                $ref: '#/components/examples/RequestDemandListExample'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDemandRead'
+              examples:
+                application/json:
+                  $ref: '#/components/examples/ResponseDemandReadExampleOk'
+
+  /demand/update:
+    post:
+      tags:
+        - demand
+      summary: Обновление Потребности
+      operationId: demandUpdate
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDemandUpdate'
+            examples:
+              application/json:
+                $ref: '#/components/examples/RequestDemandListExample'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDemandUpdate'
+              examples:
+                application/json:
+                  $ref: '#/components/examples/ResponseDemandUpdateExampleOk'
+
+  /demand/delete:
+    post:
+      tags:
+        - demand
+      summary: Удаление Потребности
+      operationId: demandDelete
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDemandUpdate'
+            examples:
+              application/json:
+                $ref: '#/components/examples/RequestDemandListExample'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDemandUpdate'
+              examples:
+                application/json:
+                  $ref: '#/components/examples/ResponseDemandUpdateExampleOk'
+
+components:
+  schemas:
+
+    RequestDemandList:
+      type: object
+      properties:
+        id:
+          type: string
+
+    ResponseDemandList:
+      type: object
+
+
+    RequestDemandCreate:
+      type: object
+      properties:
+        id:
+          type: string
+
+    ResponseDemandCreate:
+      type: object
+
+
+    RequestDemandRead:
+      type: object
+      properties:
+        id:
+          type: string
+
+    ResponseDemandRead:
+      type: object
+
+
+    RequestDemandUpdate:
+      type: object
+
+    ResponseDemandUpdate:
+      type: object
+
+
+
+  examples:
+
+    RequestDemandListExample:
+      summary: Запрос на получение списка Потребностей
+      value:
+        id: '5987-345-457-678'
+
+    ResponseDemandListExampleOk:
+      summary: Положительный ответ
+      value:
+        id: '5987-345-457-678'
+
+    RequestDemandCreateExample:
+      summary: Запрос создание информации о Потребности
+      value:
+        id: '5987-345-457-678'
+
+    ResponseDemandCreateExampleOk:
+      summary: Положительный ответ
+      value:
+        id: '5987-345-457-678'
+
+    RequestDemandReadExample:
+      summary: Запрос на получение информации о Потребности
+      value:
+        id: '5987-345-457-678'
+
+    ResponseDemandReadExampleOk:
+      summary: Положительный ответ
+      value:
+        id: '5987-345-457-678'
+
+    RequestDemandUpdateExample:
+      summary: Запрос на обновление Потребности
+      value:
+        id: '5987-345-457-678'
+
+    ResponseDemandUpdateExampleOk:
+      summary: Положительный ответ
+      value:
+        id: '5987-345-457-678'
+
+    RequestDemandDeleteExample:
+      summary: Запрос на удаление Потребности
+      value:
+        id: '5987-345-457-678'
+
+    ResponseDemandDeleteExampleOk:
+      summary: Положительный ответ
+      value:
+        id: '5987-345-457-678'
