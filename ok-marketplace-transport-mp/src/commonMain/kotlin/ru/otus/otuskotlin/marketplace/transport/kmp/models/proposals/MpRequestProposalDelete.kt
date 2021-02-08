@@ -6,11 +6,11 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.DebugDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpRequest
 
 @Serializable
-@SerialName("MpProposalRequestCreate")
-data class MpProposalRequestCreate(
+@SerialName("MpRequestProposalDelete")
+data class MpRequestProposalDelete(
     override val id: String? = null,
     override val debug: DebugDto? = null,
     override val onResponse: String? = null,
     override val startTime: String? = null,
-    val createData: MpProposalCreateDto? = null,
+    val proposalId: String? = null,
 ): IMpRequest

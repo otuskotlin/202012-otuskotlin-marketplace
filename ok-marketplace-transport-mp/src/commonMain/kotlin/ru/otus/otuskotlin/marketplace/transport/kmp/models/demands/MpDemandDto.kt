@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals
+package ru.otus.otuskotlin.marketplace.transport.kmp.models.demands
 
 import kotlinx.serialization.Serializable
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpItemDto
@@ -6,7 +6,7 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpItemPermissi
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
 
 @Serializable
-data class ProposalDto(
+data class MpDemandDto(
     override val id: String? = null,
     override val avatar: String? = null,
     override val title: String? = null,

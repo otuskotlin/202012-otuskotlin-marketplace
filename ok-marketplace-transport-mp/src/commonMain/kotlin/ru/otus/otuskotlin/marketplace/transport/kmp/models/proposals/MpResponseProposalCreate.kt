@@ -8,13 +8,13 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpResponse
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 
 @Serializable
-@SerialName("MpProposalResponseCreate")
-data class MpProposalResponseCreate(
+@SerialName("MpResponseProposalCreate")
+data class MpResponseProposalCreate(
     override val id: String? = null,
     override val onRequest: String? = null,
     override val endTime: String? = null,
     override val debug: DebugDto? = null,
     override val errors: List<ErrorDto>? = null,
     override val status: ResponseStatusDto? = null,
-    val proposal: ProposalDto? = null,
+    val proposal: MpProposalDto? = null,
 ): IMpResponse

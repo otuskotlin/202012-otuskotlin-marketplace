@@ -6,8 +6,8 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.DebugDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpRequest
 
 @Serializable
-@SerialName("MpDemandRequestUpdate")
-data class MpDemandRequestUpdate(
+@SerialName("MpRequestDemandUpdate")
+data class MpRequestDemandUpdate(
     override val id: String? = null,
     override val debug: DebugDto? = null,
     override val onResponse: String? = null,
