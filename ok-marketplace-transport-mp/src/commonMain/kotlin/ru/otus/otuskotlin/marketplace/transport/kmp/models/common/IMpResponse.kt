@@ -6,5 +6,6 @@ interface IMpResponse : IMpMessage{
     val endTime: String?
     val errors: List<ErrorDto>?
     val status: ResponseStatusDto?
+    val debug: DebugDto?
 }
 
