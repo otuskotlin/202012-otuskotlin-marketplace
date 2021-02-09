@@ -1,7 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.common.models
 
-data class ModelUnitType (
-    val id: ModelUnitTypeId = ModelUnitTypeId.NONE,
+data class MpUnitTypeModel (
+    val id: MpUnitTypeIdModel = MpUnitTypeIdModel.NONE,
     val name: String = "",
     val description: String = "",
     val synonyms: MutableSet<String> = mutableSetOf(),
@@ -10,6 +10,6 @@ data class ModelUnitType (
     val isBase: Boolean = false,
 ) {
     companion object {
-        val NONE = ModelUnitType()
+        val NONE = MpUnitTypeModel()
     }
 }
