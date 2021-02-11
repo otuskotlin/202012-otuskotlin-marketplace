@@ -1,9 +1,9 @@
 package ru.otus.otuskotlin.marketplace.common.backend.context
 
-import ru.otus.otuskotlin.marketplace.backend.common.models.MpDemandIdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.MpDemandModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.MpProposalIdModel
-import ru.otus.otuskotlin.marketplace.backend.common.models.MpProposalModel
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
 
 data class MpBeContext(
     var requestDemandId: MpDemandIdModel = MpDemandIdModel.NONE,

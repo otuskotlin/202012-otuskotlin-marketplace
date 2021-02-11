@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.common.models
+package ru.otus.otuskotlin.marketplace.common.backend.models
 
 inline class MpTechParamIdModel (val id: String) {
     companion object {
