@@ -12,5 +12,5 @@ data class MpRequestDemandCreate(
     override val debug: DebugDto? = null,
     override val onResponse: String? = null,
     override val startTime: String? = null,
-    val createDate: MpDemandCreateDto? = null,
+    val createData: MpDemandCreateDto? = null,
 ): IMpRequest
