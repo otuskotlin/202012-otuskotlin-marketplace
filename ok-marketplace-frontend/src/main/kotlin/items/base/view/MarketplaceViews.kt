@@ -3,22 +3,28 @@ package items.base.view
 import com.ccfraser.muirwik.components.*
 import com.ccfraser.muirwik.components.styles.Breakpoint
 import com.ccfraser.muirwik.components.table.*
+import layouts.offers.OffersProps
+import layouts.offers.offersLayout
+import layouts.tags.TagsProps
+import layouts.tags.tagsLayout
+import layouts.techdets.TechDetsProps
+import layouts.techdets.techDetsLayout
+import models.IMarketplaceItem
 import react.RBuilder
 import react.RComponent
 import react.RState
-import react.dom.h1
-import react.dom.h2
-import react.dom.p
-import react.dom.span
+import react.dom.*
+import react.rClass
 import react.router.dom.routeLink
 
-abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P) : RComponent<P, S>() {
+class MarketplaceViews(props: MarketplaceViewsProps) : RComponent<MarketplaceViewsProps, RState>(props) {
 
-    fun RBuilder.marketplaceView(conf: MarketplaceViewConf.() -> Unit) {
-        val viewConf = MarketplaceViewConf().apply(conf)
+    override fun RBuilder.render() {
+        val item = props.item ?: return
+        val offers = props.offers
+        val description = item.description
 
         mContainer(maxWidth = Breakpoint.xl) {
-
             mGridContainer(
                 alignContent = MGridAlignContent.flexStart,
                 spacing = MGridSpacing.spacing1,
@@ -26,20 +32,22 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
                 justify = MGridJustify.flexStart
             ) {
                 // Иконка
-                mGridItem { mAvatar(src = "imgs/converter.jpeg") }
+                if (item.avatar.isNotBlank()) {
+                    mGridItem { mAvatar(src = item.avatar) }
+                }
                 mGridItem {
                     // Title
                     h1 {
-                        routeLink("/demand/demand-Converter") {
-                            +"Конвертер"
+                        routeLink(item.linkView) {
+                            +(item.title.takeIf { it.isNotBlank() } ?: "Untitled")
                         }
 
                         // Управление статьей
                         span {
-                            routeLink("/demand/deman-Converter/edit") {
+                            routeLink(item.linkEdit) {
                                 mIcon("edit")
                             }
-                            routeLink("/demand/deman-Converter/delete") {
+                            routeLink(item.linkDelete) {
                                 mIcon("delete")
                             }
                         }
@@ -49,153 +57,48 @@ abstract class MarketplaceViews<P : IMarketplaceViewsProps, S : RState>(props: P
 
             // Tags
             h2 { +"Тэги" }
-            mGridContainer(
-                alignContent = MGridAlignContent.flexStart,
-                spacing = MGridSpacing.spacing1,
-                alignItems = MGridAlignItems.flexStart,
-                justify = MGridJustify.flexStart
-            ) {
-                mGridItem {
-                    mChip(
-                        label = "Металлургия",
-                        avatar = mAvatar(addAsChild = false) { mIcon("build_outlined") },
-                    )
-                }
-                mGridItem {
-                    mChip(
-                        label = "Оборудование",
-                        avatar = mAvatar(addAsChild = false) { mIcon("build_outlined") },
-                    )
-                }
-                mGridItem {
-                    mChip(
-                        label = "Б/У",
-                        avatar = mAvatar(addAsChild = false) { mIcon("build_outlined") },
-                    )
-                }
-            }
+            tagsLayout(TagsProps(tags = item.tags))
 
             // Description
-            h2 { +"Описание" }
-            mPaper(variant = MPaperVariant.outlined) {
-                mContainer(maxWidth = Breakpoint.xl) {
-                    p {
-                        +"Это конвертер. Огромная бочка для плавки металла"
-                    }
-                    p {
-                        +"Требуется для установки в цеху"
-                    }
-                }
-            }
-
-            h2 { +"Спецификация" }
-            mPaper {
-                mGridContainer(
-                    spacing = MGridSpacing.spacing2,
-                    alignItems = MGridAlignItems.flexStart,
-                    alignContent = MGridAlignContent.stretch,
-                    justify = MGridJustify.flexStart
-                ) {
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Цена" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"25 000 000 Руб" }
-                                    }
-                                    mTableRow {
-                                        mTableCell { +"Цена с доставкой" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"26 000 000 Руб" }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Масса" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"15 т" }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Материал корпуса" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"Сталь" }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    mGridItem(lg = MGridSize.cells3, md = MGridSize.cells4, sm = MGridSize.cells6, xs = MGridSize.cells12) {
-                        mTableContainer {
-                            mTable {
-                                mTableHead {
-                                    mTableCell(variant = MTableCellVariant.head) { +"Параметр" }
-                                    mTableCell(variant = MTableCellVariant.head) { +"Значение" }
-                                }
-                                mTableBody {
-                                    mTableRow {
-                                        mTableCell { +"Материал футеровки" }
-                                        mTableCell(align = MTableCellAlign.inherit) { +"Шамотный кирпич" }
-                                    }
-                                }
-                            }
+            if (description.isNotBlank()) {
+                h2 { +"Описание" }
+                mPaper(variant = MPaperVariant.outlined) {
+                    mContainer(maxWidth = Breakpoint.xl) {
+                        div {
+                            consumer.onTagContentUnsafe { +description }
                         }
                     }
                 }
             }
 
-            h2 { +"Предложения" }
-            mPaper {
-                mTableContainer {
-                    mTable {
-                        mTableHead {
-                            mTableCell(variant = MTableCellVariant.head) { +"#" }
-                            mTableCell(variant = MTableCellVariant.head) { +"Name" }
-                            mTableCell(variant = MTableCellVariant.head) { +"Производитель" }
-                            mTableCell(variant = MTableCellVariant.head) { +"Поставщик" }
-                        }
-                        mTableBody {
-                            mTableCell { +"1" }
-                            mTableCell { +"Большой сталелитейный конвертер" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                        }
-                        mTableBody {
-                            mTableCell { +"2" }
-                            mTableCell { +"Средний сталелитейный конвертер" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                            mTableCell { +"ООО \"МетКонв\"" }
-                        }
-                    }
+            if (item.techDets.isNotEmpty()) {
+                h2 { +"Спецификация" }
+                mPaper {
+                    techDetsLayout(TechDetsProps(techDets = item.techDets))
+                }
+            }
+
+            if (offers?.isNotEmpty() == true) {
+                h2 { +"Предложения" }
+                mPaper {
+                    offersLayout(OffersProps(items = offers))
                 }
             }
         }
     }
 
     class MarketplaceViewConf {
-        var itemTitle: String = ""
+        var item: IMarketplaceItem? = IMarketplaceItem.NONE
+        var offers: List<IMarketplaceItem>? = null
     }
+
 }
+
+fun RBuilder.marketplaceView(block: MarketplaceViews.MarketplaceViewConf.() -> Unit) =
+    MarketplaceViews.MarketplaceViewConf().also {
+        it.block()
+        val props = MarketplaceViewsProps(item = it.item, offers = it.offers)
+        console.log("RBuilder.marketplaceView", props)
+        this@marketplaceView.child(MarketplaceViews::class.rClass, props = props) {
+        }
+    }
