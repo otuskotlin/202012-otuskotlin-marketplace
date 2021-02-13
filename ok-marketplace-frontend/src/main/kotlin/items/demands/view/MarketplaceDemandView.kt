@@ -1,21 +1,32 @@
 package items.demands.view
 
 import MarketplaceDsl
-import items.demands.MarketplaceDemandRouteParams
-import items.base.view.MarketplaceViews
-import react.RBuilder
-import react.RState
-import react.rClass
-import react.router.dom.RouteResultProps
+import items.base.view.marketplaceView
+import models.DemandIdModel
+import react.*
 
 @MarketplaceDsl
-class MarketplaceDemandView(props: MarketplaceDemandViewProps) : MarketplaceViews<MarketplaceDemandViewProps, RState>(props) {
+class MarketplaceDemandView(props: MarketplaceDemandViewProps): RComponent<MarketplaceDemandViewProps, RState>(props) {
     override fun RBuilder.render() {
-        marketplaceView {
-            itemTitle = "View demand: ${props.match.params.demandId}"
+        val demand = props.demand
+        val proposals = props.proposals
+        console.log("MarketplaceDemandView", props, demand)
+        if (demand != null) {
+            marketplaceView() {
+                item = demand
+                offers = proposals
+            }
         }
+    }
+
+    companion object {
+        const val linkMask = "/demand/:demandId"
+        fun makeLink(id: String) = "/demand/$id"
+        fun makeLink(id: DemandIdModel) = makeLink(id.id)
     }
 }
 
-fun RBuilder.marketplaceDemandView(props: RouteResultProps<MarketplaceDemandRouteParams>) =
-    child(MarketplaceDemandView::class.rClass, props = props) { }
+fun RBuilder.marketplaceDemandView(props: MarketplaceDemandViewProps): ReactElement {
+    console.log("RBuilder.marketplaceDemandView", props)
+    return child(MarketplaceDemandView::class.rClass, props = props) { }
+}
