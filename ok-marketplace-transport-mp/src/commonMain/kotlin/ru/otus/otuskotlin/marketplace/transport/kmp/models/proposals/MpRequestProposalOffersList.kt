@@ -8,7 +8,7 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpRequest
 @Serializable
 @SerialName("MpRequestProposalOffersList")
 data class MpRequestProposalOffersList(
-    override val id: String? = null,
+    override val requestId: String? = null,
     override val onResponse: String? = null,
     override val startTime: String? = null,
     override val debug: DebugDto? = null,
