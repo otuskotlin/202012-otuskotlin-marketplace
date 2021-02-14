@@ -1,7 +1,6 @@
 
 rootProject.name = "otuskotlin-marketplace"
 
-
 pluginManagement {
     plugins {
         val kotlinVersion: String by settings
@@ -13,7 +12,7 @@ pluginManagement {
     }
 }
 
-
+include("ok-marketplace-common-mp")
+include("ok-marketplace-common-be")
 include("ok-marketplace-frontend")
 include("ok-marketplace-transport-mp")
-include("ok-marketplace-common-be")
