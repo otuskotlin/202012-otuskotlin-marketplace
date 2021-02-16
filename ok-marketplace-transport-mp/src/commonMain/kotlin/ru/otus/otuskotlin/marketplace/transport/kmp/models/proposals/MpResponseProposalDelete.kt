@@ -8,11 +8,17 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.*
 @SerialName("MpResponseProposalDelete")
 data class MpResponseProposalDelete(
     override val responseId: String? = null,
-    override val debug: DebugDto? = null,
+    override val debug: Debug? = null,
     override val onRequest: String? = null,
     override val endTime: String? = null,
     override val errors: List<ErrorDto>? = null,
     override val status: ResponseStatusDto? = null,
     val proposal: MpProposalDto? = null,
     val deleted: Boolean? = null,
-): IMpResponse, MpMessage()
+): IMpResponse, MpMessage() {
+
+    @Serializable
+    data class Debug(
+        override val mode: MpWorkModeDto?
+    ) : IMpDebug
+}
