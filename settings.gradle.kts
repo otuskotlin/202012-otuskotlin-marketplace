@@ -1,5 +1,5 @@
-
 rootProject.name = "otuskotlin-marketplace"
+
 
 pluginManagement {
     plugins {
@@ -16,4 +16,3 @@ include("ok-marketplace-common-mp")
 include("ok-marketplace-common-be")
 include("ok-marketplace-frontend")
 include("ok-marketplace-transport-mp")
-include("ok-marketplace-transport-mappers")

@@ -1,39 +1,71 @@
 package ru.otus.otuskotlin.marketplace.transport.kmp.models
 
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpDemandCreateDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandCreate
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
-internal class SerializationTest {
+class SerializationTest {
 
     @Test
-    fun requestSerializeTest(){
-        val request: MpMessage = MpRequestDemandCreate(
+    fun serializeMpRequestDemandCreateTest(){
+        val json = Json {
+            prettyPrint = true
+        }
+        val dto = MpRequestDemandCreate(
+            requestId = "create-id",
+            startTime = "2021-02-13T12:00:00",
             createData = MpDemandCreateDto(
-                title = "demand1",
-                tagIds = setOf("123")
+                title = "demand-1",
+                description = "some description",
+                techDets = setOf(TechDetsDto(
+                    id = "tech-det-id"
+                ))
             )
         )
 
-        val json = Json {
+        val serializedString = json.encodeToString(MpRequestDemandCreate.serializer(), dto)
+        println(serializedString)
+        assertTrue { serializedString.contains("demand-1") }
+        val deserializedDto = json.decodeFromString(MpRequestDemandCreate.serializer(), serializedString)
+        assertEquals("tech-det-id", deserializedDto.createData?.techDets?.firstOrNull()?.id)
+    }
+
+    @Test
+    fun serializeMpRequestTest(){
+        val jsonRequest = Json {
             prettyPrint = true
             serializersModule = SerializersModule {
-                polymorphic(MpMessage::class){
-                    subclass(MpRequestDemandCreate::class)
+                polymorphic(MpMessage::class) {
+                    subclass(MpRequestDemandCreate::class, MpRequestDemandCreate.serializer())
                 }
-                classDiscriminator = "type"
+
             }
+            classDiscriminator = "type"
         }
-
-        val serialString = json.encodeToString(MpMessage.serializer(), request)
-        val dto = json.decodeFromString(MpMessage.serializer(), serialString)
-
-        assertEquals("demand1", (dto as? MpRequestDemandCreate)?.createData?.title)
+        val dto:MpMessage = MpRequestDemandCreate(
+            requestId = "create-id",
+            startTime = "2021-02-13T12:00:00",
+            createData = MpDemandCreateDto(
+                title = "demand-2",
+                description = "some description",
+                techDets = setOf(TechDetsDto(
+                    id = "tech-det-id"
+                ))
+            )
+        )
+        val serializedString = jsonRequest.encodeToString(dto)
+        println(serializedString)
+        assertTrue { serializedString.contains("demand-2") }
+        val deserializedDto = jsonRequest.decodeFromString(MpMessage.serializer(), serializedString)
+        assertEquals("tech-det-id", (deserializedDto as? MpRequestDemandCreate)?.createData?.techDets?.firstOrNull()?.id)
     }
+
 }
