@@ -13,6 +13,12 @@ data class MpResponseDemandOffersList(
     override val endTime: String? = null,
     override val errors: List<ErrorDto>? = null,
     override val status: ResponseStatusDto? = null,
-    override val debug: DebugDto? = null,
+    override val debug: Debug? = null,
     val demandProposals: List<MpProposalDto>? = null,
-): IMpResponse, MpMessage()
+): IMpResponse, MpMessage() {
+
+    @Serializable
+    data class Debug(
+        override val mode: MpWorkModeDto?
+    ) : IMpDebug
+}

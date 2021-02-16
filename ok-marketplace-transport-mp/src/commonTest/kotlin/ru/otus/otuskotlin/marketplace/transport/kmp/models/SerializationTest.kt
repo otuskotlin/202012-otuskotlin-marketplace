@@ -10,6 +10,7 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpDemandCreat
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandCreate
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class SerializationTest {
 
@@ -32,6 +33,7 @@ class SerializationTest {
 
         val serializedString = json.encodeToString(MpRequestDemandCreate.serializer(), dto)
         println(serializedString)
+        assertTrue { serializedString.contains("demand-1") }
         val deserializedDto = json.decodeFromString(MpRequestDemandCreate.serializer(), serializedString)
         assertEquals("tech-det-id", deserializedDto.createData?.techDets?.firstOrNull()?.id)
     }
@@ -61,6 +63,7 @@ class SerializationTest {
         )
         val serializedString = jsonRequest.encodeToString(dto)
         println(serializedString)
+        assertTrue { serializedString.contains("demand-2") }
         val deserializedDto = jsonRequest.decodeFromString(MpMessage.serializer(), serializedString)
         assertEquals("tech-det-id", (deserializedDto as? MpRequestDemandCreate)?.createData?.techDets?.firstOrNull()?.id)
     }
