@@ -27,10 +27,10 @@ dependencies {
 openApiGenerate {
     val basePackage = "${project.group}.transport.openapi.demand"
     packageName.set(basePackage)
-    generatorName.set("kotlin")
+    generatorName.set("kotlin-server")
     configOptions.apply {
-        put("library", "jvm-okhttp4")
-        put("requestDateConverter", "toString")
+//        put("library", "jvm-okhttp4")
+//        put("requestDateConverter", "toString")
     }
     inputSpec.set("${rootProject.projectDir}/specs/marketplace-demand-api.yaml")
 }
