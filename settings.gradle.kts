@@ -14,11 +14,18 @@ pluginManagement {
     }
 }
 
+// Мультиплатформенные подпроекты
 include("ok-marketplace-common-mp")
-include("ok-marketplace-common-be")
-include("ok-marketplace-frontend")
-include("ok-marketplace-transport-mp")
-include("ok-marketplace-mappers-mp")
+include("ok-marketplace-mp-transport-mp")
+
+// Фронтенд подпроекты
+include("ok-marketplace-fe-app")
+include("ok-marketplace-fe-common")
+include("ok-marketplace-fe-mappers-mp")
+
+// Бэкенд (JVM) подпроекты
+include("ok-marketplace-be-common")
+include("ok-marketplace-be-mappers-mp")
 include("ok-marketplace-transport-openapi-demand-kt")
 include("ok-marketplace-transport-openapi-demandoffers-kt")
 include("ok-marketplace-transport-openapi-proposal-kt")
