@@ -1,0 +1,258 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: demand
+    description: Рабоа с Потребностями
+  - name: proposal
+    description: Работа с Предложениями
+paths:
+  /demand/list:
+    post:
+      tags:
+        - demand
+      summary: Получить список Потребностей
+      operationId: demandList
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestDemandList'
+        required: true
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseDemandList'
+
+  /demand/create:
+    post:
+      tags:
+        - demand
+      summary: Создание Потребности
+      operationId: demandCreate
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestDemandCreate'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseDemandCreate'
+
+  /demand/read:
+    post:
+      tags:
+        - demand
+      summary: Получение информации о Потребности
+      operationId: demandRead
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestDemandRead'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseDemandRead'
+
+  /demand/update:
+    post:
+      tags:
+        - demand
+      summary: Обновление Потребности
+      operationId: demandUpdate
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestDemandUpdate'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseDemandUpdate'
+
+  /demand/delete:
+    post:
+      tags:
+        - demand
+      summary: Удаление Потребности
+      operationId: demandDelete
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestDemandDelete'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseDemandDelete'
+
+components:
+  schemas:
+
+    MpRequestDemandList:
+      title: Запрос списка Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            filterData:
+              $ref: '#/components/schemas/MpDemandListFilter'
+
+
+    MpResponseDemandList:
+      title: Ответ на запрос списка Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demands:
+              type: array
+              items:
+                $ref: '#/components/schemas/MpDemand'
+
+    MpDemandListFilter:
+      title: Фильтр для поиска Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemFilter'
+
+    MpDemand:
+      title: Потребность
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItem'
+
+    MpRequestDemandCreate:
+      title: Запрос создания Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            createData:
+              $ref: '#/components/schemas/MpDemandCreate'
+
+    MpResponseDemandCreate:
+      title: Ответ на запрос создания Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demand:
+              $ref: '#/components/schemas/MpDemand'
+
+    MpDemandCreate:
+      title: Запрос создания Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemCreate'
+
+
+    MpRequestDemandRead:
+      title: Запрос на чтение Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            read:
+              type: object
+              properties:
+                id:
+                  type: string
+
+    MpResponseDemandRead:
+      title: Ответ на запрос информации о Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demand:
+              $ref: '#/components/schemas/MpDemand'
+
+
+    MpRequestDemandUpdate:
+      title: Запрос изменения Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            updateData:
+              $ref: '#/components/schemas/MpDemandUpdate'
+
+    MpResponseDemandUpdate:
+      title: Ответ на запрос изменения информации о Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demand:
+              $ref: '#/components/schemas/MpDemand'
+
+    MpDemandUpdate:
+      title: Запрос обновления Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemUpdate'
+
+
+    MpRequestDemandDelete:
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            delete:
+              type: object
+              properties:
+                id:
+                  type: string
+
+    MpResponseDemandDelete:
+      title: Ответ на запрос удаления Потребности
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            demand:
+              $ref: '#/components/schemas/MpDemand'
+            deleted:
+              type: boolean
+              title: Потребность удалена - true, false

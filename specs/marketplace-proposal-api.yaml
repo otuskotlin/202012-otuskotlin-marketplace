@@ -1,0 +1,256 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: proposal
+    description: Рабоа с Потребностями
+paths:
+  /proposal/list:
+    post:
+      tags:
+        - proposal
+      summary: Получить список Потребностей
+      operationId: proposalList
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestProposalList'
+        required: true
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseProposalList'
+
+  /proposal/create:
+    post:
+      tags:
+        - proposal
+      summary: Создание Предложения
+      operationId: proposalCreate
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestProposalCreate'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseProposalCreate'
+
+  /proposal/read:
+    post:
+      tags:
+        - proposal
+      summary: Получение информации о Предложения
+      operationId: proposalRead
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestProposalRead'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseProposalRead'
+
+  /proposal/update:
+    post:
+      tags:
+        - proposal
+      summary: Обновление Предложения
+      operationId: proposalUpdate
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestProposalUpdate'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseProposalUpdate'
+
+  /proposal/delete:
+    post:
+      tags:
+        - proposal
+      summary: Удаление Предложения
+      operationId: proposalDelete
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestProposalDelete'
+        required: true
+      responses:
+        200:
+          description: Положительный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseProposalDelete'
+
+components:
+  schemas:
+
+    MpRequestProposalList:
+      title: Запрос списка Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            filterData:
+              $ref: '#/components/schemas/MpProposalListFilter'
+
+
+    MpResponseProposalList:
+      title: Ответ на запрос списка Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposals:
+              type: array
+              items:
+                $ref: '#/components/schemas/MpProposal'
+
+    MpProposalListFilter:
+      title: Фильтр для поиска Потребностей
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemFilter'
+
+    MpProposal:
+      title: Предложение
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItem'
+
+    MpRequestProposalCreate:
+      title: Запрос создания Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            createData:
+              $ref: '#/components/schemas/MpProposalCreate'
+
+    MpResponseProposalCreate:
+      title: Ответ на запрос создания Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
+
+    MpProposalCreate:
+      title: Запрос создания Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemCreate'
+
+
+    MpRequestProposalRead:
+      title: Запрос на чтение Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            read:
+              type: object
+              properties:
+                id:
+                  type: string
+
+    MpResponseProposalRead:
+      title: Ответ на запрос информации о Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
+
+
+    MpRequestProposalUpdate:
+      title: Запрос изменения Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            updateData:
+              $ref: '#/components/schemas/MpProposalUpdate'
+
+    MpResponseProposalUpdate:
+      title: Ответ на запрос изменения информации о Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
+
+    MpProposalUpdate:
+      title: Запрос обновления Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpItemUpdate'
+
+
+    MpRequestProposalDelete:
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            delete:
+              type: object
+              properties:
+                id:
+                  type: string
+
+    MpResponseProposalDelete:
+      title: Ответ на запрос удаления Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposal:
+              $ref: '#/components/schemas/MpProposal'
+            deleted:
+              type: boolean
+              title: Предложение удалена - true, false

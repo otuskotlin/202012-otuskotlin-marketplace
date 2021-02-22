@@ -1,0 +1,215 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: demand
+    description: Рабоа с Потребностями
+paths:
+  /tmp:
+    get:
+      tags:
+        - demand
+      summary: Получить список Потребностей
+      responses:
+        200:
+          description: Успех
+          content: { }
+
+components:
+  schemas:
+
+
+    BaseMessage:
+      type: object
+      title: Базовая структура сообщения
+      properties:
+        type:
+          type: string
+          title: Тип запроса
+          description: 'Идентификатор типа запроса. Используется в качестве дескриминатора при десериализации.
+            Наиболее востребован при пересылке через Websocket и другие транспорты без явного выделения канала.'
+      discriminator:
+        propertyName: type
+
+
+    MpRequestBase:
+      type: object
+      properties:
+        requestId:
+          type: string
+          title: Идентификатор запроса
+          description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
+        onResponse:
+          type: string
+          title: Сформирован на response.id
+          description: Идентификатор ответа, на который сформирован текущий запрос
+
+    MpResponseBase:
+      type: object
+      properties:
+        responseId:
+          type: string
+          title: Идентификатор запроса
+          description: Уникальный идентификатор запроса для мониторинга прохождения запроса по бэкенд-инфраструктуре
+        onRequest:
+          type: string
+          title: Сформирован на request.id
+          description: Идентификатор запроса, на который сформирован текущий ответ
+
+    MpItem:
+      allOf:
+        - $ref: '#/components/schemas/MpItemUpdate'
+        - type: object
+          title: Потребность-Предложение
+          description: Базовая структура для Потребностей и Предложений
+          properties:
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/MpItemPermission'
+
+    MpItemCreate:
+      type: object
+      title: Создание объекта
+      description: Базовая структура для запроса создания Потребностей и Предложений
+      properties:
+        title:
+          type: string
+          title: Название
+          example: Поршень алюминиевый
+        description:
+          type: string
+          title: Описание
+          example: Описание поршня. Является частью двигателя внутреннего сгорания.
+        avatar:
+          type: string
+          title: Аватар объекта
+          example: 'icon:menu'
+        tagIds:
+          type: array
+          title: Идентификаторы тэгов, прикрепленных к объекту
+          example:
+            - '1232-23423-346467-56756'
+            - '1232-23423-346467-56757'
+            - '1232-23423-346467-56758'
+          items:
+            type: string
+        techDets:
+          type: array
+          title: Технические характеристики объекта
+          items:
+            $ref: '#/components/schemas/MpTechDet'
+
+    MpItemUpdate:
+      allOf:
+        - $ref: '#/components/schemas/MpItemCreate'
+        - type: object
+          properties:
+            id:
+              type: string
+              title: Идентификатор
+              example: '12343-34534-67867'
+
+    MpItemPermission:
+      type: string
+      enum:
+        - read
+        - update
+        - delete
+
+    MpTechDet:
+      type: object
+      title: Техническая характеристика
+      description: Описывает одну из технических характеристик предложения или потребности
+      properties:
+        id:
+          type: string
+          title: Идентификатор Тех.характеристики
+          description: 'Используется для операций над тех.характеристикой: удаления, добавления, изменения'
+        param:
+          $ref: '#/components/schemas/MpTechParam'
+        value:
+          type: string
+          title: Строковое значение
+          description: Строковое значение технической характеристики для отображения на экране пользователя
+        comparableValue:
+          type: number
+          format: double
+          title: Сравнимое значение
+          description: 'Значение для сравнения технических характеристик,
+            описывающих одинаковые технические параметры, но выраженные в различных единицах
+            измерения'
+
+
+    MpTechParam:
+      type: object
+      properties:
+        id:
+          type: string
+          title: Идентификатор тех. параметра
+        name:
+          type: string
+          title: Название тех. параметра
+        description:
+          type: string
+          title: Описание тех. параметра
+        priority:
+          type: number
+          format: double
+          title: Приоритет
+          description: Приоритет, по которому тех.параметры будут отфильтровываться в сокращенном списке
+        units:
+          type: array
+          title: Допустимые единицы измерений
+          items:
+            $ref: '#/components/schemas/UnitType'
+
+    UnitType:
+      type: object
+      title: Единица измерения
+      properties:
+        id:
+          type: string
+          title: Идентификатор единицы
+        name:
+          type: string
+          title: Название единицы
+        description:
+          type: string
+          title: Описание единицы
+        synonyms:
+          type: array
+          uniqueItems: true
+          title: Синонимы названия единицы измерения
+          items:
+            type: string
+        symbol:
+          type: string
+          title: Символ единицы измрения
+        symbols:
+          type: array
+          uniqueItems: true
+          title: Альтернативные символы единицы измерения
+          items:
+            type: string
+        isBase:
+          type: boolean
+          title: Флаг базовой единицы
+          description: Единица измерения используется для расчета значения comparableValue
+
+    MpItemFilter:
+      type: object
+      title: Фильтр для поиска Потребностей и Предложений
+      properties:
+        text:
+          type: string
+          title: Строковое представление фильтра

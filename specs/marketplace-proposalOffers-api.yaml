@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: proposalOffers
+    description: Работа с предложениями для Предложения
+paths:
+  /proposal-offers/list:
+    post:
+      tags:
+        - proposalOffers
+      summary: Получить список Предложений
+      operationId: proposalOffersList
+      requestBody:
+        description: Запрос
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpRequestProposalOffersList'
+        required: true
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpResponseProposalOffersList'
+
+
+components:
+  schemas:
+
+    MpRequestProposalOffersList:
+      title: Запрос для получения предложений для Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpRequestBase'
+        - type: object
+          properties:
+            proposalId:
+              type: string
+
+    MpResponseProposalOffersList:
+      title: Результат запроса списка предложений для Предложения
+      allOf:
+        - $ref: './marketplace-base-api.yaml#/components/schemas/BaseMessage'
+        - $ref: './marketplace-base-api.yaml#/components/schemas/MpResponseBase'
+        - type: object
+          properties:
+            proposalDemands:
+              type: array
+              items:
+                $ref: './marketplace-demand-api.yaml#/components/schemas/MpDemand'
+
