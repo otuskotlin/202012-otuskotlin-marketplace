@@ -33,13 +33,19 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "11"
+        }
     }
-}
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+    withType<Test> {
+        useJUnitPlatform()
+    }
+
+    bootBuildImage {
+        imageName = "ok-marketplace-app-spring:${rootProject.version}"
+    }
 }
