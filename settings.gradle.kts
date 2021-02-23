@@ -3,6 +3,8 @@ rootProject.name = "otuskotlin-marketplace"
 pluginManagement {
     val kotlinVersion: String by settings
     val openapiVersion: String by settings
+    val springDependencyVersion: String by settings
+    val springBootVersion: String by settings
 
     plugins {
         kotlin("multiplatform") version kotlinVersion
@@ -11,6 +13,8 @@ pluginManagement {
         kotlin("plugin.serialization") version kotlinVersion
 
         id("org.openapi.generator") version openapiVersion
+        id("org.springframework.boot") version springBootVersion
+        id("io.spring.dependency-management") version springDependencyVersion
     }
 }
 
@@ -30,3 +34,6 @@ include("ok-marketplace-transport-openapi-demand-kt")
 include("ok-marketplace-transport-openapi-demandoffers-kt")
 include("ok-marketplace-transport-openapi-proposal-kt")
 include("ok-marketplace-transport-openapi-proposaloffers-kt")
+
+// Приложения
+include("ok-marketplace-be-app-spring")
