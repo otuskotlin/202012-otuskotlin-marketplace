@@ -37,3 +37,4 @@ include("ok-marketplace-transport-openapi-proposaloffers-kt")
 
 // Приложения
 include("ok-marketplace-be-app-spring")
+include("ok-marketplace-be-app-ktor")
