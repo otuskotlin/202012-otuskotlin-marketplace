@@ -21,11 +21,16 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":ok-marketplace-be-common"))
+    implementation(project(":ok-marketplace-mp-transport-mp"))
+    implementation(project(":ok-marketplace-be-mappers-mp"))
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
 }
 

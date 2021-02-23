@@ -8,6 +8,8 @@ import io.ktor.http.*
 import io.ktor.content.*
 import io.ktor.http.content.*
 import io.ktor.features.*
+import io.ktor.serialization.*
+import kotlinx.serialization.json.Json
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -26,6 +28,10 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(ContentNegotiation) {
+        json(
+            contentType = ContentType.Application.Json,
+            json = jsonConfig,
+        )
     }
 
     routing {
@@ -36,6 +42,47 @@ fun Application.module(testing: Boolean = false) {
         // Static feature. Try to access `/static/ktor_logo.svg`
         static("/static") {
             resources("static")
+        }
+
+        route("/demands") {
+            post("/get") {
+
+            }
+            post("/create") {
+
+            }
+            post("/update") {
+
+            }
+            post("/delete") {
+
+            }
+            post("/filter") {
+
+            }
+            post("/offers") {
+
+            }
+        }
+        route("/proposals") {
+            post("/get") {
+
+            }
+            post("/create") {
+
+            }
+            post("/update") {
+
+            }
+            post("/delete") {
+
+            }
+            post("/filter") {
+
+            }
+            post("/offers") {
+
+            }
         }
     }
 }
