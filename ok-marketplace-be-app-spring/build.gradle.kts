@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     kotlin("jvm")
+    kotlin("plugin.serialization")
 //    kotlin("plugin.spring") version "1.4.30"
 }
 
@@ -13,12 +14,18 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 dependencies {
     val springFuVersion: String by project
+    val serializationVersion: String by project
 
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation(kotlin("stdlib"))
-    implementation("org.springframework.fu:spring-fu-autoconfigure-adapter:$springFuVersion")
+
+    implementation("org.springframework.fu:spring-fu-kofu:$springFuVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+    implementation("org.springframework:spring-webmvc")
+
+    testImplementation(kotlin("test-junit5"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.withType<KotlinCompile> {
