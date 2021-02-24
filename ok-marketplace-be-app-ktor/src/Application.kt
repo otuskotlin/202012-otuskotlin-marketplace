@@ -10,6 +10,9 @@ import io.ktor.http.content.*
 import io.ktor.features.*
 import io.ktor.serialization.*
 import kotlinx.serialization.json.Json
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -46,42 +49,90 @@ fun Application.module(testing: Boolean = false) {
 
         route("/demands") {
             post("/get") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestDemandRead
+                } catch(e: Throwable) {
 
+                }
             }
             post("/create") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestDemandCreate
+                } catch(e: Throwable) {
 
+                }
             }
             post("/update") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestDemandUpdate
+                } catch(e: Throwable) {
 
+                }
             }
             post("/delete") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestDemandDelete
+                } catch(e: Throwable) {
 
+                }
             }
             post("/filter") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestDemandList
+                } catch(e: Throwable) {
 
+                }
             }
             post("/offers") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestDemandOffersList
+                } catch(e: Throwable) {
 
+                }
             }
         }
         route("/proposals") {
             post("/get") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestProposalRead
+                } catch(e: Throwable) {
 
+                }
             }
             post("/create") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestProposalCreate
+                } catch(e: Throwable) {
 
+                }
             }
             post("/update") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestProposalUpdate
+                } catch(e: Throwable) {
 
+                }
             }
             post("/delete") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestProposalDelete
+                } catch(e: Throwable) {
 
+                }
             }
             post("/filter") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestProposalList
+                } catch(e: Throwable) {
 
+                }
             }
             post("/offers") {
+                try {
+                    val query = call.receive<MpMessage>() as MpRequestProposalOffersList
+                } catch(e: Throwable) {
 
+                }
             }
         }
     }
