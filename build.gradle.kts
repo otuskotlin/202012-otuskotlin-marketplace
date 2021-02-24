@@ -4,6 +4,7 @@ plugins {
     kotlin("js") apply false
 
     id("org.openapi.generator") apply false
+//    id("io.kotless") apply true
 }
 
 group = "ru.otus.otuskotlin.marketplace"

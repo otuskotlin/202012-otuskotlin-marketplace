@@ -5,6 +5,7 @@ pluginManagement {
     val openapiVersion: String by settings
     val springDependencyVersion: String by settings
     val springBootVersion: String by settings
+    val kotlessVersion: String by settings
 
     plugins {
         kotlin("multiplatform") version kotlinVersion
@@ -15,6 +16,7 @@ pluginManagement {
         id("org.openapi.generator") version openapiVersion
         id("org.springframework.boot") version springBootVersion
         id("io.spring.dependency-management") version springDependencyVersion
+        id("io.kotless") version kotlessVersion apply false
     }
 }
 
@@ -37,3 +39,4 @@ include("ok-marketplace-transport-openapi-proposaloffers-kt")
 
 // Приложения
 include("ok-marketplace-be-app-spring")
+include("ok-marketplace-be-app-kotless")
