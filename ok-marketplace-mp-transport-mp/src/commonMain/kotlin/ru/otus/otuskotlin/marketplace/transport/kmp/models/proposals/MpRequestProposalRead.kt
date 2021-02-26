@@ -14,7 +14,7 @@ data class MpRequestProposalRead(
     override val onResponse: String?,
     override val startTime: String?,
     override val debug: Debug? = null,
-    val requestData: String? = null,
+    val proposalId: String? = null,
     ): IMpRequest, MpMessage() {
 
     @Serializable

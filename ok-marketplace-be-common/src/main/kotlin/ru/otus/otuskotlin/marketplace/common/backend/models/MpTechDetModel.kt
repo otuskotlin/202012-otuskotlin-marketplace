@@ -5,7 +5,7 @@ data class MpTechDetModel(
     val param: MpTechParamModel = MpTechParamModel.NONE,
     val value: String = "", // String representation of the value
     val unit: MpUnitTypeModel = MpUnitTypeModel.NONE,
-    val comparableValue: Double = Double.NaN,
+    val comparableValue: Double = Double.MIN_VALUE,
 ) {
         companion object {
             val NONE = MpTechDetModel()
