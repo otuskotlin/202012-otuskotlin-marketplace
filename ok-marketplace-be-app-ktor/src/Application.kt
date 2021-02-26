@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.service.DemandService
+import com.example.service.ProposalService
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -19,6 +21,10 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
+    val demandService = DemandService()
+    val proposalService = ProposalService()
+
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
