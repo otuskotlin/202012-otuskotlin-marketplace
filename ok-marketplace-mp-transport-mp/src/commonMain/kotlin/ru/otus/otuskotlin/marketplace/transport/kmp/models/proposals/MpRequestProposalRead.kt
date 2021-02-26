@@ -11,8 +11,8 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpWorkModeDto
 @SerialName("MpRequestProposalRead")
 data class MpRequestProposalRead(
     override val requestId: String? = null,
-    override val onResponse: String?,
-    override val startTime: String?,
+    override val onResponse: String? = null,
+    override val startTime: String? = null,
     override val debug: Debug? = null,
     val proposalId: String? = null,
     ): IMpRequest, MpMessage() {
