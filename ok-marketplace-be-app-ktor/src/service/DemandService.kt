@@ -3,6 +3,7 @@ package com.example.service
 import ru.otus.otuskotlin.marketplace.backend.mappers.*
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 
@@ -15,7 +16,7 @@ class DemandService {
         tagIds = mutableSetOf("1", "2", "3"),
     )
 
-    suspend fun get(query: MpRequestDemandRead) = MpBeContext().run {
+    suspend fun get(query: MpRequestDemandRead): MpMessage = MpBeContext().run {
         try {
             setQuery(query)
             responseDemand = demand
@@ -33,7 +34,7 @@ class DemandService {
         }
     }
 
-    suspend fun create(query: MpRequestDemandCreate) = MpBeContext().run {
+    suspend fun create(query: MpRequestDemandCreate): MpMessage = MpBeContext().run {
         try {
             setQuery(query)
             responseDemand = demand
@@ -51,7 +52,7 @@ class DemandService {
         }
     }
 
-    suspend fun update(query: MpRequestDemandUpdate) = MpBeContext().run {
+    suspend fun update(query: MpRequestDemandUpdate): MpMessage = MpBeContext().run {
         try {
             setQuery(query)
             responseDemand = demand
@@ -69,7 +70,7 @@ class DemandService {
         }
     }
 
-    suspend fun delete(query: MpRequestDemandDelete) = MpBeContext().run {
+    suspend fun delete(query: MpRequestDemandDelete): MpMessage = MpBeContext().run {
         try {
             setQuery(query)
             responseDemand = demand
@@ -87,7 +88,7 @@ class DemandService {
         }
     }
 
-    suspend fun filter(query: MpRequestDemandList) = MpBeContext().run {
+    suspend fun filter(query: MpRequestDemandList): MpMessage = MpBeContext().run {
         try {
             setQuery(query)
             responseDemands = mutableListOf(demand)
@@ -105,7 +106,7 @@ class DemandService {
         }
     }
 
-    suspend fun offers(query: MpRequestDemandOffersList) = MpBeContext().run {
+    suspend fun offers(query: MpRequestDemandOffersList): MpMessage = MpBeContext().run {
         try {
             setQuery(query)
             responseProposals = mutableListOf(
