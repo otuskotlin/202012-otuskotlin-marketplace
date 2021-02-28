@@ -16,7 +16,7 @@ dependencies {
     val springFuVersion: String by project
     val serializationVersion: String by project
 
-    implementation(project(":ok-marketplace-common-mp"))
+    implementation(project(":ok-marketplace-mp-common"))
     implementation(project(":ok-marketplace-mp-transport-mp"))
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-be-mappers-mp"))

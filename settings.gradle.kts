@@ -19,11 +19,11 @@ pluginManagement {
 }
 
 // Мультиплатформенные подпроекты
-include("ok-marketplace-common-mp")
+include("ok-marketplace-mp-common")
 include("ok-marketplace-mp-transport-mp")
 
 // Фронтенд подпроекты
-include("ok-marketplace-fe-app")
+include("ok-marketplace-fe-app-kreact")
 include("ok-marketplace-fe-common")
 include("ok-marketplace-fe-mappers-mp")
 
