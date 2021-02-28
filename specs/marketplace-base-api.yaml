@@ -101,6 +101,7 @@ components:
             - '1232-23423-346467-56756'
             - '1232-23423-346467-56757'
             - '1232-23423-346467-56758'
+          uniqueItems: true
           items:
             type: string
         techDets:

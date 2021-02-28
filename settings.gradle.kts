@@ -30,10 +30,8 @@ include("ok-marketplace-fe-mappers-mp")
 // Бэкенд (JVM) подпроекты
 include("ok-marketplace-be-common")
 include("ok-marketplace-be-mappers-mp")
-include("ok-marketplace-transport-openapi-demand-kt")
-include("ok-marketplace-transport-openapi-demandoffers-kt")
-include("ok-marketplace-transport-openapi-proposal-kt")
-include("ok-marketplace-transport-openapi-proposaloffers-kt")
+include("ok-marketplace-be-transport-openapi")
+include("ok-marketplace-be-mappers-openapi")
 
 // Приложения
 include("ok-marketplace-be-app-spring")
