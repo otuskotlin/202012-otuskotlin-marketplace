@@ -12,5 +12,7 @@ data class MpBeContext(
     var requestProposal: MpProposalModel = MpProposalModel.NONE,
 
     var responseDemand: MpDemandModel = MpDemandModel.NONE,
-    var responseProposal: MpProposalModel = MpProposalModel.NONE,
+    var responseDemands: List<MpDemandModel> = emptyList(),
+    var responseProposal: List<MpProposalModel> = emptyList(),
+    var responseProposals: MpProposalModel = MpProposalModel.NONE,
 )
