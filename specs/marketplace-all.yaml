@@ -1,0 +1,41 @@
+openapi: 3.0.3
+info:
+  title: Marketplace
+  description: 'Учебный проект по созданию маркетплейса. Сервиса, на котором можно выставлять предложения и потребности
+  , а также находить их возможные комбинации'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: demand
+    description: Рабоа с Потребностями
+  - name: proposal
+paths:
+  /demand/list:
+    $ref: './marketplace-demand-api.yaml#/paths/~1demand~1list'
+  /demand/create:
+    $ref: './marketplace-demand-api.yaml#/paths/~1demand~1create'
+  /demand/read:
+    $ref: './marketplace-demand-api.yaml#/paths/~1demand~1read'
+  /demand/update:
+    $ref: './marketplace-demand-api.yaml#/paths/~1demand~1update'
+  /demand/delete:
+    $ref: './marketplace-demand-api.yaml#/paths/~1demand~1delete'
+  /demand/offers:
+    $ref: './marketplace-demandOffers-api.yaml#/paths/~1demand-offers~1list'
+
+  /proposal/list:
+    $ref: './marketplace-proposal-api.yaml#/paths/~1proposal~1list'
+  /proposal/create:
+    $ref: './marketplace-proposal-api.yaml#/paths/~1proposal~1create'
+  /proposal/read:
+    $ref: './marketplace-proposal-api.yaml#/paths/~1proposal~1read'
+  /proposal/update:
+    $ref: './marketplace-proposal-api.yaml#/paths/~1proposal~1update'
+  /proposal/delete:
+    $ref: './marketplace-proposal-api.yaml#/paths/~1proposal~1delete'
+  /proposal/offers:
+    $ref: './marketplace-proposalOffers-api.yaml#/paths/~1proposal-offers~1list'

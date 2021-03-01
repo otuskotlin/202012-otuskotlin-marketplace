@@ -12,7 +12,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-js"))
 
-    implementation(project(":ok-marketplace-common-mp"))
+    implementation(project(":ok-marketplace-mp-common"))
     implementation(project(":ok-marketplace-fe-common"))
     implementation(project(":ok-marketplace-mp-transport-mp"))
 

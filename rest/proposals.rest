@@ -1,0 +1,36 @@
+POST http://localhost:8080/proposal/list
+Content-Type: application/json
+
+{}
+
+###
+POST http://localhost:8080/proposal/create
+Content-Type: application/json
+
+{"createData": {"title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
+
+###
+POST http://localhost:8080/proposal/read
+Content-Type: application/json
+
+{"proposalId": "p-7263"}
+
+###
+POST http://localhost:8080/proposal/update
+Content-Type: application/json
+
+{"updateData": {"id": "p-rrt", "title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
+
+###
+POST http://localhost:8080/proposal/delete
+Content-Type: application/json
+
+{"proposalId": "p-rrt"}
+
+###
+POST http://localhost:8080/proposal/offers
+Content-Type: application/json
+
+{"proposalId": "p-rrt"}
+
+###
