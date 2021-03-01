@@ -11,7 +11,7 @@ data class MpBeContext(
     var proposalFilter: MpProposalFilterModel = MpProposalFilterModel.NONE,
 
     var responseDemand: MpDemandModel = MpDemandModel.NONE,
+    var responseDemands: List<MpDemandModel> = emptyList(),
+    var responseProposals: List<MpProposalModel> = emptyList(),
     var responseProposal: MpProposalModel = MpProposalModel.NONE,
-    var responseDemands: MutableList<MpDemandModel> = mutableListOf(),
-    var responseProposals: MutableList<MpProposalModel> = mutableListOf(),
 )
