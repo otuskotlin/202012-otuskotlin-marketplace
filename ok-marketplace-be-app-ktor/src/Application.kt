@@ -65,6 +65,7 @@ fun Application.module(testing: Boolean = false) {
             }
             post("/offers") {
                 demandController.offers(this)
+            }
         }
         route("/proposal") {
             post("/read") {
@@ -87,6 +88,5 @@ fun Application.module(testing: Boolean = false) {
             }
         }
     }
-}
 }
 

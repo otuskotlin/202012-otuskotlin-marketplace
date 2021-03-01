@@ -58,7 +58,7 @@ class ProposalController {
 
         // some logic
 
-        val response = if (id != null)
+        val response: MpMessage = if (id != null)
             MpResponseProposalUpdate(
                 responseId = "123",
                 onRequest = query.requestId,
