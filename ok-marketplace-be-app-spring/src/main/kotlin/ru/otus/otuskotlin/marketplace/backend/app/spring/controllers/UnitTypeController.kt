@@ -1,8 +1,8 @@
-package ru.otus.otuskotlin.marketplace.backend.app.spring.services
+package ru.otus.otuskotlin.marketplace.backend.app.spring.controllers
 
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.UnitTypeDto
 
-class UnitTypeService {
+class UnitTypeController {
 
     companion object {
         fun mockRead(id: String, symbol: String) = UnitTypeDto(

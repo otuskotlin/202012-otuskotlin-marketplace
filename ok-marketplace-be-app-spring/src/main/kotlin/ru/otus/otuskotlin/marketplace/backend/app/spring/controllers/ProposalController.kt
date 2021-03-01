@@ -1,9 +1,8 @@
-package ru.otus.otuskotlin.marketplace.backend.app.spring.services
+package ru.otus.otuskotlin.marketplace.backend.app.spring.controllers
 
 import org.springframework.web.servlet.function.ServerRequest
 import org.springframework.web.servlet.function.ServerResponse
 import org.springframework.web.servlet.function.ServerResponse.ok
-import ru.otus.otuskotlin.marketplace.common.backend.models.MpTechDetModel
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ErrorDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
@@ -11,7 +10,7 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechParamDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 import java.time.Instant
 
-class ProposalService {
+class ProposalController {
     fun list(request: ServerRequest): ServerResponse {
         val query = request.body(MpRequestProposalList::class.java)
         val response = MpResponseProposalList(
@@ -114,10 +113,10 @@ class ProposalService {
                 endTime = Instant.now().toString(),
                 status = ResponseStatusDto.SUCCESS,
                 proposalDemands = listOf(
-                    DemandService.mockRead("d-001"),
-                    DemandService.mockRead("d-002"),
-                    DemandService.mockRead("d-003"),
-                    DemandService.mockRead("d-004"),
+                    DemandController.mockRead("d-001"),
+                    DemandController.mockRead("d-002"),
+                    DemandController.mockRead("d-003"),
+                    DemandController.mockRead("d-004"),
                 )
             )
         )
@@ -143,7 +142,7 @@ class ProposalService {
                         name = "Tech Param 001",
                         description = "Tech Param Description 001",
                         priority = 0.0,
-                        units = setOf(UnitTypeService.mockRead("ut-001", "kg")),
+                        units = setOf(UnitTypeController.mockRead("ut-001", "kg")),
                     )
                 )
             )

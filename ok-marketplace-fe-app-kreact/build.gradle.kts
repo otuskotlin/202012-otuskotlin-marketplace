@@ -11,7 +11,7 @@ dependencies {
     val kotlinJsCoroutines = "1.4.2"
     val ktMaterialWrapper = "0.6.2"
 
-    implementation(project(":ok-marketplace-common-mp"))
+    implementation(project(":ok-marketplace-mp-common"))
     implementation(project(":ok-marketplace-mp-transport-mp"))
     implementation(project(":ok-marketplace-fe-common"))
     implementation(project(":ok-marketplace-fe-mappers-mp"))
