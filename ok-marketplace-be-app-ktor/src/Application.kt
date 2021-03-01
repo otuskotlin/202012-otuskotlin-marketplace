@@ -47,8 +47,8 @@ fun Application.module(testing: Boolean = false) {
             resources("static")
         }
 
-        route("/demands") {
-            post("/get") {
+        route("/demand") {
+            post("/read") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestDemandRead
                 } catch(e: Throwable) {
@@ -76,7 +76,7 @@ fun Application.module(testing: Boolean = false) {
 
                 }
             }
-            post("/filter") {
+            post("/list") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestDemandList
                 } catch(e: Throwable) {
@@ -91,8 +91,8 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
-        route("/proposals") {
-            post("/get") {
+        route("/proposal") {
+            post("/read") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestProposalRead
                 } catch(e: Throwable) {
@@ -120,7 +120,7 @@ fun Application.module(testing: Boolean = false) {
 
                 }
             }
-            post("/filter") {
+            post("/list") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestProposalList
                 } catch(e: Throwable) {
