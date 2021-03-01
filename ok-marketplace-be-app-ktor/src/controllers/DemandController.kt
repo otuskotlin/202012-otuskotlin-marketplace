@@ -1,6 +1,5 @@
 package com.example.controllers
 
-import com.example.service.ProposalController
 import io.ktor.application.*
 import io.ktor.request.*
 import io.ktor.response.*

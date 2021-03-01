@@ -1,7 +1,7 @@
 package com.example
 
 import com.example.controllers.DemandController
-import com.example.service.ProposalController
+import com.example.controllers.ProposalController
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
