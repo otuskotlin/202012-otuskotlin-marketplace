@@ -10,10 +10,22 @@ Content-Type: application/json
 {"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
 
 ###
+POST http://localhost:8080/demand/create
+Content-Type: application/json
+
+{"type": "MpRequestDemandCreate", "createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+###
 POST http://localhost:8080/demand/read
 Content-Type: application/json
 
 {"demandId": "d-7263"}
+
+###
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "demandId": "d-7263"}
 
 ###
 POST http://localhost:8080/demand/update
@@ -22,7 +34,25 @@ Content-Type: application/json
 {"updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
 
 ###
+POST http://localhost:8080/demand/update
+Content-Type: application/json
+
+{"type": "MpRequestDemandUpdate", "updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+###
 POST http://localhost:8080/demand/delete
+Content-Type: application/json
+
+{"demandId": "d-rrt"}
+
+###
+POST http://localhost:8080/demand/delete
+Content-Type: application/json
+
+{"type": "MpRequestDemandDelete", "demandId": "d-rrt"}
+
+###
+POST http://localhost:8080/demand/offers
 Content-Type: application/json
 
 {"demandId": "d-rrt"}
@@ -31,6 +61,6 @@ Content-Type: application/json
 POST http://localhost:8080/demand/offers
 Content-Type: application/json
 
-{"demandId": "d-rrt"}
+{"type": "MpRequestDemandOffersList", "demandId": "d-rrt"}
 
 ###
