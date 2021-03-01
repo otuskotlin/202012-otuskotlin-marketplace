@@ -54,8 +54,8 @@ fun Application.module(testing: Boolean = false) {
             resources("static")
         }
 
-        route("/demands") {
-            post("/get") {
+        route("/demand") {
+            post("/read") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestDemandRead
                     call.respond(demandService.get(query))
@@ -103,7 +103,7 @@ fun Application.module(testing: Boolean = false) {
                     )
                 }
             }
-            post("/filter") {
+            post("/list") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestDemandList
                     call.respond(demandService.filter(query))
@@ -128,8 +128,8 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
-        route("/proposals") {
-            post("/get") {
+        route("/proposal") {
+            post("/read") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestProposalRead
                     call.respond(proposalService.get(query))
@@ -177,7 +177,7 @@ fun Application.module(testing: Boolean = false) {
                     )
                 }
             }
-            post("/filter") {
+            post("/list") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestProposalList
                     call.respond(proposalService.filter(query))
