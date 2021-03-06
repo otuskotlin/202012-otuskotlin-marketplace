@@ -77,8 +77,15 @@ Developer](https://otus.ru/lessons/kotlin/?int_source=courses_catalog&int_term=p
 1. [`ok-marketplace-be-mappers-mp`](ok-marketplace-be-mappers-mp) -- Маперы для конвертации данных из транспортных
    моделей на базе Kotlin Multiplatform во внутренние модели и обратно
 
+### Модули приложений (фреймворки)
+
 1. [`ok-marketplace-be-app-spring`](ok-marketplace-be-app-spring) -- Бэкенд-приложение на базе фреймвока Spring Boot с
    использованием библиотеки [Spring-Fu](https://github.com/spring-projects-experimental/spring-fu)
+
+1. [`ok-marketplace-be-app-ktor`](ok-marketplace-be-app-ktor) -- Бэкенд-приложение на базе фреймвока Kotlin KTOR
+
+1. [`ok-marketplace-be-app-kotless`](ok-marketplace-be-app-kotless) -- Бэкенд-приложение на базе фреймвока Kotlin 
+   Kotless с демонстрацией возможностей бессерверных вычислени в Amazon Web Services (AWS)
 
 
 

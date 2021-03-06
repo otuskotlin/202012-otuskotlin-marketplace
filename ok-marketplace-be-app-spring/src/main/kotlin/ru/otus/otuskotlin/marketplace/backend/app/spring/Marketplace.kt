@@ -6,7 +6,7 @@ import ru.otus.otuskotlin.marketplace.backend.app.spring.controllers.DemandContr
 import ru.otus.otuskotlin.marketplace.backend.app.spring.controllers.ProposalController
 
 
-private val app = webApplication {
+val app = webApplication {
     beans {
         bean<DemandController>()
         bean<ProposalController>()
