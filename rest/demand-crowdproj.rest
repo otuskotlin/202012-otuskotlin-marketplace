@@ -1,34 +1,35 @@
+#POST http://marketplace.crowdproj.com/demand/list
 POST http://{{url}}/demand/list
 Content-Type: application/json
 
 {}
 
 ###
-POST http://{{url}}/demand/create
+POST http://localhost:8080/demand/create
 Content-Type: application/json
 
 {"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
 
 ###
-POST http://{{url}}/demand/read
+POST http://localhost:8080/demand/read
 Content-Type: application/json
 
 {"demandId": "d-7263"}
 
 ###
-POST http://{{url}}/demand/update
+POST http://localhost:8080/demand/update
 Content-Type: application/json
 
 {"updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
 
 ###
-POST http://{{url}}/demand/delete
+POST http://localhost:8080/demand/delete
 Content-Type: application/json
 
 {"demandId": "d-rrt"}
 
 ###
-POST http://{{url}}/demand/offers
+POST http://localhost:8080/demand/offers
 Content-Type: application/json
 
 {"demandId": "d-rrt"}

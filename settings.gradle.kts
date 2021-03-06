@@ -6,6 +6,7 @@ pluginManagement {
     val springDependencyVersion: String by settings
     val springBootVersion: String by settings
     val bmuschkoVersion: String by settings
+    val kotlessVersion: String by settings
 
     plugins {
         kotlin("multiplatform") version kotlinVersion
@@ -17,6 +18,7 @@ pluginManagement {
         id("org.springframework.boot") version springBootVersion
         id("io.spring.dependency-management") version springDependencyVersion
         id("com.bmuschko.docker-java-application") version bmuschkoVersion
+        id("io.kotless") version kotlessVersion apply false
     }
 }
 
@@ -38,3 +40,4 @@ include("ok-marketplace-be-mappers-openapi")
 // Приложения
 include("ok-marketplace-be-app-spring")
 include("ok-marketplace-be-app-ktor")
+include("ok-marketplace-be-app-kotless")
