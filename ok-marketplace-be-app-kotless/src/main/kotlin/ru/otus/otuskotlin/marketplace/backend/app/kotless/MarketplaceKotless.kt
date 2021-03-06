@@ -106,12 +106,12 @@ fun demandOffers(): String? = handle { query: MpRequestDemandOffersList ->
 fun proposalList(): String? = handle { query: MpRequestProposalList ->
     MpResponseProposalList(
         proposals = listOf(
-            proposalMockRead("d-001"),
-            proposalMockRead("d-002"),
-            proposalMockRead("d-003"),
-            proposalMockRead("d-004"),
-            proposalMockRead("d-005"),
-            proposalMockRead("d-006"),
+            proposalMockRead("p-001"),
+            proposalMockRead("p-002"),
+            proposalMockRead("p-003"),
+            proposalMockRead("p-004"),
+            proposalMockRead("p-005"),
+            proposalMockRead("p-006"),
         )
     )
 }
@@ -124,7 +124,7 @@ fun proposalCreate(): String? = handle { query: MpRequestProposalCreate ->
         endTime = Instant.now().toString(),
         status = ResponseStatusDto.SUCCESS,
         proposal = proposalMockUpdate(
-            id = "d-123",
+            id = "p-123",
             avatar = query.createData?.avatar,
             title = query.createData?.title,
             description = query.createData?.description
