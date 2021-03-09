@@ -3,6 +3,8 @@ package ru.otus.otuskotlin.marketplace.common.backend.context
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
 
 data class MpBeContext(
+    var status: MpBeContextStatus = MpBeContextStatus.NONE,
+
     var requestDemandId: MpDemandIdModel = MpDemandIdModel.NONE,
     var requestProposalId: MpProposalIdModel = MpProposalIdModel.NONE,
     var requestDemand: MpDemandModel = MpDemandModel.NONE,
