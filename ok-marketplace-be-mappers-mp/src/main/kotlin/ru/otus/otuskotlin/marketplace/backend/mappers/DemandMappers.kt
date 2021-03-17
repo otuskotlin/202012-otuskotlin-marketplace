@@ -6,6 +6,10 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 
 fun MpBeContext.setQuery(query: MpRequestDemandRead) = apply {
     requestDemandId = query.demandId?.let { MpDemandIdModel(it) }?: MpDemandIdModel.NONE
+    stubCase = when (query.stubCase) {
+        MpRequestDemandRead.StubCase.SUCCESS -> MpStubCase.DEMAND_READ_SUCCESS
+        else -> MpStubCase.NONE
+    }
 }
 
 fun MpBeContext.setQuery(query: MpRequestDemandCreate) = apply {
