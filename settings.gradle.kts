@@ -25,6 +25,7 @@ pluginManagement {
 // Мультиплатформенные подпроекты
 include("ok-marketplace-mp-common")
 include("ok-marketplace-mp-transport-mp")
+include("ok-marketplace-mp-pipelines")
 
 // Фронтенд подпроекты
 include("ok-marketplace-fe-app-kreact")
