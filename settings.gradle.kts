@@ -37,6 +37,7 @@ include("ok-marketplace-be-common")
 include("ok-marketplace-be-mappers-mp")
 include("ok-marketplace-be-transport-openapi")
 include("ok-marketplace-be-mappers-openapi")
+include("ok-marketplace-be-business-logic")
 
 // Приложения
 include("ok-marketplace-be-app-spring")
