@@ -1,6 +1,13 @@
 package com.example.service
 
-import ru.otus.otuskotlin.marketplace.backend.mappers.*
+import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalCreate
+import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalDelete
+import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalGet
+import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalList
+import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalOffers
+import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalUpdate
+import ru.otus.otuskotlin.marketplace.backend.mappers.setQuery
+import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
@@ -8,23 +15,26 @@ import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalCreate
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalDelete
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalList
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalOffersList
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalRead
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalUpdate
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalCreate
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalDelete
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalList
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalOffersList
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalRead
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalUpdate
 
 
-class ProposalService {
-
-    private val proposal = MpProposalModel(
-        id = MpProposalIdModel("test-id"),
-        avatar = "test-avatar",
-        title = "test-proposal",
-        description = "test-description",
-        tagIds = mutableSetOf("1", "2", "3"),
-    )
-
+class ProposalService(
+    private val crud: ProposalCrud
+) {
     suspend fun get(query: MpRequestProposalRead): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseProposal = proposal
+            crud.read(setQuery(query))
             respondProposalGet().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -41,8 +51,7 @@ class ProposalService {
 
     suspend fun create(query: MpRequestProposalCreate): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseProposal = proposal
+            crud.create(setQuery(query))
             respondProposalCreate().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -59,8 +68,7 @@ class ProposalService {
 
     suspend fun update(query: MpRequestProposalUpdate): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseProposal = proposal
+            crud.update(setQuery(query))
             respondProposalUpdate().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -75,10 +83,9 @@ class ProposalService {
         }
     }
 
-    suspend fun delete(query: MpRequestProposalDelete): MpMessage  = MpBeContext().run {
+    suspend fun delete(query: MpRequestProposalDelete): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseProposal = proposal
+            crud.delete(setQuery(query))
             respondProposalDelete().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -95,8 +102,7 @@ class ProposalService {
 
     suspend fun filter(query: MpRequestProposalList): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseProposals = mutableListOf(proposal)
+            crud.filter(setQuery(query))
             respondProposalList().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -113,16 +119,7 @@ class ProposalService {
 
     suspend fun offers(query: MpRequestProposalOffersList): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseDemands = mutableListOf(
-                MpDemandModel(
-                    id = MpDemandIdModel("test-id"),
-                    avatar = "test-avatar",
-                    title = "test-demand",
-                    description = "test-description",
-                    tagIds = mutableSetOf("1", "2", "3"),
-                )
-            )
+            crud.offers(setQuery(query))
             respondProposalOffers().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,

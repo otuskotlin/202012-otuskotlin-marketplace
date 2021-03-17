@@ -1,25 +1,19 @@
 package com.example.service
 
 import ru.otus.otuskotlin.marketplace.backend.mappers.*
+import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 
-class DemandService {
-    private val demand = MpDemandModel(
-        id = MpDemandIdModel("test-id"),
-        avatar = "test-avatar",
-        title = "test-demand",
-        description = "test-description",
-        tagIds = mutableSetOf("1", "2", "3"),
-    )
-
+class DemandService(
+    private val crud: DemandCrud
+) {
     suspend fun get(query: MpRequestDemandRead): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseDemand = demand
+            crud.read(setQuery(query))
             respondDemandGet().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -36,8 +30,7 @@ class DemandService {
 
     suspend fun create(query: MpRequestDemandCreate): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseDemand = demand
+            crud.create(setQuery(query))
             respondDemandCreate().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -54,8 +47,7 @@ class DemandService {
 
     suspend fun update(query: MpRequestDemandUpdate): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseDemand = demand
+            crud.update(setQuery(query))
             respondDemandUpdate().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -72,8 +64,7 @@ class DemandService {
 
     suspend fun delete(query: MpRequestDemandDelete): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseDemand = demand
+            crud.delete(setQuery(query))
             respondDemandDelete().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -90,8 +81,7 @@ class DemandService {
 
     suspend fun filter(query: MpRequestDemandList): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseDemands = mutableListOf(demand)
+            crud.filter(setQuery(query))
             respondDemandList().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
@@ -108,16 +98,7 @@ class DemandService {
 
     suspend fun offers(query: MpRequestDemandOffersList): MpMessage = MpBeContext().run {
         try {
-            setQuery(query)
-            responseProposals = mutableListOf(
-                MpProposalModel(
-                    id = MpProposalIdModel("test-id"),
-                    avatar = "test-avatar",
-                    title = "test-proposal",
-                    description = "test-description",
-                    tagIds = mutableSetOf("1", "2", "3"),
-                )
-            )
+            crud.offers(setQuery(query))
             respondDemandOffers().copy(
                 responseId = "123",
                 status = ResponseStatusDto.SUCCESS,
