@@ -1,8 +1,7 @@
-import com.example.jsonConfig
-import com.example.module
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import kotlinx.serialization.json.Json
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.module
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandRead

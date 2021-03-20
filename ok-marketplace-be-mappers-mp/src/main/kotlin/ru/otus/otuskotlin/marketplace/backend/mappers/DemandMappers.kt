@@ -18,7 +18,7 @@ fun MpBeContext.setQuery(query: MpRequestDemandRead) = apply {
 }
 
 fun MpBeContext.setException(e: Throwable) = apply {
-    frameworkErrors.add(e)
+    errors.add(MpError(message = "Exception is thrown: ${e.message}"))
 }
 
 fun MpBeContext.setQuery(query: MpRequestDemandCreate) = apply {

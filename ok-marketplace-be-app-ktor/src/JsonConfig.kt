@@ -1,4 +1,4 @@
-package com.example
+package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule

@@ -1,11 +1,13 @@
-package com.example.service
+package ru.otus.otuskotlin.marketplace.backend.app.ktor.service
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.slf4j.LoggerFactory
 import ru.otus.otuskotlin.marketplace.backend.mappers.*
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.models.*
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
@@ -13,7 +15,15 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 class DemandService(
     private val crud: DemandCrud
 ) {
-    suspend fun get(query: MpRequestDemandRead): MpMessage = MpBeContext().run {
+    private val logger = LoggerFactory.getLogger(this::class.java)
+    suspend fun read(
+        query: MpRequestDemandRead = MpRequestDemandRead(),
+        error: MpError? = null,
+        status: MpBeContextStatus = MpBeContextStatus.RUNNING
+    ): MpMessage = MpBeContext(
+        errors = error?.let { mutableListOf(it) } ?: mutableListOf(),
+        status = status
+    ).run {
         try {
             crud.read(setQuery(query))
             respondDemandGet().copy(
@@ -21,6 +31,7 @@ class DemandService(
                 onRequest = query.requestId
             )
         } catch (e: Throwable) {
+            logger.error("Error handling ${this::class.java}::read business chain", e)
             withContext(Dispatchers.Unconfined) {
                 crud.read(setException(e))
                 respondDemandGet().copy(

@@ -1,19 +1,18 @@
-package com.example
+package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
-import com.example.service.DemandService
-import com.example.service.ProposalService
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.service.DemandService
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.service.ProposalService
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.http.*
-import io.ktor.content.*
 import io.ktor.http.content.*
 import io.ktor.features.*
 import io.ktor.serialization.*
-import kotlinx.serialization.json.Json
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
+import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
@@ -59,19 +58,15 @@ fun Application.module(testing: Boolean = false) {
             resources("static")
         }
 
-        route("/demands") {
-            post("/get") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestDemandRead
-                    call.respond(demandService.get(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseDemandRead(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
+        post(RestEndpoints.demandRead) {
+            try {
+                val query = call.receive<MpMessage>() as MpRequestDemandRead
+                call.respond(demandService.read(query))
+            } catch(e: Throwable) {
+                call.respond(demandService.read(error=e.toModel()))
             }
+        }
+        route("/demands") {
             post("/create") {
                 try {
                     val query = call.receive<MpMessage>() as MpRequestDemandCreate

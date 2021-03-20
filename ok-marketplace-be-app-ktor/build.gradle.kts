@@ -1,6 +1,7 @@
 val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
+val serializationVersion: String by project
 
 plugins {
     application
@@ -40,6 +41,7 @@ docker {
 }
 
 dependencies {
+    implementation(project(":ok-marketplace-mp-common"))
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-mp-transport-mp"))
     implementation(project(":ok-marketplace-be-mappers-mp"))
@@ -51,6 +53,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
 }
 

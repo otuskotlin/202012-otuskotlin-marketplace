@@ -33,7 +33,6 @@ internal class DemandReadValidation {
         runBlocking {
             DemandRead.execute(ctx)
             assertEquals(MpBeContextStatus.ERROR, ctx.status)
-            assertEquals(1, ctx.errors.size)
             assertTrue { ctx.errors.first().message.contains("empty") }
         }
     }

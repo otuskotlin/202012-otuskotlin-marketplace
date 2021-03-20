@@ -1,4 +1,4 @@
-package com.example.service
+package ru.otus.otuskotlin.marketplace.backend.app.ktor.service
 
 import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalCreate
 import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalDelete
@@ -9,10 +9,6 @@ import ru.otus.otuskotlin.marketplace.backend.mappers.respondProposalUpdate
 import ru.otus.otuskotlin.marketplace.backend.mappers.setQuery
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
-import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
-import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
-import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalCreate
