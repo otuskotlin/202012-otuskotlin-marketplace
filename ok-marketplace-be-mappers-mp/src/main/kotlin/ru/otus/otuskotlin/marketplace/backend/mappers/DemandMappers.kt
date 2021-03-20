@@ -1,7 +1,12 @@
 package ru.otus.otuskotlin.marketplace.backend.mappers
 
+import ru.otus.otuskotlin.marketplace.backend.mappers.exceptions.WrongMpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus.*
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ErrorDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 
 fun MpBeContext.setQuery(query: MpRequestDemandRead) = apply {
@@ -10,6 +15,10 @@ fun MpBeContext.setQuery(query: MpRequestDemandRead) = apply {
         MpRequestDemandRead.StubCase.SUCCESS -> MpStubCase.DEMAND_READ_SUCCESS
         else -> MpStubCase.NONE
     }
+}
+
+fun MpBeContext.setException(e: Throwable) = apply {
+    frameworkErrors.add(e)
 }
 
 fun MpBeContext.setQuery(query: MpRequestDemandCreate) = apply {
@@ -37,8 +46,23 @@ fun MpBeContext.setQuery(query: MpRequestDemandOffersList) = apply {
 }
 
 fun MpBeContext.respondDemandGet() = MpResponseDemandRead(
-    demand = responseDemand.takeIf { it != MpDemandModel.NONE }?.toTransport()
+    demand = responseDemand.takeIf { it != MpDemandModel.NONE }?.toTransport(),
+    errors = errors.map { it.toTransport() },
+    status = status.toTransport()
 )
+
+private fun IMpError.toTransport() = ErrorDto(
+    message = message
+)
+
+fun MpBeContextStatus.toTransport() = when(this) {
+    NONE -> throw WrongMpBeContextStatus(this)
+    RUNNING -> throw WrongMpBeContextStatus(this)
+    FINISHING -> throw WrongMpBeContextStatus(this)
+    FAILING -> throw WrongMpBeContextStatus(this)
+    SUCCESS -> ResponseStatusDto.SUCCESS
+    ERROR -> ResponseStatusDto.BAD_REQUEST
+}
 
 fun MpBeContext.respondDemandCreate() = MpResponseDemandCreate(
     demand = responseDemand.takeIf { it != MpDemandModel.NONE }?.toTransport()

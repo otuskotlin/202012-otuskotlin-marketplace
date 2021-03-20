@@ -5,6 +5,7 @@ import ru.otus.otuskotlin.marketplace.common.backend.models.*
 data class MpBeContext(
     var status: MpBeContextStatus = MpBeContextStatus.NONE,
     var errors: MutableList<IMpError> = mutableListOf(),
+    var frameworkErrors: MutableList<Throwable> = mutableListOf(),
     var stubCase: MpStubCase = MpStubCase.NONE,
 
     var requestDemandId: MpDemandIdModel = MpDemandIdModel.NONE,

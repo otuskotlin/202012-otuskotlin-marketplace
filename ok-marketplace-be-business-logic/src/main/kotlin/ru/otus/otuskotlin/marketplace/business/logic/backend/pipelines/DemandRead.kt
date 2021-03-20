@@ -6,6 +6,7 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.stubs.De
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
+import ru.otus.otuskotlin.marketplace.common.kmp.validation.validators.ValidatorIntInRange
 import ru.otus.otuskotlin.marketplace.common.kmp.validation.validators.ValidatorStringNonEmpty
 import ru.otus.otuskotlin.marketplace.kmp.pipelines.validation.validation
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.IOperation
@@ -15,6 +16,22 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
     execute(InitializePipeline)
 
     execute(DemandReadStub)
+
+    validation {
+        errorHandler { validationResult ->
+            if (validationResult.isSuccess) return@errorHandler
+            val errs = validationResult.errors.map {
+                MpError(message = it.message)
+            }
+            errors.addAll(errs)
+            status = MpBeContextStatus.FAILING
+        }
+
+        validate<Int> {
+            on { frameworkErrors.size }
+            validator(ValidatorIntInRange(field = "", min = 0, max = 0))
+        }
+    }
 
     validation {
         errorHandler { validationResult ->

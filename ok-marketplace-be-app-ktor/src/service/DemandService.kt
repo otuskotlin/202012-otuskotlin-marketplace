@@ -1,5 +1,7 @@
 package com.example.service
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.otus.otuskotlin.marketplace.backend.mappers.*
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
@@ -16,15 +18,16 @@ class DemandService(
             crud.read(setQuery(query))
             respondDemandGet().copy(
                 responseId = "123",
-                status = ResponseStatusDto.SUCCESS,
                 onRequest = query.requestId
             )
         } catch (e: Throwable) {
-            MpResponseDemandRead(
-                responseId = "123",
-                onRequest = query.requestId,
-                status = ResponseStatusDto.INTERNAL_SERVER_ERROR,
-            )
+            withContext(Dispatchers.Unconfined) {
+                crud.read(setException(e))
+                respondDemandGet().copy(
+                    responseId = "123",
+                    onRequest = query.requestId
+                )
+            }
         }
     }
 
