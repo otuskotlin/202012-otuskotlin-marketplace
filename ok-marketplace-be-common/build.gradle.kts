@@ -12,7 +12,7 @@ repositories {
 dependencies {
     val kotestVersion: String by project
 
-    implementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib-jdk8"))
 
     testImplementation(kotlin("test-junit5"))
     testImplementation(platform("org.junit:junit-bom:5.7.1"))
@@ -26,5 +26,12 @@ dependencies {
 tasks {
     test {
         useJUnitPlatform()
+    }
+
+    compileKotlin {
+        targetCompatibility = "11"
+        kotlinOptions {
+            jvmTarget = "11"
+        }
     }
 }
