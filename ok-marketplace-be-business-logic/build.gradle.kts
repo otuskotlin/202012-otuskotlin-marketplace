@@ -16,6 +16,7 @@ dependencies {
     implementation(project(":ok-marketplace-mp-common"))
     implementation(project(":ok-marketplace-be-common"))
     implementation(project(":ok-marketplace-mp-pipelines"))
+    implementation(project(":ok-marketplace-mp-pipelines-validation"))
 
     testImplementation(kotlin("test-junit5"))
     testImplementation(platform("org.junit:junit-bom:5.7.1"))
