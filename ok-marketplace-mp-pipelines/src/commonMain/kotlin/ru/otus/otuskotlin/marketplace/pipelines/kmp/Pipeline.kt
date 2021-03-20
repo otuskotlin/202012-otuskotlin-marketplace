@@ -15,7 +15,7 @@ private constructor(
     }
 
     @PipelineDsl
-    class Builder<T> {
+    class Builder<T>: IOperationBuilder<T> {
         private val operations: MutableList<IOperation<T>> = mutableListOf()
         private var checkPrecondition: Predicate<T> = { true }
         private var handleError: ErrorHandler<T> = { throw it }
@@ -36,7 +36,7 @@ private constructor(
             handleError = block
         }
 
-        fun build(): Pipeline<T> =
+        override fun build(): Pipeline<T> =
             Pipeline(operations, checkPrecondition, handleError)
     }
 }

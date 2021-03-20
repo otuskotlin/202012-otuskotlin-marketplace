@@ -15,7 +15,7 @@ private constructor(
     }
 
     @PipelineDsl
-    class Builder<T> {
+    class Builder<T>: IOperationBuilder<T> {
         private var checkPrecondition: Predicate<T> = { true }
         private var runOperation: Runnable<T> = {}
         private var handleError: ErrorHandler<T> = { throw it }
@@ -32,7 +32,7 @@ private constructor(
             handleError = block
         }
 
-        fun build(): Operation<T> =
+        override fun build(): Operation<T> =
             Operation(checkPrecondition, runOperation, handleError)
     }
 }
