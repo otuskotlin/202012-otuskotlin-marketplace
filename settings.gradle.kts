@@ -26,6 +26,7 @@ pluginManagement {
 include("ok-marketplace-mp-common")
 include("ok-marketplace-mp-transport-mp")
 include("ok-marketplace-mp-pipelines")
+include("ok-marketplace-mp-pipelines-validation")
 
 // Фронтенд подпроекты
 include("ok-marketplace-fe-app-kreact")
@@ -43,4 +44,3 @@ include("ok-marketplace-be-business-logic")
 include("ok-marketplace-be-app-spring")
 include("ok-marketplace-be-app-ktor")
 include("ok-marketplace-be-app-kotless")
-include("ok-marketplace-mp-pipelines-validation")
