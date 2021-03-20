@@ -17,9 +17,15 @@ kotlin {
     jvm { }
 
     sourceSets {
+        val coroutinesVersion: String by project
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+
+                implementation(project(":ok-marketplace-mp-common"))
+                implementation(project(":ok-marketplace-mp-pipelines"))
+
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {
