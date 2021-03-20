@@ -2,6 +2,7 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.module
+import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandRead
@@ -24,7 +25,7 @@ class ApplicationTest {
     @Test
     fun testGet() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, "/demands/get") {
+            handleRequest(HttpMethod.Post, RestEndpoints.demandRead) {
                 val body = MpRequestDemandRead(
                     requestId = "321",
                     demandId = "12345",

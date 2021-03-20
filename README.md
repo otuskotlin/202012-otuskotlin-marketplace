@@ -1,10 +1,10 @@
 # 202012-otuskotlin-marketplace
 
-Учебный проект курса [Kotlin Backend
-Developer](https://otus.ru/lessons/kotlin/?int_source=courses_catalog&int_term=programming). Marketplace -- это
-площадка, на которой пользователи выставляют предложения и потребности. Задача площадки -- предоставить наиболее
-подходящие варианты в обоих случаях: для предложения -- набор вариантов с потребностями, для потребностей -- набор
-вариантов с предложениями.
+Учебный проект
+курса [Kotlin Backend Developer](https://otus.ru/lessons/kotlin/?int_source=courses_catalog&int_term=programming).
+Marketplace -- это площадка, на которой пользователи выставляют предложения и потребности. Задача площадки --
+предоставить наиболее подходящие варианты в обоих случаях: для предложения -- набор вариантов с потребностями, для
+потребностей -- набор вариантов с предложениями.
 
 ## Учебный маркетинг приложения
 
@@ -59,6 +59,12 @@ Developer](https://otus.ru/lessons/kotlin/?int_source=courses_catalog&int_term=p
 1. [`ok-marketplace-mp-transport-mp`](ok-marketplace-mp-transport-mp) -- Транспортные модели для API на базе Kotlin
    Multiplatform для коммуникации между бэкендом и фронтендом
 
+1. [`ok-marketplace-mp-pipelines`](ok-marketplace-mp-pipelines) -- Библиотека с DSL для шаблона проектирования Chain of
+   Responsibility
+
+1. [`ok-marketplace-mp-pipelines-validation`](ok-marketplace-mp-pipelines-validation) --
+   Расширение [`ok-marketplace-mp-pipelines`](ok-marketplace-mp-pipelines) для валидации
+
 ### Модули фронтенда
 
 1. [`ok-marketplace-fe-common`](ok-marketplace-fe-common) -- Общие классы для компонентов фронтенд-приложения. Прежде
@@ -77,6 +83,9 @@ Developer](https://otus.ru/lessons/kotlin/?int_source=courses_catalog&int_term=p
 1. [`ok-marketplace-be-mappers-mp`](ok-marketplace-be-mappers-mp) -- Маперы для конвертации данных из транспортных
    моделей на базе Kotlin Multiplatform во внутренние модели и обратно
 
+1. [`ok-marketplace-be-business-logic`](ok-marketplace-be-business-logic) -- Модуль бизнес-логики на
+   базе [`ok-marketplace-mp-pipelines`](ok-marketplace-mp-pipelines). Вся логика обработки запросов находится здесь
+
 ### Модули приложений (фреймворки)
 
 1. [`ok-marketplace-be-app-spring`](ok-marketplace-be-app-spring) -- Бэкенд-приложение на базе фреймвока Spring Boot с
@@ -84,8 +93,8 @@ Developer](https://otus.ru/lessons/kotlin/?int_source=courses_catalog&int_term=p
 
 1. [`ok-marketplace-be-app-ktor`](ok-marketplace-be-app-ktor) -- Бэкенд-приложение на базе фреймвока Kotlin KTOR
 
-1. [`ok-marketplace-be-app-kotless`](ok-marketplace-be-app-kotless) -- Бэкенд-приложение на базе фреймвока Kotlin 
-   Kotless с демонстрацией возможностей бессерверных вычислени в Amazon Web Services (AWS)
+1. [`ok-marketplace-be-app-kotless`](ok-marketplace-be-app-kotless) -- Бэкенд-приложение на базе фреймвока Kotlin
+   Kotless с демонстрацией возможностей бессерверных вычислений в Amazon Web Services (AWS)
 
 
 

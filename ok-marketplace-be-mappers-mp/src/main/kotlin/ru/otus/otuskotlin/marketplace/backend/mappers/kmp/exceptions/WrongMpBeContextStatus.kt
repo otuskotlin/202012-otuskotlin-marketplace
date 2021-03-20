@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.mappers.exceptions
+package ru.otus.otuskotlin.marketplace.backend.mappers.kmp.exceptions
 
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 

@@ -9,7 +9,7 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.ProposalU
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 
 class ProposalCrud {
-    suspend fun filter(context: MpBeContext) {
+    suspend fun list(context: MpBeContext) {
         ProposalFilter.execute(context.apply(this::configureContext))
     }
 

@@ -9,7 +9,7 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.DemandUpd
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 
 class DemandCrud {
-    suspend fun filter(context: MpBeContext) {
+    suspend fun list(context: MpBeContext) {
         DemandFilter.execute(context.apply(this::configureContext))
     }
 

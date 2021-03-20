@@ -52,7 +52,6 @@ class DemandReadValidationTest {
                 val body = MpRequestDemandRead(
                     requestId = "321",
                     demandId = "",
-//                    stubCase = MpRequestDemandRead.StubCase.SUCCESS
                 )
 
                 val format = jsonConfig

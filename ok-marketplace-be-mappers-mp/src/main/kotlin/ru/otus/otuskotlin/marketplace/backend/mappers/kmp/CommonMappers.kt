@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.mappers
+package ru.otus.otuskotlin.marketplace.backend.mappers.kmp
 
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto

@@ -1,22 +1,16 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.service.DemandService
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.service.ProposalService
 import io.ktor.application.*
 import io.ktor.response.*
-import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.features.*
 import io.ktor.serialization.*
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.demandRouting
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.proposalRouting
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
-import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -26,9 +20,6 @@ fun Application.module(testing: Boolean = false) {
 
     val demandCrud = DemandCrud()
     val proposalCrud = ProposalCrud()
-
-    val demandService = DemandService(demandCrud)
-    val proposalService = ProposalService(proposalCrud)
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -58,150 +49,8 @@ fun Application.module(testing: Boolean = false) {
             resources("static")
         }
 
-        post(RestEndpoints.demandRead) {
-            try {
-                val query = call.receive<MpMessage>() as MpRequestDemandRead
-                call.respond(demandService.read(query))
-            } catch(e: Throwable) {
-                call.respond(demandService.read(error=e.toModel()))
-            }
-        }
-        route("/demands") {
-            post("/create") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestDemandCreate
-                    call.respond(demandService.create(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseDemandCreate(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/update") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestDemandUpdate
-                    call.respond(demandService.update(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseDemandUpdate(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/delete") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestDemandDelete
-                    call.respond(demandService.delete(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseDemandDelete(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/filter") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestDemandList
-                    call.respond(demandService.filter(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseDemandList(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/offers") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestDemandOffersList
-                    call.respond(demandService.offers(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseDemandOffersList(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-        }
-        route("/proposals") {
-            post("/get") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestProposalRead
-                    call.respond(proposalService.get(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseProposalRead(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/create") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestProposalCreate
-                    call.respond(proposalService.create(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseProposalCreate(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/update") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestProposalUpdate
-                    call.respond(proposalService.update(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseProposalUpdate(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/delete") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestProposalDelete
-                    call.respond(proposalService.delete(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseProposalDelete(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/filter") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestProposalList
-                    call.respond(proposalService.filter(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseProposalList(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-            post("/offers") {
-                try {
-                    val query = call.receive<MpMessage>() as MpRequestProposalOffersList
-                    call.respond(proposalService.offers(query))
-                } catch(e: Throwable) {
-                    call.respond(
-                        MpResponseProposalOffersList(
-                            status = ResponseStatusDto.BAD_REQUEST
-                        )
-                    )
-                }
-            }
-        }
+        demandRouting(demandCrud)
+        proposalRouting(proposalCrud)
     }
 }
 

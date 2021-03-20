@@ -28,21 +28,12 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
             status = MpBeContextStatus.FAILING
         }
 
-    }
-
-    validation {
-        errorHandler { validationResult ->
-            if (validationResult.isSuccess) return@errorHandler
-            val errs = validationResult.errors.map {
-                MpError(message = it.message)
-            }
-            errors.addAll(errs)
-            status = MpBeContextStatus.FAILING
-        }
-
         validate<String?> {
             on { requestDemandId.id }
-            validator(ValidatorStringNonEmpty())
+            validator(ValidatorStringNonEmpty(
+                field = "demand-id",
+                message = "Demand ID requested must not be empty"
+            ))
         }
     }
 

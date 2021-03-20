@@ -20,7 +20,7 @@ class ProposalCrudTest {
             proposalFilter = MpProposalFilterModel(text = "test")
         )
 
-        runBlockingTest { givenCrud.filter(givenContext) }
+        runBlockingTest { givenCrud.list(givenContext) }
 
         assertEquals(MpBeContextStatus.SUCCESS, givenContext.status)
         assertEquals(1, givenContext.responseProposals.size)

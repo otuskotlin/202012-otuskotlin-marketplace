@@ -1,6 +1,6 @@
-package ru.otus.otuskotlin.marketplace.backend.mappers
+package ru.otus.otuskotlin.marketplace.backend.mappers.kmp
 
-import ru.otus.otuskotlin.marketplace.backend.mappers.exceptions.WrongMpBeContextStatus
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.exceptions.WrongMpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus.*
@@ -8,8 +8,10 @@ import ru.otus.otuskotlin.marketplace.common.backend.models.*
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ErrorDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
+import java.time.Instant
 
 fun MpBeContext.setQuery(query: MpRequestDemandRead) = apply {
+    onRequest = query.requestId ?: ""
     requestDemandId = query.demandId?.let { MpDemandIdModel(it) }?: MpDemandIdModel.NONE
     stubCase = when (query.stubCase) {
         MpRequestDemandRead.StubCase.SUCCESS -> MpStubCase.DEMAND_READ_SUCCESS
@@ -45,20 +47,23 @@ fun MpBeContext.setQuery(query: MpRequestDemandOffersList) = apply {
     requestDemandId = query.demandId?.let { MpDemandIdModel(it) }?: MpDemandIdModel.NONE
 }
 
-fun MpBeContext.respondDemandGet() = MpResponseDemandRead(
+fun MpBeContext.respondDemandRead() = MpResponseDemandRead(
     demand = responseDemand.takeIf { it != MpDemandModel.NONE }?.toTransport(),
-    errors = errors.map { it.toTransport() },
-    status = status.toTransport()
+    errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+    status = status.toTransport(),
+    responseId = responseId,
+    onRequest = onRequest,
+    endTime = Instant.now().toString()
 )
 
 private fun IMpError.toTransport() = ErrorDto(
     message = message
 )
 
-fun MpBeContextStatus.toTransport() = when(this) {
+fun MpBeContextStatus.toTransport(): ResponseStatusDto = when(this) {
     NONE -> throw WrongMpBeContextStatus(this)
     RUNNING -> throw WrongMpBeContextStatus(this)
-    FINISHING -> throw WrongMpBeContextStatus(this)
+    FINISHING -> ResponseStatusDto.SUCCESS
     FAILING -> throw WrongMpBeContextStatus(this)
     SUCCESS -> ResponseStatusDto.SUCCESS
     ERROR -> ResponseStatusDto.BAD_REQUEST

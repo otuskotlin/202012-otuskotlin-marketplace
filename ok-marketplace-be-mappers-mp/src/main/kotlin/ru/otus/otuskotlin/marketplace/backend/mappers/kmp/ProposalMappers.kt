@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.mappers
+package ru.otus.otuskotlin.marketplace.backend.mappers.kmp
 
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
@@ -33,7 +33,7 @@ fun MpBeContext.setQuery(query: MpRequestProposalOffersList) = apply {
     requestProposalId = query.proposalId?.let { MpProposalIdModel(it) }?: MpProposalIdModel.NONE
 }
 
-fun MpBeContext.respondProposalGet() = MpResponseProposalRead(
+fun MpBeContext.respondProposalRead() = MpResponseProposalRead(
     proposal = responseProposal.takeIf { it != MpProposalModel.NONE }?.toTransport()
 )
 

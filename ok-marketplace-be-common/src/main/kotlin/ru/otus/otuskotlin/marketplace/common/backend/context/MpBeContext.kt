@@ -1,8 +1,12 @@
 package ru.otus.otuskotlin.marketplace.common.backend.context
 
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
+import java.time.Instant
 
 data class MpBeContext(
+    var timeStarted: Instant = Instant.MIN,
+    var responseId: String = "",
+    var onRequest: String = "",
     var status: MpBeContextStatus = MpBeContextStatus.NONE,
     var errors: MutableList<IMpError> = mutableListOf(),
     var frameworkErrors: MutableList<Throwable> = mutableListOf(),
