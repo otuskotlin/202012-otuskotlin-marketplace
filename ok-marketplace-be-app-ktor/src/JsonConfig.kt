@@ -13,30 +13,34 @@ val jsonConfig: Json by lazy {
         prettyPrint = true
         serializersModule = SerializersModule {
             polymorphic(MpMessage::class) {
+
+                subclass(MpRequestDemandList::class)
                 subclass(MpRequestDemandCreate::class)
                 subclass(MpRequestDemandRead::class)
-                subclass(MpRequestDemandDelete::class)
                 subclass(MpRequestDemandUpdate::class)
-                subclass(MpRequestDemandList::class)
-                subclass(MpRequestDemandOffersList::class)
+                subclass(MpRequestDemandDelete::class)
+                subclass(MpRequestDemandOffers::class)
+
+                subclass(MpRequestProposalList::class)
                 subclass(MpRequestProposalCreate::class)
                 subclass(MpRequestProposalRead::class)
-                subclass(MpRequestProposalDelete::class)
                 subclass(MpRequestProposalUpdate::class)
-                subclass(MpRequestProposalList::class)
-                subclass(MpRequestProposalOffersList::class)
+                subclass(MpRequestProposalDelete::class)
+                subclass(MpRequestProposalOffers::class)
+
+                subclass(MpResponseDemandList::class)
                 subclass(MpResponseDemandCreate::class)
                 subclass(MpResponseDemandRead::class)
                 subclass(MpResponseDemandDelete::class)
                 subclass(MpResponseDemandUpdate::class)
-                subclass(MpResponseDemandList::class)
-                subclass(MpResponseDemandOffersList::class)
+                subclass(MpResponseDemandOffers::class)
+
+                subclass(MpResponseProposalList::class)
                 subclass(MpResponseProposalCreate::class)
                 subclass(MpResponseProposalRead::class)
                 subclass(MpResponseProposalUpdate::class)
                 subclass(MpResponseProposalDelete::class)
-                subclass(MpResponseProposalList::class)
-                subclass(MpResponseProposalOffersList::class)
+                subclass(MpResponseProposalOffers::class)
             }
 
         }

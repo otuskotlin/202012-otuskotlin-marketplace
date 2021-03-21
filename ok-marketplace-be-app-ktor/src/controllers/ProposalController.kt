@@ -43,7 +43,7 @@ fun Routing.proposalRouting(crud: ProposalCrud) {
         }
     }
     post(RestEndpoints.proposalOffers) {
-        handleRoute<MpRequestProposalOffersList,MpResponseProposalOffersList> { query ->
+        handleRoute<MpRequestProposalOffers,MpResponseProposalOffers> { query ->
             query?.also { setQuery(it) }
             crud.offers(this)
             respondProposalOffers()

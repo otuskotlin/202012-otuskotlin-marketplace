@@ -87,8 +87,8 @@ fun demandDelete(): String? = handle { query: MpRequestDemandDelete ->
 }
 
 @Post("/demand/offers")
-fun demandOffers(): String? = handle { query: MpRequestDemandOffersList ->
-    MpResponseDemandOffersList(
+fun demandOffers(): String? = handle { query: MpRequestDemandOffers ->
+    MpResponseDemandOffers(
         responseId = "123",
         onRequest = query.requestId,
         endTime = Instant.now().toString(),
@@ -172,8 +172,8 @@ fun proposalDelete(): String? = handle { query: MpRequestProposalDelete ->
 }
 
 @Post("/proposal/offers")
-fun proposalOffers(): String? = handle { query: MpRequestProposalOffersList ->
-    MpResponseProposalOffersList(
+fun proposalOffers(): String? = handle { query: MpRequestProposalOffers ->
+    MpResponseProposalOffers(
         responseId = "123",
         onRequest = query.requestId,
         endTime = Instant.now().toString(),

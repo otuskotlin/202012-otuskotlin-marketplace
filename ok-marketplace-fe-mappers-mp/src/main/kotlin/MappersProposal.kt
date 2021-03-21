@@ -2,7 +2,6 @@ import models.ProposalIdModel
 import models.ProposalModel
 import models.MpFrontContext
 import models.TagIdModel
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpResponseDemandOffersList
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 
 fun MpFrontContext.responded(data: MpResponseProposalList) = apply {
@@ -27,7 +26,7 @@ fun MpFrontContext.responded(data: MpResponseProposalDelete) = apply {
     }
 }
 
-fun MpFrontContext.responded(data: MpResponseProposalOffersList) = apply {
+fun MpFrontContext.responded(data: MpResponseProposalOffers) = apply {
     proposalOffers = data.proposalDemands?.map { it.toInternal() }?.toMutableList() ?: mutableListOf()
 }
 

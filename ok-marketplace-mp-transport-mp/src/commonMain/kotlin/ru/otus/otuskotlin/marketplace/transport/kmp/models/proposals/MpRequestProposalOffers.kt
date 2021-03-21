@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.transport.kmp.models.demands
+package ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -8,13 +8,13 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpWorkModeDto
 
 @Serializable
-@SerialName("MpRequestDemandOffersList")
-data class MpRequestDemandOffersList(
+@SerialName("MpRequestProposalOffers")
+data class MpRequestProposalOffers(
     override val requestId: String? = null,
     override val onResponse: String? = null,
     override val startTime: String? = null,
     override val debug: Debug? = null,
-    val demandId: String? = null,
+    val proposalId: String? = null,
 ): IMpRequest, MpMessage() {
 
     @Serializable

@@ -105,9 +105,9 @@ class ProposalController {
     }
 
     fun offers(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestProposalOffersList::class.java)
+        val query = request.body(MpRequestProposalOffers::class.java)
         return ok().body(
-            MpResponseProposalOffersList(
+            MpResponseProposalOffers(
                 responseId = "123",
                 onRequest = query.requestId,
                 endTime = Instant.now().toString(),

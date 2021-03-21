@@ -6,8 +6,8 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.*
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpProposalDto
 
 @Serializable
-@SerialName("MpResponseDemandOffersList")
-data class MpResponseDemandOffersList(
+@SerialName("MpResponseDemandOffers")
+data class MpResponseDemandOffers(
     override val responseId: String? = null,
     override val onRequest: String? = null,
     override val endTime: String? = null,

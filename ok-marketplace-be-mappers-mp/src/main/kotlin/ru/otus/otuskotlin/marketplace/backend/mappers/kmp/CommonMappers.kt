@@ -1,9 +1,10 @@
 package ru.otus.otuskotlin.marketplace.backend.mappers.kmp
 
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.exceptions.WrongMpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechDetsDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechParamDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.UnitTypeDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.*
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpDemandDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpProposalDto
 
@@ -80,3 +81,21 @@ internal fun TechParamDto.toModel() = MpTechParamModel(
     priority = priority?: Double.MIN_VALUE,
     units = units?.map { it.toModel() }?.toMutableSet()?: mutableSetOf(),
 )
+
+fun <T: IMpRequest> MpBeContext.setQuery(query: T, block: MpBeContext.() -> Unit) = apply {
+    onRequest = query.requestId ?: ""
+    block()
+}
+
+fun IMpError.toTransport() = ErrorDto(
+    message = message
+)
+
+fun MpBeContextStatus.toTransport(): ResponseStatusDto = when(this) {
+    MpBeContextStatus.NONE -> throw WrongMpBeContextStatus(this)
+    MpBeContextStatus.RUNNING -> throw WrongMpBeContextStatus(this)
+    MpBeContextStatus.FINISHING -> ResponseStatusDto.SUCCESS
+    MpBeContextStatus.FAILING -> throw WrongMpBeContextStatus(this)
+    MpBeContextStatus.SUCCESS -> ResponseStatusDto.SUCCESS
+    MpBeContextStatus.ERROR -> ResponseStatusDto.BAD_REQUEST
+}

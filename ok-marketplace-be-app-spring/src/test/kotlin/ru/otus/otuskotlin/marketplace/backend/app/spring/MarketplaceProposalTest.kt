@@ -137,12 +137,12 @@ internal class MarketplaceProposalTest {
             .post()
             .uri("/proposal/offers")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestProposalOffersList(
+            .bodyValue(MpRequestProposalOffers(
                 proposalId = "p-6543",
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<MpResponseProposalOffersList>()
+            .expectBody<MpResponseProposalOffers>()
             .returnResult()
             .responseBody
 

@@ -137,12 +137,12 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/offers")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandOffersList(
+            .bodyValue(MpRequestDemandOffers(
                 demandId = "d-6543",
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
-            .expectBody<MpResponseDemandOffersList>()
+            .expectBody<MpResponseDemandOffers>()
             .returnResult()
             .responseBody
 

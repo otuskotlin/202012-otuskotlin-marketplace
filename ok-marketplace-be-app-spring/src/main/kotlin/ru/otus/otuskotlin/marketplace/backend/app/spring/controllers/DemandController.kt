@@ -105,9 +105,9 @@ class DemandController {
     }
 
     fun offers(request: ServerRequest): ServerResponse {
-        val query = request.body(MpRequestDemandOffersList::class.java)
+        val query = request.body(MpRequestDemandOffers::class.java)
         return ok().body(
-            MpResponseDemandOffersList(
+            MpResponseDemandOffers(
                 responseId = "123",
                 onRequest = query.requestId,
                 endTime = Instant.now().toString(),

@@ -1,20 +1,9 @@
 package ru.otus.otuskotlin.marketplace.backend.mappers.kmp
 
-import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.exceptions.WrongMpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus.*
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ErrorDto
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpRequest
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 import java.time.Instant
-
-fun <T: IMpRequest> MpBeContext.setQuery(query: T, block: MpBeContext.() -> Unit) = apply {
-    onRequest = query.requestId ?: ""
-    block()
-}
 
 fun MpBeContext.setQuery(query: MpRequestDemandRead) = setQuery(query) {
     requestDemandId = query.demandId?.let { MpDemandIdModel(it) }?: MpDemandIdModel.NONE
@@ -60,25 +49,12 @@ fun MpBeContext.setQuery(query: MpRequestDemandList) = setQuery(query) {
     }
 }
 
-fun MpBeContext.setQuery(query: MpRequestDemandOffersList) = setQuery(query) {
+fun MpBeContext.setQuery(query: MpRequestDemandOffers) = setQuery(query) {
     requestDemandId = query.demandId?.let { MpDemandIdModel(it) }?: MpDemandIdModel.NONE
     stubCase = when (query.debug?.stubCase) {
-        MpRequestDemandOffersList.StubCase.SUCCESS -> MpStubCase.DEMAND_OFFERS_SUCCESS
+        MpRequestDemandOffers.StubCase.SUCCESS -> MpStubCase.DEMAND_OFFERS_SUCCESS
         else -> MpStubCase.NONE
     }
-}
-
-private fun IMpError.toTransport() = ErrorDto(
-    message = message
-)
-
-fun MpBeContextStatus.toTransport(): ResponseStatusDto = when(this) {
-    NONE -> throw WrongMpBeContextStatus(this)
-    RUNNING -> throw WrongMpBeContextStatus(this)
-    FINISHING -> ResponseStatusDto.SUCCESS
-    FAILING -> throw WrongMpBeContextStatus(this)
-    SUCCESS -> ResponseStatusDto.SUCCESS
-    ERROR -> ResponseStatusDto.BAD_REQUEST
 }
 
 fun MpBeContext.respondDemandCreate() = MpResponseDemandCreate(
@@ -127,7 +103,7 @@ fun MpBeContext.respondDemandList() = MpResponseDemandList(
     endTime = Instant.now().toString()
 )
 
-fun MpBeContext.respondDemandOffers() = MpResponseDemandOffersList(
+fun MpBeContext.respondDemandOffers() = MpResponseDemandOffers(
     demandProposals = responseProposals.takeIf { it.isNotEmpty() }?.filter { it != MpProposalModel.NONE}
         ?.map { it.toTransport() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },

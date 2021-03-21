@@ -10,7 +10,7 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.TechParamDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.UnitTypeDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpProposalDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalList
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalOffersList
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalOffers
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalRead
 
 class MarketplaceProposalService(
@@ -72,7 +72,7 @@ class MarketplaceProposalService(
             )
         )
 
-        fun mockOffers(id: ProposalIdModel): MpResponseProposalOffersList = MpResponseProposalOffersList(
+        fun mockOffers(id: ProposalIdModel): MpResponseProposalOffers = MpResponseProposalOffers(
             responseId = "123",
             onRequest = "321",
             status = ResponseStatusDto.SUCCESS,

@@ -26,7 +26,7 @@ fun MpFrontContext.responded(data: MpResponseDemandDelete) = apply {
     }
 }
 
-fun MpFrontContext.responded(data: MpResponseDemandOffersList) = apply {
+fun MpFrontContext.responded(data: MpResponseDemandOffers) = apply {
     demandOffers = data.demandProposals?.map { it.toInternal() }?.toMutableList() ?: mutableListOf()
 }
 
