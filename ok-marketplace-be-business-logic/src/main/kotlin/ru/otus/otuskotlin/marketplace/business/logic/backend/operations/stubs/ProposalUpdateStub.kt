@@ -18,11 +18,12 @@ object ProposalUpdateStub : IOperation<MpBeContext> by pipeline({
         startIf { stubCase == MpStubCase.PROPOSAL_UPDATE_SUCCESS }
         execute {
             responseProposal = MpProposalModel(
-                id = MpProposalIdModel("test-id"),
-                avatar = "test-avatar",
-                title = "test-proposal",
-                description = "test-description",
-                tagIds = mutableSetOf("1", "2", "3")
+                id = requestProposal.id,
+                avatar = requestProposal.avatar,
+                title = requestProposal.title,
+                description = requestProposal.description,
+                tagIds = requestProposal.tagIds,
+                techDets = requestProposal.techDets
             )
             status = MpBeContextStatus.FINISHING
         }

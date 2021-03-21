@@ -18,7 +18,7 @@ object ProposalDeleteStub : IOperation<MpBeContext> by pipeline({
         startIf { stubCase == MpStubCase.PROPOSAL_DELETE_SUCCESS }
         execute {
             responseProposal = MpProposalModel(
-                id = MpProposalIdModel("test-id"),
+                id = requestProposalId,
                 avatar = "test-avatar",
                 title = "test-proposal",
                 description = "test-description",
