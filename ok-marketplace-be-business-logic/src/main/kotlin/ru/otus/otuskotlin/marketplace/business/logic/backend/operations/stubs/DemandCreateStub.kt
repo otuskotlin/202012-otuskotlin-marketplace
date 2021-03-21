@@ -17,10 +17,11 @@ object DemandCreateStub : IOperation<MpBeContext> by pipeline({
         execute {
             responseDemand = MpDemandModel(
                 id = MpDemandIdModel("test-id"),
-                avatar = "test-avatar",
-                title = "test-demand",
-                description = "test-description",
-                tagIds = mutableSetOf("1", "2", "3")
+                avatar = requestDemand.avatar,
+                title = requestDemand.title,
+                description = requestDemand.description,
+                tagIds = requestDemand.tagIds,
+                techDets = requestDemand.techDets
             )
             status = MpBeContextStatus.FINISHING
         }

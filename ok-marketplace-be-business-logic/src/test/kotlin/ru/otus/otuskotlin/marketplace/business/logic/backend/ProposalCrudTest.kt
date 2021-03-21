@@ -16,7 +16,7 @@ class ProposalCrudTest {
     fun filter() {
         val givenCrud = ProposalCrud()
         val givenContext = MpBeContext(
-            stubCase = MpStubCase.PROPOSAL_FILTER_SUCCESS,
+            stubCase = MpStubCase.PROPOSAL_LIST_SUCCESS,
             proposalFilter = MpProposalFilterModel(text = "test")
         )
 

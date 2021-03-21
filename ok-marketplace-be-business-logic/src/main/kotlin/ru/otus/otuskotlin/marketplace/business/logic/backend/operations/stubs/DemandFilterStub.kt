@@ -13,7 +13,7 @@ object DemandFilterStub : IOperation<MpBeContext> by pipeline({
     startIf { stubCase != MpStubCase.NONE }
 
     operation {
-        startIf { stubCase == MpStubCase.DEMAND_FILTER_SUCCESS }
+        startIf { stubCase == MpStubCase.DEMAND_LIST_SUCCESS }
         execute {
             responseDemands.add(
                 MpDemandModel(

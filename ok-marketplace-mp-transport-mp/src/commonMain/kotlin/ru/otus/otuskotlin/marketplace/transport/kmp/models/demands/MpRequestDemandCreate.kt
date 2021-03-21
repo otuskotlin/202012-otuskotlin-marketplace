@@ -15,10 +15,17 @@ data class MpRequestDemandCreate(
     override val onResponse: String? = null,
     override val startTime: String? = null,
     val createData: MpDemandCreateDto? = null,
-): MpMessage(), IMpRequest {
+) : MpMessage(), IMpRequest {
 
     @Serializable
     data class Debug(
-        override val mode: MpWorkModeDto?
-        ) : IMpDebug
+        override val mode: MpWorkModeDto? = null,
+        val stubCase: StubCase? = null
+    ) : IMpDebug
+
+    @Serializable
+    enum class StubCase {
+        NONE,
+        SUCCESS
+    }
 }

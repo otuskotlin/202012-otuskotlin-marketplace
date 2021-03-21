@@ -16,7 +16,7 @@ class DemandCrudTest {
     fun filter() {
         val givenCrud = DemandCrud()
         val givenContext = MpBeContext(
-            stubCase = MpStubCase.DEMAND_FILTER_SUCCESS,
+            stubCase = MpStubCase.DEMAND_LIST_SUCCESS,
             demandFilter = MpDemandFilterModel(text = "test")
         )
 

@@ -23,7 +23,6 @@ fun Routing.demandRouting(crud: DemandCrud) {
     }
     post(RestEndpoints.demandRead) {
         handleRoute<MpRequestDemandRead,MpResponseDemandRead> { query ->
-            println("QUERY: $query")
             query?.also { setQuery(it) }
             crud.read(this)
             respondDemandRead()

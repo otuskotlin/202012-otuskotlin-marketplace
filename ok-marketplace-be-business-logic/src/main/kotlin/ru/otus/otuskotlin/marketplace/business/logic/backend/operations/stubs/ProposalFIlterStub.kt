@@ -13,7 +13,7 @@ object ProposalFIlterStub : IOperation<MpBeContext> by pipeline({
     startIf { stubCase != MpStubCase.NONE }
 
     operation {
-        startIf { stubCase == MpStubCase.PROPOSAL_FILTER_SUCCESS }
+        startIf { stubCase == MpStubCase.PROPOSAL_LIST_SUCCESS }
         execute {
             responseProposals.add(
                 MpProposalModel(

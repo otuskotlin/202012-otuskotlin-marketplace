@@ -16,7 +16,7 @@ object DemandDeleteStub : IOperation<MpBeContext> by pipeline({
         startIf { stubCase == MpStubCase.DEMAND_DELETE_SUCCESS }
         execute {
             responseDemand = MpDemandModel(
-                id = MpDemandIdModel("test-id"),
+                id = requestDemandId,
                 avatar = "test-avatar",
                 title = "test-demand",
                 description = "test-description",

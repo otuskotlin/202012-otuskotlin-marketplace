@@ -29,7 +29,7 @@ class ApplicationTest {
                 val body = MpRequestDemandRead(
                     requestId = "321",
                     demandId = "12345",
-                    stubCase = MpRequestDemandRead.StubCase.SUCCESS
+                    debug = MpRequestDemandRead.Debug(stubCase = MpRequestDemandRead.StubCase.SUCCESS)
                 )
 
                 val format = jsonConfig
