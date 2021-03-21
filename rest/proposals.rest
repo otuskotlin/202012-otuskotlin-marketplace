@@ -1,36 +1,36 @@
-POST http://localhost:8080/proposal/list
+POST http://{{url}}/proposal/list
 Content-Type: application/json
 
-{}
+{"debug": {"stubCase": "SUCCESS"}}
 
 ###
-POST http://localhost:8080/proposal/create
+POST http://{{url}}/proposal/create
 Content-Type: application/json
 
-{"createData": {"title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
+{"debug": {"stubCase": "SUCCESS"},"createData": {"title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
 
 ###
-POST http://localhost:8080/proposal/read
+POST http://{{url}}/proposal/read
 Content-Type: application/json
 
-{"proposalId": "p-7263"}
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-7263"}
 
 ###
-POST http://localhost:8080/proposal/update
+POST http://{{url}}/proposal/update
 Content-Type: application/json
 
-{"updateData": {"id": "p-rrt", "title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
+{"debug": {"stubCase": "SUCCESS"},"updateData": {"id": "p-rrt", "title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
 
 ###
-POST http://localhost:8080/proposal/delete
+POST http://{{url}}/proposal/delete
 Content-Type: application/json
 
-{"proposalId": "p-rrt"}
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-rrt"}
 
 ###
-POST http://localhost:8080/proposal/offers
+POST http://{{url}}/proposal/offers
 Content-Type: application/json
 
-{"proposalId": "p-rrt"}
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-rrt"}
 
 ###

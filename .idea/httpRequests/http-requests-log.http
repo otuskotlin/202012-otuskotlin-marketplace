@@ -1,0 +1,241 @@
+POST http://localhost:8080/demand/offers
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-rrt"}
+
+<> 2021-03-21T235300.200.txt
+
+###
+
+POST http://localhost:8080/demand/delete
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-rrt"}
+
+<> 2021-03-21T235248.200.txt
+
+###
+
+POST http://localhost:8080/demand/update
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+<> 2021-03-21T235245.200.txt
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-03-21T235239.200.txt
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-03-21T235205.404.html
+
+###
+
+POST http://localhost:8080/demand/create
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+<> 2021-03-21T235202.200.txt
+
+###
+
+POST http://localhost:8080/proposal/delete
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-rrt"}
+
+<> 2021-03-21T235155.200.txt
+
+###
+
+POST http://localhost:8080/proposal/update
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"updateData": {"id": "p-rrt", "title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
+
+<> 2021-03-21T235150.200.txt
+
+###
+
+POST http://localhost:8080/proposal/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-7263"}
+
+<> 2021-03-21T235141.200.txt
+
+###
+
+POST http://localhost:8080/proposal/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-7263"}
+
+<> 2021-03-21T234934.404.html
+
+###
+
+POST http://localhost:8080/proposal/create
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"createData": {"title": "Test Proposal", "avatar": "icon://ok", "description": "Some Test Proposal"}}
+
+<> 2021-03-21T234931.200.txt
+
+###
+
+POST http://localhost:8080/proposal/list
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"}}
+
+<> 2021-03-21T234927.200.txt
+
+###
+
+POST http://localhost:8080/proposal/list
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"}}
+
+<> 2021-03-21T234851.200.txt
+
+###
+
+POST http://localhost:8080/demand/create
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+<> 2021-03-21T234837.200.txt
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"}}
+
+<> 2021-03-21T234748.200.txt
+
+###
+
+POST http://localhost:8080/demand/create
+Content-Type: application/json
+
+{"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+<> 2021-03-21T234716.200.txt
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{}
+
+<> 2021-03-21T234634.200.txt
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{}
+
+<> 2021-03-21T234056.200.txt
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{}
+
+<> 2021-03-21T233708.200.json
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{}
+
+<> 2021-03-21T231711.200.json
+
+###
+
+POST http://localhost:8080/demand/offers
+Content-Type: application/json
+
+{"demandId": "d-rrt"}
+
+<> 2021-03-21T231604.200.json
+
+###
+
+POST http://localhost:8080/demand/delete
+Content-Type: application/json
+
+{"demandId": "d-rrt"}
+
+<> 2021-03-21T231603-1.200.json
+
+###
+
+POST http://localhost:8080/demand/update
+Content-Type: application/json
+
+{"updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+<> 2021-03-21T231603.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"demandId": "d-7263"}
+
+<> 2021-03-21T231602.404.html
+
+###
+
+POST http://localhost:8080/demand/create
+Content-Type: application/json
+
+{"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+
+<> 2021-03-21T231601.200.json
+
+###
+
+POST http://localhost:8080/demand/list
+Content-Type: application/json
+
+{}
+
+<> 2021-03-21T231600.200.json
+
+###
+

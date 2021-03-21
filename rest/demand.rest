@@ -1,36 +1,36 @@
 POST http://{{url}}/demand/list
 Content-Type: application/json
 
-{}
+{"debug": {"stubCase": "SUCCESS"}}
 
 ###
 POST http://{{url}}/demand/create
 Content-Type: application/json
 
-{"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+{"debug": {"stubCase": "SUCCESS"},"createData": {"title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
 
 ###
 POST http://{{url}}/demand/read
 Content-Type: application/json
 
-{"demandId": "d-7263"}
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
 
 ###
 POST http://{{url}}/demand/update
 Content-Type: application/json
 
-{"updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
+{"debug": {"stubCase": "SUCCESS"},"updateData": {"id": "d-rrt", "title": "Test Demand", "avatar": "icon://ok", "description": "Some Test Demand"}}
 
 ###
 POST http://{{url}}/demand/delete
 Content-Type: application/json
 
-{"demandId": "d-rrt"}
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-rrt"}
 
 ###
 POST http://{{url}}/demand/offers
 Content-Type: application/json
 
-{"demandId": "d-rrt"}
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-rrt"}
 
 ###

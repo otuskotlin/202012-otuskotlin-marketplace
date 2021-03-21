@@ -17,7 +17,9 @@ import java.time.Instant
 import java.util.*
 
 @OptIn(InternalSerializationApi::class)
-suspend inline fun <reified T : IMpRequest, reified U : MpMessage> PipelineContext<Unit, ApplicationCall>.handleRoute(block: suspend MpBeContext.(T?) -> U) {
+suspend inline fun <reified T : IMpRequest, reified U : MpMessage> PipelineContext<Unit, ApplicationCall>.handleRoute(
+    block: suspend MpBeContext.(T?) -> U
+) {
     val ctx = MpBeContext(
         responseId = UUID.randomUUID().toString(),
         timeStarted = Instant.now()
