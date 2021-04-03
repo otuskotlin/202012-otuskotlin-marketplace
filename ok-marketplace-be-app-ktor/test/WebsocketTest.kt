@@ -1,5 +1,6 @@
 import io.ktor.http.cio.websocket.*
 import io.ktor.server.testing.*
+import kotlinx.coroutines.withTimeoutOrNull
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.module
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
@@ -20,6 +21,12 @@ internal class WebsocketTest {
                         stubCase = MpRequestDemandList.StubCase.SUCCESS
                     )
                 )
+                withTimeoutOrNull(250L) {
+                    while (true) {
+                        val respJson =(incoming.receive() as Frame.Text).readText()
+                        println("GOT INIT RESPONSE: $respJson")
+                    }
+                }
                 val requestJson = jsonConfig.encodeToString(MpMessage.serializer(), query)
                 outgoing.send(Frame.Text(requestJson))
                 val respJson =(incoming.receive() as Frame.Text).readText()
@@ -34,6 +41,12 @@ internal class WebsocketTest {
     fun demandListErrorTest() {
         withTestApplication({ module(testing = true) }) {
             handleWebSocketConversation("/ws") { incoming, outgoing ->
+                withTimeoutOrNull(250L) {
+                    while (true) {
+                        val respJson =(incoming.receive() as Frame.Text).readText()
+                        println("GOT INIT RESPONSE: $respJson")
+                    }
+                }
                 val requestJson = """{"type":"123"}"""
                 outgoing.send(Frame.Text(requestJson))
                 val respJson =(incoming.receive() as Frame.Text).readText()
