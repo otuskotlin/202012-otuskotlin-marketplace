@@ -27,6 +27,9 @@ suspend fun service(
     is MpRequestProposalDelete -> proposalService.delete(context, query)
     is MpRequestProposalOffers -> proposalService.offers(context, query)
 
-    else -> throw RuntimeException("It's unreal to reach this place")
+    else -> {
+        // В дальнейшем здесь должен оказаться чейн обработки ошибок
+        demandService.list(context, null)
+    }
     
 }
