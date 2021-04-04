@@ -18,10 +18,10 @@ object ProposalReadStub : IOperation<MpBeContext> by pipeline({
         startIf { stubCase == MpStubCase.PROPOSAL_READ_SUCCESS }
         execute {
             responseProposal = MpProposalModel(
-                id = MpProposalIdModel("test-id"),
-                avatar = "test-avatar",
-                title = "test-proposal",
-                description = "test-description",
+                id = requestProposalId,
+                avatar = "icon://menu",
+                title = "Proposal ${requestProposalId.asString()}",
+                description = "Description of proposal ${requestProposalId.asString()}",
                 tagIds = mutableSetOf("1", "2", "3")
             )
             status = MpBeContextStatus.FINISHING

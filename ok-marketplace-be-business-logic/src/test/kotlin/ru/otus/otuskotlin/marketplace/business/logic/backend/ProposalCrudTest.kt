@@ -71,9 +71,9 @@ class ProposalCrudTest {
         assertEquals(MpBeContextStatus.SUCCESS, givenContext.status)
         with(givenContext.responseProposal) {
             assertEquals(MpProposalIdModel("test-id"), id)
-            assertEquals("test-avatar", avatar)
-            assertEquals("test-proposal", title)
-            assertEquals("test-description", description)
+            assertEquals("icon://menu", avatar)
+            assertEquals("Proposal test-id", title)
+            assertEquals("Description of proposal test-id", description)
             assertEquals(setOf("1", "2", "3"), tagIds)
         }
     }

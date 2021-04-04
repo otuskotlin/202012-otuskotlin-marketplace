@@ -6,20 +6,37 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.features.*
+import io.ktor.http.cio.websocket.*
 import io.ktor.serialization.*
+import io.ktor.websocket.*
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.serializer
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.demandRouting
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.mpWebsocket
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.proposalRouting
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandCreate
+import java.time.Instant
+import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@OptIn(InternalSerializationApi::class)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
     val demandCrud = DemandCrud()
     val proposalCrud = ProposalCrud()
+    val demandService = DemandService(demandCrud)
+    val proposalService = ProposalService(proposalCrud)
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -32,6 +49,7 @@ fun Application.module(testing: Boolean = false) {
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
 
+    install(WebSockets)
     install(ContentNegotiation) {
         json(
             contentType = ContentType.Application.Json,
@@ -49,8 +67,10 @@ fun Application.module(testing: Boolean = false) {
             resources("static")
         }
 
-        demandRouting(demandCrud)
-        proposalRouting(proposalCrud)
+        demandRouting(demandService)
+        proposalRouting(proposalService)
+
+        mpWebsocket(demandService, proposalService)
     }
 }
 

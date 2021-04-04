@@ -48,7 +48,7 @@ class ApplicationTest {
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("321", res.onRequest)
-                assertEquals("test-demand", res.demand?.title)
+                assertEquals("Demand 12345", res.demand?.title)
             }
         }
     }

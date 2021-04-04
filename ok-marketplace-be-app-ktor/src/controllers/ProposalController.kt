@@ -1,52 +1,39 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers
 
 import io.ktor.routing.*
-import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.*
-import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 
-fun Routing.proposalRouting(crud: ProposalCrud) {
+fun Routing.proposalRouting(service: ProposalService) {
     post(RestEndpoints.proposalList) {
         handleRoute<MpRequestProposalList,MpResponseProposalList> { query ->
-            query?.also { setQuery(it) }
-            crud.list(this)
-            respondProposalList()
+            service.list(this, query)
         }
     }
     post(RestEndpoints.proposalCreate) {
         handleRoute<MpRequestProposalCreate,MpResponseProposalCreate> { query ->
-            query?.also { setQuery(it) }
-            crud.create(this)
-            respondProposalCreate()
+            service.create(this, query)
         }
     }
     post(RestEndpoints.proposalRead) {
         handleRoute<MpRequestProposalRead,MpResponseProposalRead> { query ->
-            query?.also { setQuery(it) }
-            crud.read(this)
-            respondProposalRead()
+            service.read(this, query)
         }
     }
     post(RestEndpoints.proposalUpdate) {
         handleRoute<MpRequestProposalUpdate,MpResponseProposalUpdate> { query ->
-            query?.also { setQuery(it) }
-            crud.update(this)
-            respondProposalUpdate()
+            service.update(this, query)
         }
     }
     post(RestEndpoints.proposalDelete) {
         handleRoute<MpRequestProposalDelete,MpResponseProposalDelete> { query ->
-            query?.also { setQuery(it) }
-            crud.delete(this)
-            respondProposalDelete()
+            service.delete(this, query)
         }
     }
     post(RestEndpoints.proposalOffers) {
         handleRoute<MpRequestProposalOffers,MpResponseProposalOffers> { query ->
-            query?.also { setQuery(it) }
-            crud.offers(this)
-            respondProposalOffers()
+            service.offers(this, query)
         }
     }
 }

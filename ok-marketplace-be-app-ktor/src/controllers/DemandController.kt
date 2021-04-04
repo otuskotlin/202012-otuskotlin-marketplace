@@ -1,52 +1,41 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers
 
 import io.ktor.routing.*
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.*
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 
-fun Routing.demandRouting(crud: DemandCrud) {
+fun Routing.demandRouting(service: DemandService) {
     post(RestEndpoints.demandList) {
         handleRoute<MpRequestDemandList,MpResponseDemandList> { query ->
-            query?.also { setQuery(it) }
-            crud.list(this)
-            respondDemandList()
+            service.list(this, query)
         }
     }
     post(RestEndpoints.demandCreate) {
         handleRoute<MpRequestDemandCreate,MpResponseDemandCreate> { query ->
-            query?.also { setQuery(it) }
-            crud.create(this)
-            respondDemandCreate()
+            service.create(this, query)
         }
     }
     post(RestEndpoints.demandRead) {
         handleRoute<MpRequestDemandRead,MpResponseDemandRead> { query ->
-            query?.also { setQuery(it) }
-            crud.read(this)
-            respondDemandRead()
+            service.read(this, query)
         }
     }
     post(RestEndpoints.demandUpdate) {
         handleRoute<MpRequestDemandUpdate,MpResponseDemandUpdate> { query ->
-            query?.also { setQuery(it) }
-            crud.update(this)
-            respondDemandUpdate()
+            service.update(this, query)
         }
     }
     post(RestEndpoints.demandDelete) {
         handleRoute<MpRequestDemandDelete,MpResponseDemandDelete> { query ->
-            query?.also { setQuery(it) }
-            crud.delete(this)
-            respondDemandDelete()
+            service.delete(this, query)
         }
     }
     post(RestEndpoints.demandOffers) {
         handleRoute<MpRequestDemandOffers,MpResponseDemandOffers> { query ->
-            query?.also { setQuery(it) }
-            crud.offers(this)
-            respondDemandOffers()
+            service.offers(this, query)
         }
     }
 }

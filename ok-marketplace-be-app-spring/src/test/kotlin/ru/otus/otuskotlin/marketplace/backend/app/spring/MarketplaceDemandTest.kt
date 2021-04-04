@@ -9,13 +9,17 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class MarketplaceDemandTest {
-    private val client = WebTestClient.bindToServer().baseUrl("http://localhost:8181").build()
+    private val client = WebTestClient
+        .bindToServer()
+        .baseUrl("http://localhost:8181")
+        .build()
 
     private lateinit var context: ConfigurableApplicationContext
 
@@ -30,14 +34,20 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/list")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandList())
+            .bodyValue(
+                MpRequestDemandList(
+                    debug = MpRequestDemandList.Debug(
+                        stubCase = MpRequestDemandList.StubCase.SUCCESS
+                    ),
+                )
+            )
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseDemandList>()
             .returnResult()
             .responseBody
 
-        assertEquals(6, res?.demands?.size)
+        assertEquals(1, res?.demands?.size)
     }
 
     @Test
@@ -46,23 +56,28 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/create")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandCreate(
-                createData = MpDemandCreateDto(
-                    avatar = "icon://example",
-                    title = "Some Demand",
-                    description = "Demand Description"
+            .bodyValue(
+                MpRequestDemandCreate(
+                    createData = MpDemandCreateDto(
+                        avatar = "icon://example",
+                        title = "Some Demand",
+                        description = "Demand Description"
+                    ),
+                    debug = MpRequestDemandCreate.Debug(
+                        stubCase = MpRequestDemandCreate.StubCase.SUCCESS
+                    ),
                 )
-            ))
+            )
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseDemandCreate>()
             .returnResult()
-            .responseBody
+            .responseBody!!
 
-        assertEquals("d-123", res?.demand?.id)
-        assertEquals("icon://example", res?.demand?.avatar)
-        assertEquals("Some Demand", res?.demand?.title)
-        assertEquals("Demand Description", res?.demand?.description)
+        assertEquals("test-id", res.demand?.id)
+        assertEquals("icon://example", res.demand?.avatar)
+        assertEquals("Some Demand", res.demand?.title)
+        assertEquals("Demand Description", res.demand?.description)
     }
 
     @Test
@@ -71,9 +86,14 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/read")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandRead(
-                demandId = "d-6547",
-            ))
+            .bodyValue(
+                MpRequestDemandRead(
+                    demandId = "d-6547",
+                    debug = MpRequestDemandRead.Debug(
+                        stubCase = MpRequestDemandRead.StubCase.SUCCESS
+                    ),
+                ),
+            )
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseDemandRead>()
@@ -92,14 +112,19 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/update")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandUpdate(
-                updateData = MpDemandUpdateDto(
-                    id = "d-6543",
-                    avatar = "icon://example",
-                    title = "Some Demand",
-                    description = "Demand Description"
+            .bodyValue(
+                MpRequestDemandUpdate(
+                    updateData = MpDemandUpdateDto(
+                        id = "d-6543",
+                        avatar = "icon://example",
+                        title = "Some Demand",
+                        description = "Demand Description"
+                    ),
+                    debug = MpRequestDemandUpdate.Debug(
+                        stubCase = MpRequestDemandUpdate.StubCase.SUCCESS
+                    ),
                 )
-            ))
+            )
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseDemandDelete>()
@@ -118,9 +143,14 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/delete")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandDelete(
-                demandId = "d-6543",
-            ))
+            .bodyValue(
+                MpRequestDemandDelete(
+                    demandId = "d-6543",
+                    debug = MpRequestDemandDelete.Debug(
+                        stubCase = MpRequestDemandDelete.StubCase.SUCCESS
+                    ),
+                )
+            )
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseDemandDelete>()
@@ -128,7 +158,6 @@ internal class MarketplaceDemandTest {
             .responseBody
 
         assertEquals("d-6543", res?.demand?.id)
-        assertTrue(res?.deleted!!)
     }
 
     @Test
@@ -137,16 +166,21 @@ internal class MarketplaceDemandTest {
             .post()
             .uri("/demand/offers")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestDemandOffers(
-                demandId = "d-6543",
-            ))
+            .bodyValue(
+                MpRequestDemandOffers(
+                    demandId = "d-6543",
+                    debug = MpRequestDemandOffers.Debug(
+                        stubCase = MpRequestDemandOffers.StubCase.SUCCESS
+                    ),
+                )
+            )
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseDemandOffers>()
             .returnResult()
             .responseBody
 
-        assertEquals(4, res?.demandProposals?.size)
+        assertEquals(1, res?.demandProposals?.size)
     }
 
     @AfterAll

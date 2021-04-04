@@ -11,6 +11,7 @@ import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 val jsonConfig: Json by lazy {
     Json {
         prettyPrint = true
+        ignoreUnknownKeys = true
         serializersModule = SerializersModule {
             polymorphic(MpMessage::class) {
 

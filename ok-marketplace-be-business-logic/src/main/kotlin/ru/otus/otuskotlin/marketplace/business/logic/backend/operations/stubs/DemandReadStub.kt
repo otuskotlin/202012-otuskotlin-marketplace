@@ -16,10 +16,10 @@ object DemandReadStub : IOperation<MpBeContext> by pipeline({
         startIf { stubCase == MpStubCase.DEMAND_READ_SUCCESS }
         execute {
             responseDemand = MpDemandModel(
-                id = MpDemandIdModel("test-id"),
-                avatar = "test-avatar",
-                title = "test-demand",
-                description = "test-description",
+                id = requestDemandId,
+                avatar = "icon://menu",
+                title = "Demand ${requestDemandId.asString()}",
+                description = "Description of demand ${requestDemandId.asString()}",
                 tagIds = mutableSetOf("1", "2", "3")
             )
             status = MpBeContextStatus.FINISHING
