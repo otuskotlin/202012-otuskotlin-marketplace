@@ -33,10 +33,10 @@ class DebugSerializationTest {
             )
         )
 
-//        val serializedString = json.encodeToString(MpRequestDemandCreate.serializer(), dto)
-        val serializedString = jsonConfig.encodeToString(MpMessage.serializer(), dto)
+        val serializedString = json.encodeToString(MpRequestDemandCreate.serializer(), dto)
+//        val serializedString = jsonConfig.encodeToString(MpMessage.serializer(), dto)
         println(serializedString)
-        assertTrue { serializedString.contains("stubCase\":\"SUCCESS") }
+        assertTrue { serializedString.contains(Regex("stubCase\":\\s*\"SUCCESS")) }
         val deserializedDto = json.decodeFromString(MpRequestDemandCreate.serializer(), serializedString)
         assertEquals(MpRequestDemandCreate.StubCase.SUCCESS, deserializedDto.debug?.stubCase)
     }

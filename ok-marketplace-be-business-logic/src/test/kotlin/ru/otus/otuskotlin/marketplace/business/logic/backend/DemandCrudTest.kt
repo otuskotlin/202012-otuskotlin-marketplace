@@ -71,9 +71,9 @@ class DemandCrudTest {
         assertEquals(MpBeContextStatus.SUCCESS, givenContext.status)
         with(givenContext.responseDemand) {
             assertEquals(MpDemandIdModel("test-id"), id)
-            assertEquals("test-avatar", avatar)
-            assertEquals("test-demand", title)
-            assertEquals("test-description", description)
+            assertEquals("icon://menu", avatar)
+            assertEquals("Demand test-id", title)
+            assertEquals("Description of demand test-id", description)
             assertEquals(setOf("1", "2", "3"), tagIds)
         }
     }

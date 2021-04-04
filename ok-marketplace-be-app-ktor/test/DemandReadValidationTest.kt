@@ -20,7 +20,7 @@ class DemandReadValidationTest {
             handleRequest(HttpMethod.Post, RestEndpoints.demandRead) {
                 val body = MpRequestDemandRead(
                     requestId = "321",
-                    demandId = "12345",
+                    demandId = "d-12345",
                     debug = MpRequestDemandRead.Debug(stubCase = MpRequestDemandRead.StubCase.SUCCESS)
                 )
 
@@ -40,7 +40,7 @@ class DemandReadValidationTest {
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("321", res.onRequest)
-                assertEquals("test-demand", res.demand?.title)
+                assertEquals("Demand d-12345", res.demand?.title)
             }
         }
     }

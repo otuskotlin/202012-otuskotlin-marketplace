@@ -40,7 +40,7 @@ class ProposalReadValidationTest {
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("321", res.onRequest)
-                assertEquals("test-proposal", res.proposal?.title)
+                assertEquals("Proposal 12345", res.proposal?.title)
             }
         }
     }

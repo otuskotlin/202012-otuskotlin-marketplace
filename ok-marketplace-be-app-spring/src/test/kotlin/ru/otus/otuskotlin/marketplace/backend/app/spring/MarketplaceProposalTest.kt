@@ -30,14 +30,18 @@ internal class MarketplaceProposalTest {
             .post()
             .uri("/proposal/list")
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .bodyValue(MpRequestProposalList())
+            .bodyValue(MpRequestProposalList(
+                debug = MpRequestProposalList.Debug(
+                    stubCase = MpRequestProposalList.StubCase.SUCCESS
+                )
+            ))
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody<MpResponseProposalList>()
             .returnResult()
             .responseBody
 
-        assertEquals(6, res?.proposals?.size)
+        assertEquals(1, res?.proposals?.size)
     }
 
     @Test
@@ -51,7 +55,10 @@ internal class MarketplaceProposalTest {
                     avatar = "icon://example",
                     title = "Some Proposal",
                     description = "Proposal Description"
-                )
+                ),
+                debug = MpRequestProposalCreate.Debug(
+                    stubCase = MpRequestProposalCreate.StubCase.SUCCESS
+                ),
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
@@ -59,7 +66,7 @@ internal class MarketplaceProposalTest {
             .returnResult()
             .responseBody
 
-        assertEquals("p-123", res?.proposal?.id)
+        assertEquals("test-id", res?.proposal?.id)
         assertEquals("icon://example", res?.proposal?.avatar)
         assertEquals("Some Proposal", res?.proposal?.title)
         assertEquals("Proposal Description", res?.proposal?.description)
@@ -73,6 +80,9 @@ internal class MarketplaceProposalTest {
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .bodyValue(MpRequestProposalRead(
                 proposalId = "p-6547",
+                debug = MpRequestProposalRead.Debug(
+                    stubCase = MpRequestProposalRead.StubCase.SUCCESS
+                )
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
@@ -98,7 +108,10 @@ internal class MarketplaceProposalTest {
                     avatar = "icon://example",
                     title = "Some Proposal",
                     description = "Proposal Description"
-                )
+                ),
+                debug = MpRequestProposalUpdate.Debug(
+                    stubCase = MpRequestProposalUpdate.StubCase.SUCCESS
+                ),
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
@@ -120,6 +133,9 @@ internal class MarketplaceProposalTest {
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .bodyValue(MpRequestProposalDelete(
                 proposalId = "p-6543",
+                debug = MpRequestProposalDelete.Debug(
+                    stubCase = MpRequestProposalDelete.StubCase.SUCCESS
+                )
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
@@ -128,7 +144,6 @@ internal class MarketplaceProposalTest {
             .responseBody
 
         assertEquals("p-6543", res?.proposal?.id)
-        assertTrue(res?.deleted!!)
     }
 
     @Test
@@ -139,6 +154,9 @@ internal class MarketplaceProposalTest {
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .bodyValue(MpRequestProposalOffers(
                 proposalId = "p-6543",
+                debug = MpRequestProposalOffers.Debug(
+                    stubCase = MpRequestProposalOffers.StubCase.SUCCESS
+                ),
             ))
             .exchange()
             .expectStatus().is2xxSuccessful
@@ -146,7 +164,7 @@ internal class MarketplaceProposalTest {
             .returnResult()
             .responseBody
 
-        assertEquals(4, res?.proposalDemands?.size)
+        assertEquals(1, res?.proposalDemands?.size)
     }
 
     @AfterAll
