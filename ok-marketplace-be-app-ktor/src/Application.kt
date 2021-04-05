@@ -8,26 +8,18 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.websocket.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.serializer
 import pl.jutupe.ktor_rabbitmq.RabbitMQ
-import pl.jutupe.ktor_rabbitmq.consume
-import pl.jutupe.ktor_rabbitmq.publish
-import pl.jutupe.ktor_rabbitmq.rabbitConsumer
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.demandRouting
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.mpWebsocket
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.proposalRouting
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.rabbitMq
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
-import java.time.Instant
-import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -106,11 +98,11 @@ fun Application.module(testing: Boolean = false) {
 
         mpWebsocket(demandService, proposalService)
 
-        rabbitConsumer {
-            consume<MpMessage>(queueIn) { consumerTag, query ->
-                println("Consumed message $query, consumer tag: $consumerTag")
-            }
-        }
+        rabbitMq(
+            queueIn,
+            exchangeOut,
+            demandService,
+            proposalService
+        )
     }
 }
-
