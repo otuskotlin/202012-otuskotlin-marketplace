@@ -28,9 +28,10 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-    val queueIn = "marketplaceQueueIn"
-    val exchangeIn = "marketplaceExchange"
-    val exchangeOut = "marketplaceExchange"
+    val queueIn by lazy { environment.config.property("marketplace.rabbitmq.queueIn").getString() }
+    val exchangeIn by lazy { environment.config.property("marketplace.rabbitmq.exchangeIn").getString() }
+    val exchangeOut by lazy { environment.config.property("marketplace.rabbitmq.exchangeOut").getString() }
+    val rabbitMqEndpoint by lazy { environment.config.property("marketplace.rabbitmq.endpoint").getString() }
 
     val demandCrud = DemandCrud()
     val proposalCrud = ProposalCrud()
@@ -56,7 +57,7 @@ fun Application.module(testing: Boolean = false) {
         )
     }
     install(RabbitMQ) {
-        uri = "amqp://guest:guest@localhost:5672"
+        uri = rabbitMqEndpoint
         connectionName = "Connection name"
 
         //serialize and deserialize functions are required
@@ -74,6 +75,7 @@ fun Application.module(testing: Boolean = false) {
         //example initialization logic
         initialize {
             exchangeDeclare(exchangeIn, "fanout", true)
+            exchangeDeclare(exchangeOut, "fanout", true)
             queueDeclare(queueIn, true, false, false, emptyMap())
             queueBind(
                 queueIn,
@@ -99,10 +101,10 @@ fun Application.module(testing: Boolean = false) {
         mpWebsocket(demandService, proposalService)
 
         rabbitMq(
-            queueIn,
-            exchangeOut,
-            demandService,
-            proposalService
+            queueIn = queueIn,
+            exchangeOut = exchangeOut,
+            demandService = demandService,
+            proposalService = proposalService
         )
     }
 }
