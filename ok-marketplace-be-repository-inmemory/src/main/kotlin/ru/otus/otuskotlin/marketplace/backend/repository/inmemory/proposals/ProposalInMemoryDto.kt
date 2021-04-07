@@ -21,10 +21,10 @@ data class ProposalInMemoryDto(
     )
 
     companion object {
-        fun of(model: MpProposalModel) = of(model, model.id)
+        fun of(model: MpProposalModel) = of(model, model.id.id)
 
-        fun of(model: MpProposalModel, id: MpProposalIdModel) = ProposalInMemoryDto(
-            id = id.id.takeIf { it.isNotBlank() },
+        fun of(model: MpProposalModel, id: String) = ProposalInMemoryDto(
+            id = id.takeIf { it.isNotBlank() },
             avatar = model.avatar.takeIf { it.isNotBlank() },
             title = model.title.takeIf { it.isNotBlank() },
             description = model.description.takeIf { it.isNotBlank() },

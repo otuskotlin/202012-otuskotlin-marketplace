@@ -23,10 +23,10 @@ data class DemandInMemoryDto(
 
     companion object {
 
-        fun of(model: MpDemandModel) = of(model, model.id)
+        fun of(model: MpDemandModel) = of(model, model.id.id)
 
-        fun of(model: MpDemandModel, id: MpDemandIdModel) = DemandInMemoryDto(
-            id = id.id.takeIf { it.isNotBlank() },
+        fun of(model: MpDemandModel, id: String) = DemandInMemoryDto(
+            id = id.takeIf { it.isNotBlank() },
             avatar = model.avatar.takeIf { it.isNotBlank() },
             title = model.title.takeIf { it.isNotBlank() },
             description = model.description.takeIf { it.isNotBlank() },
