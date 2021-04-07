@@ -1,30 +1,25 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.features.*
-import io.ktor.http.cio.websocket.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.websocket.*
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.serializer
+import pl.jutupe.ktor_rabbitmq.RabbitMQ
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.demandRouting
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.mpWebsocket
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.proposalRouting
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.rabbitMq
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandCreate
-import java.time.Instant
-import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -32,6 +27,11 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
+    val queueIn by lazy { environment.config.property("marketplace.rabbitmq.queueIn").getString() }
+    val exchangeIn by lazy { environment.config.property("marketplace.rabbitmq.exchangeIn").getString() }
+    val exchangeOut by lazy { environment.config.property("marketplace.rabbitmq.exchangeOut").getString() }
+    val rabbitMqEndpoint by lazy { environment.config.property("marketplace.rabbitmq.endpoint").getString() }
 
     val demandCrud = DemandCrud()
     val proposalCrud = ProposalCrud()
@@ -56,6 +56,34 @@ fun Application.module(testing: Boolean = false) {
             json = jsonConfig,
         )
     }
+    install(RabbitMQ) {
+        uri = rabbitMqEndpoint
+        connectionName = "Connection name"
+
+        //serialize and deserialize functions are required
+        serialize {
+            when (it) {
+                is MpMessage -> jsonConfig.encodeToString(MpMessage.serializer(), it).toByteArray()
+                else -> jsonConfig.encodeToString(Any::class.serializer(), it).toByteArray()
+            }
+        }
+        deserialize { bytes, type ->
+            val jsonString = String(bytes, Charsets.UTF_8)
+            jsonConfig.decodeFromString(type.serializer(), jsonString)
+        }
+
+        //example initialization logic
+        initialize {
+            exchangeDeclare(exchangeIn, "fanout", true)
+            exchangeDeclare(exchangeOut, "fanout", true)
+            queueDeclare(queueIn, true, false, false, emptyMap())
+            queueBind(
+                queueIn,
+                exchangeIn,
+                "*"
+            )
+        }
+    }
 
     routing {
         get("/") {
@@ -71,6 +99,12 @@ fun Application.module(testing: Boolean = false) {
         proposalRouting(proposalService)
 
         mpWebsocket(demandService, proposalService)
+
+        rabbitMq(
+            queueIn = queueIn,
+            exchangeOut = exchangeOut,
+            demandService = demandService,
+            proposalService = proposalService
+        )
     }
 }
-

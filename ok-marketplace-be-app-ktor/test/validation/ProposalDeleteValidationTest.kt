@@ -1,3 +1,5 @@
+package validation
+
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
@@ -10,42 +12,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class ProposalUpdateValidationTest {
+class ProposalDeleteValidationTest {
 
     @Test
-    fun `non-empty update must success`() {
+    fun `non-empty delete must success`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.proposalUpdate) {
-                val body = MpRequestProposalUpdate(
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalDelete) {
+                val body = MpRequestProposalDelete(
                     requestId = "321",
-                    updateData = MpProposalUpdateDto(
-                        id = "d-123",
-                        avatar = "avatar",
-                        title = "Proposal Title",
-                        description = "proposal desc",
-                        tagIds = setOf("123","223"),
-                        techDets = setOf(
-                            TechDetsDto(
-                                id = "x123",
-                                param = TechParamDto(
-                                    id = "y-345",
-                                    name = "par-1",
-                                    description = "par des",
-                                    units = setOf(
-                                        UnitTypeDto(
-                                            id = "u-232",
-                                            name = "uni",
-                                            description = "Uni",
-                                            symbol = "un",
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    debug = MpRequestProposalUpdate.Debug(
+                    proposalId = "p-333",
+                    debug = MpRequestProposalDelete.Debug(
                         mode = MpWorkModeDto.TEST,
-                        stubCase = MpRequestProposalUpdate.StubCase.SUCCESS
+                        stubCase = MpRequestProposalDelete.StubCase.SUCCESS
                     )
                 )
 
@@ -59,26 +37,23 @@ class ProposalUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalUpdate)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("321", res.onRequest)
-                assertEquals("d-123", res.proposal?.id)
-                assertEquals("Proposal Title", res.proposal?.title)
+                assertEquals("p-333", res.proposal?.id)
+                assertEquals("test-proposal", res.proposal?.title)
             }
         }
     }
 
     @Test
-    fun `empty id or title or description must fail`() {
+    fun `empty proposal id must fail`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.proposalUpdate) {
-                val body = MpRequestProposalUpdate(
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalDelete) {
+                val body = MpRequestProposalDelete(
                     requestId = "321",
-                    updateData = MpProposalUpdateDto(
-
-                    )
                 )
 
                 val format = jsonConfig
@@ -92,21 +67,15 @@ class ProposalUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalUpdate)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
                 assertEquals("321", res.onRequest)
-                assertTrue {
+                assertTrue("errors: ${res.errors}") {
                     res.errors?.firstOrNull {
-                        it.message?.contains("title") == true
-                                && it.message?.contains("empty") == true
-                    } != null
-                }
-                assertTrue {
-                    res.errors?.firstOrNull {
-                        it.message?.contains("description") == true
-                                && it.message?.contains("empty") == true
+                        it.message?.toLowerCase()?.contains("id") == true
+                                && it.message?.toLowerCase()?.contains("empty") == true
                     } != null
                 }
             }
@@ -116,7 +85,7 @@ class ProposalUpdateValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.proposalUpdate) {
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalDelete) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -126,7 +95,7 @@ class ProposalUpdateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalUpdate)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

@@ -1,3 +1,5 @@
+package validation
+
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
@@ -10,20 +12,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class DemandListValidationTest {
+class DemandDeleteValidationTest {
 
     @Test
-    fun `non-empty list must success`() {
+    fun `non-empty delete must success`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.demandList) {
-                val body = MpRequestDemandList(
+            handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
+                val body = MpRequestDemandDelete(
                     requestId = "321",
-                    filterData = MpDemandListFilterDto(
-
-                    ),
-                    debug = MpRequestDemandList.Debug(
+                    demandId = "d-333",
+                    debug = MpRequestDemandDelete.Debug(
                         mode = MpWorkModeDto.TEST,
-                        stubCase = MpRequestDemandList.StubCase.SUCCESS
+                        stubCase = MpRequestDemandDelete.StubCase.SUCCESS
                     )
                 )
 
@@ -37,12 +37,47 @@ class DemandListValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandList)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("321", res.onRequest)
-                assertEquals("test-demand", res.demands?.firstOrNull()?.title)
+                assertEquals("d-333", res.demand?.id)
+                assertEquals("test-demand", res.demand?.title)
+            }
+        }
+    }
+
+    @Test
+    fun `empty demand id must fail`() {
+        withTestApplication({ module(testing = true)}) {
+            handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
+                val body = MpRequestDemandDelete(
+                    requestId = "321",
+                )
+
+                val format = jsonConfig
+
+                val bodyString = format.encodeToString(MpMessage.serializer(), body)
+                setBody(bodyString)
+                addHeader("Content-Type", "application/json")
+            }.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+                assertEquals(ContentType.Application.Json.withCharset(Charsets.UTF_8), response.contentType())
+                val jsonString = response.content ?: fail("Null response json")
+                println(jsonString)
+
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandDelete)
+                    ?: fail("Incorrect response format")
+
+                assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
+                assertEquals("321", res.onRequest)
+                assertTrue("errors: ${res.errors}") {
+                    res.errors?.firstOrNull {
+                        it.message?.toLowerCase()?.contains("id") == true
+                                && it.message?.toLowerCase()?.contains("empty") == true
+                    } != null
+                }
             }
         }
     }
@@ -50,7 +85,7 @@ class DemandListValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.demandList) {
+            handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -60,7 +95,7 @@ class DemandListValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandList)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandDelete)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)

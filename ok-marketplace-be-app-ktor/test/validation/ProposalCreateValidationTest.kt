@@ -1,27 +1,31 @@
+package validation
+
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.module
 import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.*
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpProposalCreateDto
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalCreate
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalCreate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class DemandCreateValidationTest {
+class ProposalCreateValidationTest {
 
     @Test
     fun `non-empty create must success`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
-                val body = MpRequestDemandCreate(
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalCreate) {
+                val body = MpRequestProposalCreate(
                     requestId = "321",
-                    createData = MpDemandCreateDto(
+                    createData = MpProposalCreateDto(
                         avatar = "avatar",
-                        title = "Demand Title",
-                        description = "demand desc",
+                        title = "Proposal Title",
+                        description = "proposal desc",
                         tagIds = setOf("123","223"),
                         techDets = setOf(
                             TechDetsDto(
@@ -42,9 +46,9 @@ class DemandCreateValidationTest {
                             )
                         )
                     ),
-                    debug = MpRequestDemandCreate.Debug(
+                    debug = MpRequestProposalCreate.Debug(
                         mode = MpWorkModeDto.TEST,
-                        stubCase = MpRequestDemandCreate.StubCase.SUCCESS
+                        stubCase = MpRequestProposalCreate.StubCase.SUCCESS
                     )
                 )
 
@@ -58,12 +62,12 @@ class DemandCreateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandCreate)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("321", res.onRequest)
-                assertEquals("Demand Title", res.demand?.title)
+                assertEquals("Proposal Title", res.proposal?.title)
             }
         }
     }
@@ -71,10 +75,10 @@ class DemandCreateValidationTest {
     @Test
     fun `empty title or description must fail`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
-                val body = MpRequestDemandCreate(
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalCreate) {
+                val body = MpRequestProposalCreate(
                     requestId = "321",
-                    createData = MpDemandCreateDto(
+                    createData = MpProposalCreateDto(
 
                     )
                 )
@@ -90,7 +94,7 @@ class DemandCreateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandCreate)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
@@ -114,7 +118,7 @@ class DemandCreateValidationTest {
     @Test
     fun `bad json must fail`() {
         withTestApplication({ module(testing = true)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalCreate) {
                 val bodyString = "{"
                 setBody(bodyString)
                 addHeader("Content-Type", "application/json")
@@ -124,7 +128,7 @@ class DemandCreateValidationTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandCreate)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalCreate)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.BAD_REQUEST, res.status)
