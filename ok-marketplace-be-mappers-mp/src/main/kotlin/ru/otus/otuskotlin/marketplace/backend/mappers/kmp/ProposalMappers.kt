@@ -40,7 +40,10 @@ fun MpBeContext.setQuery(query: MpRequestProposalDelete) = setQuery(query) {
 fun MpBeContext.setQuery(query: MpRequestProposalList) = setQuery(query) {
     proposalFilter = query.filterData?.let {
         MpProposalFilterModel(
-            text = it.text?: ""
+            text = it.text?: "",
+            sortBy = it.sortBy?.let { MpSortModel.valueOf(it.name) }?: MpSortModel.NONE,
+            offset = it.offset?: Int.MIN_VALUE,
+            count = it.count?: Int.MIN_VALUE,
         )
     }?: MpProposalFilterModel.NONE
     stubCase = when (query.debug?.stubCase) {
