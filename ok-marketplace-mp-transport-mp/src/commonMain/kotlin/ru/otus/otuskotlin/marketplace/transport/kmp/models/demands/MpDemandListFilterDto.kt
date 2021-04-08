@@ -10,4 +10,5 @@ data class MpDemandListFilterDto(
     override val sortBy: MpSortDto? = null,
     override val offset: Int? = null,
     override val count: Int? = null,
+    override val includeDescription: Boolean? = null,
     ):IMpFilterItem

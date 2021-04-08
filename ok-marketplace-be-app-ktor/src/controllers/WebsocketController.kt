@@ -12,7 +12,6 @@ import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.toModel
-import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.EmptyUserSession
@@ -31,10 +30,10 @@ fun Routing.mpWebsocket(
         sessions[this] = WsUserSession(fwSession = this)
         apply {
             val ctx = MpBeContext(
-                responseId = UUID.randomUUID().toString(),
                 timeStarted = Instant.now(),
-                userSession = sessions[this] ?: EmptyUserSession,
-                status = MpBeContextStatus.RUNNING
+                responseId = UUID.randomUUID().toString(),
+                status = MpBeContextStatus.RUNNING,
+                userSession = sessions[this] ?: EmptyUserSession
             )
             service(
                 context = ctx,
@@ -50,8 +49,8 @@ fun Routing.mpWebsocket(
         for (frame in incoming) {
             if (frame is Frame.Text) {
                 val ctx = MpBeContext(
-                    responseId = UUID.randomUUID().toString(),
                     timeStarted = Instant.now(),
+                    responseId = UUID.randomUUID().toString(),
                     userSession = sessions[this] ?: EmptyUserSession
                 )
                 try {

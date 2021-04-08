@@ -41,6 +41,7 @@ fun MpBeContext.setQuery(query: MpRequestDemandList) = setQuery(query) {
     demandFilter = query.filterData?.let {
         MpDemandFilterModel(
             text = it.text?: "",
+            includeDescription = it.includeDescription?: false,
             sortBy = it.sortBy?.let { MpSortModel.valueOf(it.name) }?: MpSortModel.NONE,
             offset = it.offset?: Int.MIN_VALUE,
             count = it.count?: Int.MIN_VALUE,
@@ -99,6 +100,7 @@ fun MpBeContext.respondDemandDelete() = MpResponseDemandDelete(
 fun MpBeContext.respondDemandList() = MpResponseDemandList(
     demands = responseDemands.takeIf { it.isNotEmpty() }?.filter { it != MpDemandModel.NONE }
         ?.map { it.toTransport() },
+    pageCount = pageCount.takeIf {it != Int.MIN_VALUE},
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     status = status.toTransport(),
     responseId = responseId,

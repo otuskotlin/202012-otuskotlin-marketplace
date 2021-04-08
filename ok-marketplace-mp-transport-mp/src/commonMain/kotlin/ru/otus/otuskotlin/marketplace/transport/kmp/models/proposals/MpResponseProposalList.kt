@@ -14,6 +14,7 @@ data class MpResponseProposalList(
     override val status: ResponseStatusDto? = null,
     override val debug: Debug? = null,
     val proposals: List<MpProposalDto>? = null,
+    val pageCount: Int? = null,
 ): IMpResponse, MpMessage() {
 
     @Serializable

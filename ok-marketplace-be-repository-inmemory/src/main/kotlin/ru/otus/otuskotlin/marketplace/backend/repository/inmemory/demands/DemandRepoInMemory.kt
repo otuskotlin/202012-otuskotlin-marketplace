@@ -3,10 +3,12 @@ package ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands
 import org.cache2k.Cache
 import org.cache2k.Cache2kBuilder
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoNotFoundException
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoWrongIdException
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpSortModel
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandRepository
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -51,11 +53,40 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     }
 
     override suspend fun list(context: MpBeContext): Collection<MpDemandModel> {
-        TODO("Not yet implemented")
+        val textFilter = context.demandFilter.text
+        if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
+        val records = cache.asMap().filterValues {
+            it.title?.contains(textFilter)?:false || if (context.demandFilter.includeDescription) {
+                it.description?.contains(textFilter) ?: false
+            } else false
+        }.values
+        if (records.count() <= context.demandFilter.offset)
+            throw MpRepoIndexException(textFilter)
+        val list = records.toList()
+            .subList(
+                context.demandFilter.offset,
+                if (records.count() >= context.demandFilter.offset + context.demandFilter.count)
+                    context.demandFilter.offset + context.demandFilter.count
+                else records.count()
+            ).map { it.toModel() }
+        context.responseDemands = list.toMutableList()
+        context.pageCount = list.count().takeIf { it != 0 }
+            ?.let { (records.count().toDouble() / it + 0.5).toInt() }
+            ?: Int.MIN_VALUE
+        return list
     }
 
     override suspend fun offers(context: MpBeContext): Collection<MpDemandModel> {
-        TODO("Not yet implemented")
+        var title = context.requestProposal.title
+        if (title.length < 3) throw MpRepoIndexException(title)
+        var offers: List<DemandInMemoryDto> = emptyList()
+        while (title.length >= 3 && offers.count() < 10) {
+            offers = cache.asMap().filterValues {
+                it.title?.contains(title)?: false
+            }.values.toList()
+            title = title.dropLast(1)
+        }
+        return offers.takeIf { it.isNotEmpty() }?.map { it.toModel() }?: throw  MpRepoIndexException(title)
     }
 
     private suspend fun save(dto: DemandInMemoryDto): DemandInMemoryDto {

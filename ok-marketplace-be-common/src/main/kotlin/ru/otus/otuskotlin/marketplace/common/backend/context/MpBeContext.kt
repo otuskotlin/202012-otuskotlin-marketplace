@@ -27,4 +27,5 @@ data class MpBeContext(
     var responseProposal: MpProposalModel = MpProposalModel.NONE,
     var responseDemands: MutableList<MpDemandModel> = mutableListOf(),
     var responseProposals: MutableList<MpProposalModel> = mutableListOf(),
+    var pageCount: Int = Int.MIN_VALUE,
 )

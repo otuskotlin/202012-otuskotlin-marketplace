@@ -3,6 +3,7 @@ package ru.otus.otuskotlin.marketplace.backend.repository.inmemory.proposals
 import org.cache2k.Cache
 import org.cache2k.Cache2kBuilder
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoNotFoundException
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoWrongIdException
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
@@ -51,11 +52,40 @@ class ProposalRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     }
 
     override suspend fun list(context: MpBeContext): Collection<MpProposalModel> {
-        TODO("Not yet implemented")
+        val textFilter = context.proposalFilter.text
+        if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
+        val records = cache.asMap().filterValues {
+            it.title?.contains(textFilter)?:false || if (context.proposalFilter.includeDescription) {
+                it.description?.contains(textFilter) ?: false
+            } else false
+        }.values
+        if (records.count() <= context.proposalFilter.offset)
+            throw MpRepoIndexException(textFilter)
+        val list = records.toList()
+            .subList(
+                context.proposalFilter.offset,
+                if (records.count() >= context.proposalFilter.offset + context.proposalFilter.count)
+                    context.proposalFilter.offset + context.proposalFilter.count
+                else records.count()
+            ).map { it.toModel() }
+        context.responseProposals = list.toMutableList()
+        context.pageCount = list.count().takeIf { it != 0 }
+            ?.let { (records.count().toDouble() / it + 0.5).toInt() }
+            ?: Int.MIN_VALUE
+        return list
     }
 
     override suspend fun offers(context: MpBeContext): Collection<MpProposalModel> {
-        TODO("Not yet implemented")
+        var title = context.requestDemand.title
+        if (title.length < 3) throw MpRepoIndexException(title)
+        var offers: List<ProposalInMemoryDto> = emptyList()
+        while (title.length >= 3 && offers.count() < 10) {
+            offers = cache.asMap().filterValues {
+                it.title?.contains(title)?: false
+            }.values.toList()
+            title = title.dropLast(1)
+        }
+        return offers.takeIf { it.isNotEmpty() }?.map { it.toModel() }?: throw  MpRepoIndexException(title)
     }
 
     private suspend fun save(dto: ProposalInMemoryDto): ProposalInMemoryDto {

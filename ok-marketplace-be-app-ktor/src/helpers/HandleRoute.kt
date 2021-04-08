@@ -21,8 +21,8 @@ suspend inline fun <reified T : IMpRequest, reified U : MpMessage> PipelineConte
     block: suspend MpBeContext.(T?) -> U
 ) {
     val ctx = MpBeContext(
-        responseId = UUID.randomUUID().toString(),
-        timeStarted = Instant.now()
+        timeStarted = Instant.now(),
+        responseId = UUID.randomUUID().toString()
     )
     try {
         val query = call.receive<MpMessage>() as T

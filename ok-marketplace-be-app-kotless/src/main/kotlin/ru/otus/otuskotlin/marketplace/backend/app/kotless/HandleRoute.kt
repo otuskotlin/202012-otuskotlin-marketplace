@@ -22,8 +22,8 @@ inline fun <reified T : Any, reified R : Any> handle(crossinline block: suspend 
             runBlocking {
                 log.debug("Handling query: {}", q)
                 val ctx = MpBeContext(
-                    responseId = UUID.randomUUID().toString(),
-                    timeStarted = Instant.now()
+                    timeStarted = Instant.now(),
+                    responseId = UUID.randomUUID().toString()
                 )
                 try {
                     val query = Json.decodeFromString(T::class.serializer(), q)
