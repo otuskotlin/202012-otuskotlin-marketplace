@@ -1,6 +1,4 @@
-import io.ktor.application.*
 import io.ktor.config.*
-import io.ktor.routing.*
 import io.ktor.server.testing.*
 import io.ktor.util.*
 import kotlinx.coroutines.delay
@@ -26,6 +24,7 @@ internal class KafkaTest {
             (environment.config as MapApplicationConfig).apply {
                 put("marketplace.kafka.topicIn", TOPIC_IN)
                 put("marketplace.kafka.topicOut", TOPIC_OT)
+                put("marketplace.kafka.brokers", BROKERS)
             }
             module(
                 kafkaTestConsumer = consumer,
@@ -40,12 +39,12 @@ internal class KafkaTest {
                 )
                 consumer.send(TOPIC_IN, "xx1", jsonIn)
 
-                delay(30L)
+                delay(100L)
 
+                val responseObjs = producer.getSent()
                 assertTrue("Must contain two messages") {
-                    val feedBack = producer.getSent().map { it.value() }.first()
-                    println(feedBack)
-                    feedBack.contains("Result: yy")
+                    val feedBack = responseObjs.first().value()
+                    feedBack.contains(Regex("\"status\":\\s*\"SUCCESS\""))
                 }
             }
         }
@@ -54,6 +53,7 @@ internal class KafkaTest {
     companion object {
         const val TOPIC_IN = "some-topic-in"
         const val TOPIC_OT = "some-topic-ot"
+        const val BROKERS = ""
     }
 }
 
