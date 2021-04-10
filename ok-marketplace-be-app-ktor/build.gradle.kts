@@ -5,6 +5,8 @@ val serializationVersion: String by project
 val ktorRabbitmqFeature: String by project
 val rabbitmqVersion: String by project
 val testContainersVersion: String by project
+val ktorKafkaVersion: String by project
+val kafkaVersion: String by project
 
 plugins {
     application
@@ -61,6 +63,9 @@ dependencies {
 
     implementation("com.github.JUtupe:ktor-rabbitmq:$ktorRabbitmqFeature")
     implementation("com.rabbitmq:amqp-client:$rabbitmqVersion")
+
+    implementation("ru.datana.smart.common.ktor.kafka:datana-smart-ktor-kafka:$ktorKafkaVersion")
+    implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
 
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")

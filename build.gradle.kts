@@ -17,6 +17,7 @@ subprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven { url = uri("https://nexus.datana.ru/repository/datana-release/") }
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }
         maven { url = uri("https://repo.spring.io/milestone") }
         maven { url = uri("https://jitpack.io") }
