@@ -89,28 +89,28 @@ internal class RabbitMqTest {
     }
 
     companion object {
-        val queueIn = "mpQueueIn"
-        val queueOut = "mpQueueOut"
-        val exchangeIn = "mpExchangeIn"
-        val exchangeOut = "mpExchangeOut"
+        const val queueIn = "mpQueueIn"
+        const val queueOut = "mpQueueOut"
+        const val exchangeIn = "mpExchangeIn"
+        const val exchangeOut = "mpExchangeOut"
 
         val container by lazy {
 //            Этот образ предназначен для дебагинга, он содержит панель управления на порту httpPort
 //            RabbitMQContainer("rabbitmq:3-management").apply {
 //            Этот образ минимальный и не содержит панель управления
             RabbitMQContainer("rabbitmq:latest").apply {
-                withExchange(exchangeIn, "fanout")
-                withExchange(exchangeOut, "fanout")
-                withQueue(queueIn, false, true, null)
-                withBinding(exchangeIn, queueIn)
-                withExposedPorts(5672, 15672)
+//                withExchange(exchangeIn, "fanout")
+//                withExchange(exchangeOut, "fanout")
+//                withQueue(queueIn, false, true, null)
+//                withBinding(exchangeIn, queueIn)
+//                withExposedPorts(5672, 15672)
                 start()
 //                println("CONTAINER PORT: ${this.httpPort}, ${this.amqpPort}, ${this.amqpsPort}")
 //                println("CONTAINER URL: ${this.httpUrl}, ${this.amqpUrl}, ${this.amqpsUrl}")
             }
         }
 
-        val rabbitMqTestPort by lazy {
+        val rabbitMqTestPort: Int by lazy {
             container.getMappedPort(5672)
         }
 
