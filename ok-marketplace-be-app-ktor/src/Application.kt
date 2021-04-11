@@ -20,7 +20,6 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
-//@kotlin.jvm.JvmOverloads
 fun Application.module(
     testing: Boolean = false,
     kafkaTestConsumer: Consumer<String, String>? = null,

@@ -27,7 +27,7 @@ inline fun <reified T : MpMessage, reified U : MpMessage> handleRoute(
     try {
         val queryJson = request.body<String>()
         println("QUERY: $queryJson")
-        val query = jsonConfig.decodeFromString(T::class.serializer(), queryJson) as T
+        val query = jsonConfig.decodeFromString(T::class.serializer(), queryJson)
         ctx.status = MpBeContextStatus.RUNNING
         val response = ctx.block(query)
         val responseJson = jsonConfig.encodeToString(U::class.serializer(), response)

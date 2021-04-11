@@ -57,15 +57,13 @@ fun Application.rabbitMqEndpoints(
                 "*"
             )
         }
-
-        rabbitMq(
-            queueIn = queueIn,
-            exchangeOut = exchangeOut,
-            demandService = demandService,
-            proposalService = proposalService
-        )
-
     }
+    rabbitMq(
+        queueIn = queueIn,
+        exchangeOut = exchangeOut,
+        demandService = demandService,
+        proposalService = proposalService
+    )
 }
 
 fun Application.rabbitMq(
