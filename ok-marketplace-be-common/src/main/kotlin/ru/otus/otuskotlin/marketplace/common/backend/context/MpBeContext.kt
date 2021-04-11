@@ -34,4 +34,8 @@ data class MpBeContext(
 
     var proposalRepoTest: IProposalRepository = IProposalRepository.NONE,
     var demandRepoTest: IDemandRepository = IDemandRepository.NONE,
+    var demandRepoProd: IDemandRepository = IDemandRepository.NONE,
+    var demandRepo: IDemandRepository = IDemandRepository.NONE,
+    var proposalRepoProd: IProposalRepository = IProposalRepository.NONE,
+    var proposalRepo: IProposalRepository = IProposalRepository.NONE,
 )
