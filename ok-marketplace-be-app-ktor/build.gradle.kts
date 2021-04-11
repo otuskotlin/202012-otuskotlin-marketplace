@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":ok-marketplace-mp-transport-mp"))
     implementation(project(":ok-marketplace-be-mappers-mp"))
     implementation(project(":ok-marketplace-be-business-logic"))
+    implementation(project(":ok-marketplace-be-repository-inmemory"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")

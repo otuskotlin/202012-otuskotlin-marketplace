@@ -7,18 +7,22 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
-import io.ktor.websocket.*
-import kotlinx.serialization.InternalSerializationApi
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.proposals.ProposalRepoInMemory
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
+import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@OptIn(ExperimentalTime::class)
 @Suppress("unused") // Referenced in application.conf
 fun Application.module(
     testing: Boolean = false,
@@ -26,8 +30,14 @@ fun Application.module(
     kafkaTestProducer: Producer<String, String>? = null
 ) {
 
-    val demandCrud = DemandCrud()
-    val proposalCrud = ProposalCrud()
+    val demandRepoTest = DemandRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
+    val proposalRepoTest = ProposalRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
+    val demandCrud = DemandCrud(
+        demandRepoTest = demandRepoTest,
+    )
+    val proposalCrud = ProposalCrud(
+        proposalRepoTest = proposalRepoTest
+    )
     val demandService = DemandService(demandCrud)
     val proposalService = ProposalService(proposalCrud)
 

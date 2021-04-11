@@ -3,7 +3,6 @@ package ru.otus.otuskotlin.marketplace.backend.app.kotless
 import io.kotless.dsl.lang.http.Post
 import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.*
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
-import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 
 private val crud = ProposalCrud()

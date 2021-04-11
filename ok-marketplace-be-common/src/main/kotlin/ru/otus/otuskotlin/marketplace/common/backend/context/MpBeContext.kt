@@ -2,6 +2,8 @@ package ru.otus.otuskotlin.marketplace.common.backend.context
 
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.EmptyUserSession
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandRepository
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepository
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.IUserSession
 import java.time.Instant
 
@@ -13,6 +15,7 @@ data class MpBeContext(
     var errors: MutableList<IMpError> = mutableListOf(),
     var frameworkErrors: MutableList<Throwable> = mutableListOf(),
     var stubCase: MpStubCase = MpStubCase.NONE,
+    var workMode: MpWorkMode = MpWorkMode.DEFAULT,
 
     val userSession: IUserSession<*> = EmptyUserSession,
 
@@ -28,4 +31,7 @@ data class MpBeContext(
     var responseDemands: MutableList<MpDemandModel> = mutableListOf(),
     var responseProposals: MutableList<MpProposalModel> = mutableListOf(),
     var pageCount: Int = Int.MIN_VALUE,
+
+    var proposalRepoTest: IProposalRepository = IProposalRepository.NONE,
+    var demandRepoTest: IDemandRepository = IDemandRepository.NONE,
 )

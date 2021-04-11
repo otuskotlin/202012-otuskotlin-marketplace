@@ -3,7 +3,6 @@ package ru.otus.otuskotlin.marketplace.backend.repository.inmemory
 import kotlinx.coroutines.runBlocking
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpTechDetModel
 import kotlin.test.Test
