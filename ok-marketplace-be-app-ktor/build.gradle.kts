@@ -64,7 +64,7 @@ dependencies {
     implementation("com.github.JUtupe:ktor-rabbitmq:$ktorRabbitmqFeature")
     implementation("com.rabbitmq:amqp-client:$rabbitmqVersion")
 
-    implementation("ru.datana.smart.common.ktor.kafka:datana-smart-ktor-kafka:$ktorKafkaVersion")
+    implementation("com.github.Datana-company:ktor-kafka:$ktorKafkaVersion")
     implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
 
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
