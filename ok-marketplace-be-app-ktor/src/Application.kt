@@ -1,37 +1,30 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
 import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.features.*
-import io.ktor.http.cio.websocket.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.websocket.*
 import kotlinx.serialization.InternalSerializationApi
-import kotlinx.serialization.serializer
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.demandRouting
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.mpWebsocket
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.proposalRouting
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import org.apache.kafka.clients.consumer.Consumer
+import org.apache.kafka.clients.producer.Producer
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
-import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandCreate
-import java.time.Instant
-import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@OptIn(InternalSerializationApi::class)
 @Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
+fun Application.module(
+    testing: Boolean = false,
+    kafkaTestConsumer: Consumer<String, String>? = null,
+    kafkaTestProducer: Producer<String, String>? = null
+) {
 
     val demandCrud = DemandCrud()
     val proposalCrud = ProposalCrud()
@@ -49,13 +42,41 @@ fun Application.module(testing: Boolean = false) {
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
 
-    install(WebSockets)
     install(ContentNegotiation) {
         json(
             contentType = ContentType.Application.Json,
             json = jsonConfig,
         )
     }
+
+    // Подключаем Websocket
+    websocketEndpoints(
+        demandService = demandService,
+        proposalService = proposalService
+    )
+
+    // Подключаем RabbitMQ
+    val rabbitMqEndpoint = environment.config.propertyOrNull("marketplace.rabbitmq.endpoint")?.getString()
+    if (rabbitMqEndpoint != null) {
+        rabbitMqEndpoints(
+            rabbitMqEndpoint = rabbitMqEndpoint,
+            demandService = demandService,
+            proposalService = proposalService
+        )
+    }
+
+    // Подключаем Kafka
+    val brokers = environment.config.propertyOrNull("marketplace.kafka.brokers")?.getString()
+    if (brokers != null) {
+        kafkaEndpoints(
+            brokers = brokers,
+            kafkaConsumer = kafkaTestConsumer,
+            kafkaProducer = kafkaTestProducer,
+            demandService = demandService,
+            proposalService = proposalService
+        )
+    }
+
 
     routing {
         get("/") {
@@ -70,7 +91,5 @@ fun Application.module(testing: Boolean = false) {
         demandRouting(demandService)
         proposalRouting(proposalService)
 
-        mpWebsocket(demandService, proposalService)
     }
 }
-

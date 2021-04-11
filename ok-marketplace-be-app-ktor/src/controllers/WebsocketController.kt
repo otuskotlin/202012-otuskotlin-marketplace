@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers
 
+import io.ktor.application.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.routing.*
 import io.ktor.websocket.*
@@ -20,6 +21,18 @@ import java.time.Instant
 import java.util.*
 
 private val sessions = mutableMapOf<WebSocketSession, WsUserSession>()
+
+fun Application.websocketEndpoints(
+    demandService: DemandService,
+    proposalService: ProposalService,
+) {
+    install(WebSockets)
+
+    routing {
+        mpWebsocket(demandService, proposalService)
+    }
+}
+
 
 @OptIn(InternalSerializationApi::class)
 fun Routing.mpWebsocket(
