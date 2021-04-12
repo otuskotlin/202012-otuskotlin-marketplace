@@ -3,12 +3,15 @@ import io.ktor.server.testing.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.module
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.proposals.ProposalRepoInMemory
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
 import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpWorkModeDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.ResponseStatusDto
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpRequestProposalOffers
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.MpResponseProposalOffers
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
@@ -16,6 +19,7 @@ import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
+@OptIn(ExperimentalTime::class)
 internal class ApplicationInMemoryTest {
     companion object {
         val demand1 = MpDemandModel(
@@ -61,18 +65,29 @@ internal class ApplicationInMemoryTest {
             )
         )
 
-        @OptIn(ExperimentalTime::class)
-        val repo by lazy {
+        val proposal = MpProposalModel(
+            id = MpProposalIdModel("test-proposal-id-1"),
+            title = "DeMand"
+        )
+
+        val demandRepo by lazy {
             DemandRepoInMemory(
                 ttl = 15.toDuration(DurationUnit.MINUTES),
                 initObjects = listOf(demand1, demand2, demand3)
+            )
+        }
+
+        val proposalRepo by lazy {
+            ProposalRepoInMemory(
+                ttl = 15.toDuration(DurationUnit.MINUTES),
+                initObjects = listOf(proposal)
             )
         }
     }
 
     @Test
     fun testRead() {
-        withTestApplication({module(testDemandRepo = repo)}) {
+        withTestApplication({module(testDemandRepo = demandRepo)}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandRead) {
                 val body = MpRequestDemandRead(
                     requestId = "12345",
@@ -105,7 +120,7 @@ internal class ApplicationInMemoryTest {
 
     @Test
     fun testCreate() {
-        withTestApplication({module(testDemandRepo = repo)}) {
+        withTestApplication({module(testDemandRepo = demandRepo)}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
                 val body = MpRequestDemandCreate(
                     requestId = "12345",
@@ -140,7 +155,7 @@ internal class ApplicationInMemoryTest {
 
     @Test
     fun testUpdate() {
-        withTestApplication({module(testDemandRepo = repo)}) {
+        withTestApplication({module(testDemandRepo = demandRepo)}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandUpdate) {
                 val body = MpRequestDemandUpdate(
                     requestId = "12345",
@@ -178,7 +193,7 @@ internal class ApplicationInMemoryTest {
 
     @Test
     fun testDelete() {
-        withTestApplication({module(testDemandRepo = repo)}) {
+        withTestApplication({module(testDemandRepo = demandRepo)}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
                 val body = MpRequestDemandDelete(
                     requestId = "12345",
@@ -212,7 +227,7 @@ internal class ApplicationInMemoryTest {
 
     @Test
     fun testList() {
-        withTestApplication({module(testDemandRepo = repo)}) {
+        withTestApplication({module(testDemandRepo = demandRepo)}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandList) {
                 val body = MpRequestDemandList(
                     requestId = "12345",
@@ -249,11 +264,12 @@ internal class ApplicationInMemoryTest {
 
     @Test
     fun testOffers() {
-        withTestApplication({module(testDemandRepo = repo)}) {
-            handleRequest(HttpMethod.Post, RestEndpoints.demandOffers) {
-                val body = MpRequestDemandOffers(
+        withTestApplication({module(testDemandRepo = demandRepo, testProposalRepo = proposalRepo)}) {
+            handleRequest(HttpMethod.Post, RestEndpoints.proposalOffers) {
+                val body = MpRequestProposalOffers(
                     requestId = "12345",
-                    debug = MpRequestDemandOffers.Debug(mode = MpWorkModeDto.TEST)
+                    proposalId = proposal.id.id,
+                    debug = MpRequestProposalOffers.Debug(mode = MpWorkModeDto.TEST)
                 )
 
                 val format = jsonConfig
@@ -267,13 +283,12 @@ internal class ApplicationInMemoryTest {
                 val jsonString = response.content ?: fail("Null response json")
                 println(jsonString)
 
-                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseDemandList)
+                val res = (jsonConfig.decodeFromString(MpMessage.serializer(), jsonString) as? MpResponseProposalOffers)
                     ?: fail("Incorrect response format")
 
                 assertEquals(ResponseStatusDto.SUCCESS, res.status)
                 assertEquals("12345", res.onRequest)
-                assertEquals(2, res.demands?.size)
-                assertEquals(1, res.pageCount)
+                assertEquals(3, res.proposalDemands?.size)
             }
         }
     }

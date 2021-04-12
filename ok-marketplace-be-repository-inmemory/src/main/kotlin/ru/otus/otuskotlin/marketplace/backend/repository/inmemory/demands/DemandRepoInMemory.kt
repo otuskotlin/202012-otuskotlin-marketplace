@@ -94,7 +94,9 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
             }.values.toList()
             title = title.dropLast(1)
         }
-        return offers.takeIf { it.isNotEmpty() }?.map { it.toModel() }?: throw  MpRepoIndexException(title)
+        val list = offers.takeIf { it.isNotEmpty() }?.map { it.toModel() }?: throw  MpRepoIndexException(title)
+        context.responseDemands = list.toMutableList()
+        return list
     }
 
     private suspend fun save(dto: DemandInMemoryDto): DemandInMemoryDto {
