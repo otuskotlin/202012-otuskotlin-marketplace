@@ -33,23 +33,31 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     override suspend fun read(context: MpBeContext): MpDemandModel {
         val id = context.requestDemandId
         if (id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(id.id)
-        return cache.get(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        val model = cache.get(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun create(context: MpBeContext): MpDemandModel {
         val dto = DemandInMemoryDto.of(context.requestDemand, UUID.randomUUID().toString())
-        return save(dto).toModel()
+        val model = save(dto).toModel()
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun update(context: MpBeContext): MpDemandModel {
         if (context.requestDemand.id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(context.requestDemand.id.id)
-        return save(DemandInMemoryDto.of(context.requestDemand)).toModel()
+        val model = save(DemandInMemoryDto.of(context.requestDemand)).toModel()
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun delete(context: MpBeContext): MpDemandModel {
         val id = context.requestDemandId
         if (id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(id.id)
-        return cache.peekAndRemove(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        val model = cache.peekAndRemove(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun list(context: MpBeContext): Collection<MpDemandModel> {
