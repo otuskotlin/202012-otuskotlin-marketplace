@@ -93,7 +93,9 @@ class ProposalRepoInMemory @OptIn(ExperimentalTime::class) constructor(
             }.values.toList()
             title = title.dropLast(1)
         }
-        return offers.takeIf { it.isNotEmpty() }?.map { it.toModel() }?: throw  MpRepoIndexException(title)
+        val list = offers.takeIf { it.isNotEmpty() }?.map { it.toModel() }?: throw  MpRepoIndexException(title)
+        context.responseProposals = list.toMutableList()
+        return list
     }
 
     private suspend fun save(dto: ProposalInMemoryDto): ProposalInMemoryDto {
