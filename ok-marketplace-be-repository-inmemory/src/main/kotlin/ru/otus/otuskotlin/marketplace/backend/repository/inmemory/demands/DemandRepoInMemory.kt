@@ -33,31 +33,39 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     override suspend fun read(context: MpBeContext): MpDemandModel {
         val id = context.requestDemandId
         if (id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(id.id)
-        return cache.get(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        val model = cache.get(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun create(context: MpBeContext): MpDemandModel {
         val dto = DemandInMemoryDto.of(context.requestDemand, UUID.randomUUID().toString())
-        return save(dto).toModel()
+        val model = save(dto).toModel()
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun update(context: MpBeContext): MpDemandModel {
         if (context.requestDemand.id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(context.requestDemand.id.id)
-        return save(DemandInMemoryDto.of(context.requestDemand)).toModel()
+        val model = save(DemandInMemoryDto.of(context.requestDemand)).toModel()
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun delete(context: MpBeContext): MpDemandModel {
         val id = context.requestDemandId
         if (id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(id.id)
-        return cache.peekAndRemove(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        val model = cache.peekAndRemove(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        context.responseDemand = model
+        return model
     }
 
     override suspend fun list(context: MpBeContext): Collection<MpDemandModel> {
         val textFilter = context.demandFilter.text
         if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
         val records = cache.asMap().filterValues {
-            it.title?.contains(textFilter)?:false || if (context.demandFilter.includeDescription) {
-                it.description?.contains(textFilter) ?: false
+            it.title?.contains(textFilter, true)?:false || if (context.demandFilter.includeDescription) {
+                it.description?.contains(textFilter, true) ?: false
             } else false
         }.values
         if (records.count() <= context.demandFilter.offset)
@@ -82,7 +90,7 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
         var offers: List<DemandInMemoryDto> = emptyList()
         while (title.length >= 3 && offers.count() < 10) {
             offers = cache.asMap().filterValues {
-                it.title?.contains(title)?: false
+                it.title?.contains(title, true)?: false
             }.values.toList()
             title = title.dropLast(1)
         }
