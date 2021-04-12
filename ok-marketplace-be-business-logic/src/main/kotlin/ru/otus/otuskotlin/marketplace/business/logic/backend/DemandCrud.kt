@@ -8,9 +8,11 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.DemandRea
 import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.DemandUpdate
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandRepository
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepository
 
 class DemandCrud(
     private val demandRepoTest: IDemandRepository = IDemandRepository.NONE,
+    private val proposalRepoTest: IProposalRepository = IProposalRepository.NONE
 ) {
     suspend fun list(context: MpBeContext) {
         DemandFilter.execute(context.apply(this::configureContext))
@@ -38,5 +40,6 @@ class DemandCrud(
 
     private fun configureContext(context: MpBeContext) {
         context.demandRepoTest = demandRepoTest
+        context.proposalRepoTest = proposalRepoTest
     }
 }

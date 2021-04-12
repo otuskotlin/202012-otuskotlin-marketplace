@@ -34,8 +34,10 @@ fun Application.module(
     val proposalRepoTest = ProposalRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
     val demandCrud = DemandCrud(
         demandRepoTest = demandRepoTest,
+        proposalRepoTest = proposalRepoTest
     )
     val proposalCrud = ProposalCrud(
+        demandRepoTest = demandRepoTest,
         proposalRepoTest = proposalRepoTest
     )
     val demandService = DemandService(demandCrud)

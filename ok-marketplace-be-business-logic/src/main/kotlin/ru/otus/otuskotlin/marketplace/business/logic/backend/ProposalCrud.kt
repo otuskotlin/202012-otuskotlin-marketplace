@@ -7,9 +7,11 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.ProposalO
 import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.ProposalRead
 import ru.otus.otuskotlin.marketplace.business.logic.backend.pipelines.ProposalUpdate
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandRepository
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepository
 
 class ProposalCrud(
+    private val demandRepoTest: IDemandRepository = IDemandRepository.NONE,
     private val proposalRepoTest: IProposalRepository = IProposalRepository.NONE
 ) {
     suspend fun list(context: MpBeContext) {
@@ -37,6 +39,7 @@ class ProposalCrud(
     }
 
     private fun configureContext(context: MpBeContext) {
+        context.demandRepoTest = demandRepoTest
         context.proposalRepoTest = proposalRepoTest
     }
 }
