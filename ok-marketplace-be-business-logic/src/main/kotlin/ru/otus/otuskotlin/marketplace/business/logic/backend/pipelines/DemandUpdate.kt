@@ -6,8 +6,11 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.Initiali
 import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.QuerySetWorkMode
 import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.stubs.DemandUpdateStub
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
 import ru.otus.otuskotlin.marketplace.common.kmp.validation.validators.ValidatorStringNonEmpty
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.IOperation
+import ru.otus.otuskotlin.marketplace.pipelines.kmp.operation
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.pipeline
 
 object DemandUpdate : IOperation<MpBeContext> by pipeline({
@@ -16,8 +19,10 @@ object DemandUpdate : IOperation<MpBeContext> by pipeline({
     // Установка параметров контекста в зависимости от режима работы в запросе
     execute(QuerySetWorkMode)
 
+    // Обработка стабового запроса
     execute(DemandUpdateStub)
 
+    // Валидация параметров запроса
     validation {
         validate<String?> {
             validator(ValidatorStringNonEmpty(field = "id", message = "You must provide non-empty id for the demand"))
@@ -33,5 +38,24 @@ object DemandUpdate : IOperation<MpBeContext> by pipeline({
         }
     }
 
+    // Обновление данных в репозитарии, ответ сохраняется в контексте
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING }
+        execute {
+            try {
+                demandRepo.update(this)
+                status = MpBeContextStatus.FINISHING
+            } catch (t: Throwable) {
+                status = MpBeContextStatus.FAILING
+                errors.add(
+                    MpError(
+                        code = "demand-repo-update-error",
+                        message = t.message?:"")
+                )
+            }
+        }
+    }
+
+    // Подготовка ответа
     execute(CompletePipeline)
 })

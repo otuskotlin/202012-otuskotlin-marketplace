@@ -41,7 +41,7 @@ include("ok-marketplace-be-mappers-openapi")
 include("ok-marketplace-be-business-logic")
 
 // Приложения
-//include("ok-marketplace-be-app-spring")
+include("ok-marketplace-be-app-spring")
 include("ok-marketplace-be-app-ktor")
 include("ok-marketplace-be-app-kotless")
 include("ok-marketplace-be-repository-inmemory")

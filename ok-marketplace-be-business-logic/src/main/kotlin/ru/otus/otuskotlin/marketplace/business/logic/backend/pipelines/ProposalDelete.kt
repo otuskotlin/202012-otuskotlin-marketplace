@@ -6,8 +6,11 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.Initiali
 import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.QuerySetWorkMode
 import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.stubs.ProposalDeleteStub
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
 import ru.otus.otuskotlin.marketplace.common.kmp.validation.validators.ValidatorStringNonEmpty
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.IOperation
+import ru.otus.otuskotlin.marketplace.pipelines.kmp.operation
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.pipeline
 
 object ProposalDelete : IOperation<MpBeContext> by pipeline({
@@ -16,8 +19,10 @@ object ProposalDelete : IOperation<MpBeContext> by pipeline({
     // Установка параметров контекста в зависимости от режима работы в запросе
     execute(QuerySetWorkMode)
 
+    // Обработка стабового запроса
     execute(ProposalDeleteStub)
 
+    // Валидация параметров запроса
     validation {
         validate<String?> {
             on { requestProposalId.id }
@@ -30,5 +35,24 @@ object ProposalDelete : IOperation<MpBeContext> by pipeline({
         }
     }
 
+    // Удаление из репозитария, ответ сохраняется в контексте
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING }
+        execute {
+            try {
+                proposalRepo.delete(this)
+                status = MpBeContextStatus.FINISHING
+            } catch (t: Throwable) {
+                status = MpBeContextStatus.FAILING
+                errors.add(
+                    MpError(
+                        code = "proposal-repo-delete-error",
+                        message = t.message?:"")
+                )
+            }
+        }
+    }
+
+    // Подготовка ответа
     execute(CompletePipeline)
 })
