@@ -40,7 +40,8 @@ object ProposalOffers : IOperation<MpBeContext> by pipeline({
         startIf { status == MpBeContextStatus.RUNNING }
         execute {
             try {
-                proposalRepo.offers(this)
+                requestProposal = proposalRepo.read(this)
+                demandRepo.offers(this)
                 status = MpBeContextStatus.FINISHING
             } catch (t: Throwable) {
                 status = MpBeContextStatus.FAILING

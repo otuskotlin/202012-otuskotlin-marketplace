@@ -64,8 +64,8 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
         val textFilter = context.demandFilter.text
         if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
         val records = cache.asMap().filterValues {
-            it.title?.contains(textFilter)?:false || if (context.demandFilter.includeDescription) {
-                it.description?.contains(textFilter) ?: false
+            it.title?.contains(textFilter, true)?:false || if (context.demandFilter.includeDescription) {
+                it.description?.contains(textFilter, true) ?: false
             } else false
         }.values
         if (records.count() <= context.demandFilter.offset)
@@ -90,7 +90,7 @@ class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
         var offers: List<DemandInMemoryDto> = emptyList()
         while (title.length >= 3 && offers.count() < 10) {
             offers = cache.asMap().filterValues {
-                it.title?.contains(title)?: false
+                it.title?.contains(title, true)?: false
             }.values.toList()
             title = title.dropLast(1)
         }
