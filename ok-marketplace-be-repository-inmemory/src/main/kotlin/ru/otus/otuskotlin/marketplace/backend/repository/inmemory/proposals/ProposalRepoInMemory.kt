@@ -32,31 +32,39 @@ class ProposalRepoInMemory @OptIn(ExperimentalTime::class) constructor(
     override suspend fun read(context: MpBeContext): MpProposalModel {
         val id = context.requestProposalId
         if (id == MpProposalIdModel.NONE) throw MpRepoWrongIdException(id.id)
-        return cache.get(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        val  model = cache.get(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        context.responseProposal = model
+        return model
     }
 
     override suspend fun create(context: MpBeContext): MpProposalModel {
         val dto = ProposalInMemoryDto.of(context.requestProposal, UUID.randomUUID().toString())
-        return save(dto).toModel()
+        val model = save(dto).toModel()
+        context.responseProposal = model
+        return model
     }
 
     override suspend fun update(context: MpBeContext): MpProposalModel {
         if (context.requestProposal.id == MpProposalIdModel.NONE) throw MpRepoWrongIdException(context.requestProposal.id.id)
-        return save(ProposalInMemoryDto.of(context.requestProposal)).toModel()
+        val model = save(ProposalInMemoryDto.of(context.requestProposal)).toModel()
+        context.responseProposal = model
+        return model
     }
 
     override suspend fun delete(context: MpBeContext): MpProposalModel {
         val id = context.requestProposalId
         if (id == MpProposalIdModel.NONE) throw MpRepoWrongIdException(id.id)
-        return cache.peekAndRemove(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        val model = cache.peekAndRemove(id.id)?.toModel()?: throw MpRepoNotFoundException(id.id)
+        context.responseProposal = model
+        return model
     }
 
     override suspend fun list(context: MpBeContext): Collection<MpProposalModel> {
         val textFilter = context.proposalFilter.text
         if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
         val records = cache.asMap().filterValues {
-            it.title?.contains(textFilter)?:false || if (context.proposalFilter.includeDescription) {
-                it.description?.contains(textFilter) ?: false
+            it.title?.contains(textFilter, true)?:false || if (context.proposalFilter.includeDescription) {
+                it.description?.contains(textFilter, true) ?: false
             } else false
         }.values
         if (records.count() <= context.proposalFilter.offset)
@@ -81,7 +89,7 @@ class ProposalRepoInMemory @OptIn(ExperimentalTime::class) constructor(
         var offers: List<ProposalInMemoryDto> = emptyList()
         while (title.length >= 3 && offers.count() < 10) {
             offers = cache.asMap().filterValues {
-                it.title?.contains(title)?: false
+                it.title?.contains(title, true)?: false
             }.values.toList()
             title = title.dropLast(1)
         }
