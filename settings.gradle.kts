@@ -13,6 +13,7 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion
         kotlin("js") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
+        kotlin("kapt") version kotlinVersion
 
         id("org.openapi.generator") version openapiVersion
         id("org.springframework.boot") version springBootVersion
@@ -45,4 +46,4 @@ include("ok-marketplace-be-business-logic")
 include("ok-marketplace-be-app-ktor")
 include("ok-marketplace-be-app-kotless")
 include("ok-marketplace-be-repository-inmemory")
-include("ok-marketplace-be-cassandra")
+include("ok-marketplace-be-repository-cassandra")
