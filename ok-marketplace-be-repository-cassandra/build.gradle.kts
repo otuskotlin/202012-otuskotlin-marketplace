@@ -15,6 +15,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":ok-marketplace-be-common"))
+
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.datastax.oss:java-driver-core:$cassandraDriverVersion")
     implementation("com.datastax.oss:java-driver-query-builder:$cassandraDriverVersion")
