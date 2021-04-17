@@ -70,6 +70,7 @@ internal class ApplicationInMemoryTest {
             title = "DeMand"
         )
 
+        // создается репозитарий с начальными данными
         val demandRepo by lazy {
             DemandRepoInMemory(
                 ttl = 15.toDuration(DurationUnit.MINUTES),
