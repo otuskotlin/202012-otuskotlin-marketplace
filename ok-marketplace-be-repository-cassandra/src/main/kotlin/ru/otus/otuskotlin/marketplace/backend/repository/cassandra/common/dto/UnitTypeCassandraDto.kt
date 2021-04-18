@@ -33,6 +33,7 @@ data class UnitTypeCassandraDto(
     )
 
     companion object {
+        const val TYPE_NAME = "unit_type"
         const val ID = "id"
         const val NAME = "name"
         const val DESCRIPTION = "description"

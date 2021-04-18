@@ -13,7 +13,7 @@ data class TechDetCassandraDto(
     val param: TechParamCassandraDto? = null,
     @CqlName(VALUE)
     val value: String? = null,
-    @CqlName(UNIT)
+    @CqlName(UNIT_TYPE)
     val unit: UnitTypeCassandraDto? = null,
     @CqlName(COMPARABLE_VALUE)
     val comparableValue: Double? = null,
@@ -27,11 +27,11 @@ data class TechDetCassandraDto(
     )
 
     companion object {
-        const val TECH_DET_TYPE_NAME = "tech_det"
+        const val TYPE_NAME = "tech_det"
         const val ID = "id"
         const val PARAM = "param"
         const val VALUE = "value"
-        const val UNIT = "unit"
+        const val UNIT_TYPE = "unit_type"
         const val COMPARABLE_VALUE = "comparable_value"
 
         fun of(model: MpTechDetModel) = TechDetCassandraDto(

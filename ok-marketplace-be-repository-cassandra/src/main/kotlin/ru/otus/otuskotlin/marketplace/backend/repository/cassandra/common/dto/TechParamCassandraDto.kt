@@ -27,6 +27,7 @@ data class TechParamCassandraDto(
     )
 
     companion object {
+        const val TYPE_NAME = "tech_params"
         const val ID = "id"
         const val NAME = "name"
         const val DESCRIPTION = "description"

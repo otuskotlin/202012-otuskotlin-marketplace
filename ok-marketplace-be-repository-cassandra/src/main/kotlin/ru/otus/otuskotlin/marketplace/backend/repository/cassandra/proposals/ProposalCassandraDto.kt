@@ -6,6 +6,7 @@ import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto.TechDetCassandraDto
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
+import java.util.*
 
 @Entity
 data class ProposalCassandraDto(
@@ -23,7 +24,7 @@ data class ProposalCassandraDto(
     @CqlName(TECH_DETS)
     val techDets: Set<TechDetCassandraDto>? = null,
     @CqlName(LOCK_VERSION)
-    val lockVersion: String? = null,
+    val lockVersion: String = UUID.randomUUID().toString(),
 ) {
     fun toModel() = MpProposalModel(
         id = id?.let { MpProposalIdModel(it) }?: MpProposalModel.NONE.id,

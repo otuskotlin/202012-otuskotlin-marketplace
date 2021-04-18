@@ -6,6 +6,7 @@ import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto.TechDetCassandraDto
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
+import java.util.*
 
 @Entity
 data class DemandCassandraDto(
@@ -40,7 +41,7 @@ data class DemandCassandraDto(
         const val AVATAR = "avatar"
         const val TITLE = "title"
         const val DESCRIPTION = "description"
-        const val TAG_ID_LIST = "tag_id_list"
+        const val TAG_ID_LIST = "tag_ids"
         const val TECH_DETS = "tech_dets"
         const val LOCK_VERSION = "lock_version"
 
