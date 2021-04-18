@@ -27,6 +27,7 @@ data class TechDetCassandraDto(
     )
 
     companion object {
+        const val TECH_DET_TYPE_NAME = "tech_det"
         const val ID = "id"
         const val PARAM = "param"
         const val VALUE = "value"

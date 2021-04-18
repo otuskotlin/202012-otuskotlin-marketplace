@@ -35,6 +35,7 @@ data class DemandCassandraDto(
     )
 
     companion object {
+        const val DEMANDS_TABLE_NAME = "demands"
         const val ID = "id"
         const val AVATAR = "avatar"
         const val TITLE = "title"
