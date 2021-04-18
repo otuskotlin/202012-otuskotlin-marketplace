@@ -3,7 +3,7 @@ package ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands
 import com.datastax.oss.driver.api.mapper.annotations.CqlName
 import com.datastax.oss.driver.api.mapper.annotations.Entity
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
-import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.TechDetCassandraDto
+import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto.TechDetCassandraDto
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
 

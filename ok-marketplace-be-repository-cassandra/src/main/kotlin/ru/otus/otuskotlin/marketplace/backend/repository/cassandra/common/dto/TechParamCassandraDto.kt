@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common
+package ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto
 
 import com.datastax.oss.driver.api.mapper.annotations.CqlName
 import com.datastax.oss.driver.api.mapper.annotations.Entity
