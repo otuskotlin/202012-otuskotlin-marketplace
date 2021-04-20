@@ -37,7 +37,7 @@ abstract class MpRepositoryCassandra(
         }
         builder.withKeyspace(keyspaceName).build().apply {
             createTypeProducer() // регистрация udt
-            createTable()
+            createTables()
         }
     }
 
@@ -99,7 +99,7 @@ abstract class MpRepositoryCassandra(
         .map { InetSocketAddress(InetAddress.getByName(it), port) }
 
 
-    abstract fun CqlSession.createTable()
+    abstract fun CqlSession.createTables()
 
     abstract fun init(): MpRepositoryCassandra
 }

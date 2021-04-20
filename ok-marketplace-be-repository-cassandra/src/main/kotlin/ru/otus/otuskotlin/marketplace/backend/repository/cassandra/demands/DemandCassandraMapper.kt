@@ -9,8 +9,14 @@ import com.datastax.oss.driver.api.mapper.annotations.Mapper
 interface DemandCassandraMapper {
 
     @DaoFactory
-    fun demandDao(
+    fun demandByIdDao(
         @DaoKeyspace keyspace: String,
         @DaoTable table: String
-    ): DemandCassandraDao
+    ): DemandByIdCassandraDao
+
+    @DaoFactory
+    fun demandByTitleDao(
+        @DaoKeyspace keyspace: String,
+        @DaoTable table: String
+    ): DemandByTitleCassandraDao
 }

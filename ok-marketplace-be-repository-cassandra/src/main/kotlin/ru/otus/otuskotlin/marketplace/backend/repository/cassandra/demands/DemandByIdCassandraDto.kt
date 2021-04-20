@@ -6,10 +6,9 @@ import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto.TechDetCassandraDto
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
-import java.util.*
 
 @Entity
-data class DemandCassandraDto(
+data class DemandByIdCassandraDto(
     @PartitionKey
     @CqlName(ID)
     val id: String? = null,
@@ -36,7 +35,7 @@ data class DemandCassandraDto(
     )
 
     companion object {
-        const val DEMANDS_TABLE_NAME = "demands"
+        const val DEMANDS_TABLE_NAME = "demands_by_id"
         const val ID = "id"
         const val AVATAR = "avatar"
         const val TITLE = "title"
@@ -47,7 +46,7 @@ data class DemandCassandraDto(
 
         fun of(model: MpDemandModel) = of(model, model.id.id)
 
-        fun of(model: MpDemandModel, id: String) = DemandCassandraDto(
+        fun of(model: MpDemandModel, id: String) = DemandByIdCassandraDto(
             id = id.takeIf { it != MpDemandModel.NONE.id.id },
             avatar = model.avatar.takeIf { it != MpDemandModel.NONE.avatar },
             title = model.title.takeIf { it != MpDemandModel.NONE.title },
