@@ -34,15 +34,15 @@ interface DemandByTitleCassandraDao {
     @StatementAttributes(consistencyLevel = "ONE")
     fun createAsync(dto: DemandByTitleCassandraDto): ListenableFuture<Unit>
 
-//    @Select(
-//        customWhereClause = "${DemandByTitleCassandraDto.TITLE} LIKE :filter",
+    @Select(
+        customWhereClause = "${DemandByTitleCassandraDto.TITLE_INDEX} LIKE :filter",
 //        orderBy = ["${DemandByTitleCassandraDto.TIMESTAMP} DESC"]
-//    )
-//    fun filterByTitleAsync(filter: String): ListenableFuture<Collection<DemandByTitleCassandraDto>>
-
-    @Query("SELECT ${DemandByTitleCassandraDto.ID} FROM ${DemandByTitleCassandraDto.DEMANDS_TITLE_TABLE_NAME}" +
-            "WHERE ${DemandByTitleCassandraDto.TITLE} LIKE :filter ORDER BY ${DemandByTitleCassandraDto.TIMESTAMP} DESC")
-    fun filterByTitleAsync(filter: String): ListenableFuture<Collection<String>>
+    )
+    fun filterByTitleAsync(filter: String): ListenableFuture<Collection<DemandByTitleCassandraDto>>
+//
+//    @Query("SELECT ${DemandByTitleCassandraDto.ID} FROM ${DemandByTitleCassandraDto.DEMANDS_TITLE_TABLE_NAME}" +
+//            "WHERE ${DemandByTitleCassandraDto.TITLE} LIKE :filter ORDER BY ${DemandByTitleCassandraDto.TIMESTAMP} DESC")
+//    fun filterByTitleAsync(filter: String): ListenableFuture<Collection<String>>
 
     @Delete
     fun deleteAsync(dto: DemandByTitleCassandraDto): ListenableFuture<Unit>

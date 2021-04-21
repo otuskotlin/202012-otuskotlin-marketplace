@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.metadata.schema.ClusteringOrder
 import com.datastax.oss.driver.api.core.type.DataTypes
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
+import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableMap
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.guava.await
@@ -133,11 +134,10 @@ class DemandRepositoryCassandra(
             val records = daoByTitle.filterByTitleAsync("%${filter.text}%").await().toList()
              if (records.count() < minCount) throw MpRepoIndexException(filter.text)
              val list = flow {
-                 for (it in filter.offset until minCount) {
-                     emit(
-                         daoById.readAsync(records[it]).await()?.toModel()
-                             ?: throw MpRepoNotFoundException(records[it])
-                     )
+                 for (pos in filter.offset until minCount) {
+                         records[pos].id?.let { id ->
+                             emit(daoById.readAsync(id).await()?.toModel() ?: throw MpRepoNotFoundException(id))
+                         }
                  }
              }.toList()
              context.responseDemands = list.toMutableList()
@@ -155,11 +155,13 @@ class DemandRepositoryCassandra(
         return withTimeout(timeout.toMillis()) {
             val records = daoByTitle.filterByTitleAsync("%${filter}%").await().toList()
             val list = flow {
-                records.forEach {
-                    emit(
-                        daoById.readAsync(it).await()?.toModel()
-                            ?: throw MpRepoNotFoundException(it)
-                    )
+                records.forEach { dto ->
+                    dto.id?.let {
+                        emit(
+                            daoById.readAsync(it).await()?.toModel()
+                                ?: throw MpRepoNotFoundException(it)
+                        )
+                    }
                 }
             }.toList()
             context.responseDemands = list.toMutableList()
@@ -172,8 +174,9 @@ class DemandRepositoryCassandra(
             SchemaBuilder.createTable(DemandByTitleCassandraDto.DEMANDS_TITLE_TABLE_NAME)
                 .ifNotExists()
                 .withPartitionKey(DemandByTitleCassandraDto.TITLE, DataTypes.TEXT)
-                .withClusteringColumn(DemandByTitleCassandraDto.ID, DataTypes.TEXT)
                 .withClusteringColumn(DemandByTitleCassandraDto.TIMESTAMP, DataTypes.TIMESTAMP)
+                .withClusteringColumn(DemandByTitleCassandraDto.ID, DataTypes.TEXT)
+                .withClusteringColumn(DemandByTitleCassandraDto.TITLE_INDEX, DataTypes.TEXT)
 //                .withColumn(DemandByTitleCassandraDto.AVATAR, DataTypes.TEXT)
 //                .withColumn(DemandByTitleCassandraDto.DESCRIPTION, DataTypes.TEXT)
 //                .withColumn(DemandByTitleCassandraDto.TAG_ID_LIST, DataTypes.setOf(DataTypes.TEXT))
@@ -182,6 +185,8 @@ class DemandRepositoryCassandra(
 //                    DataTypes.setOf(SchemaBuilder.udt(TechDetCassandraDto.TYPE_NAME, true))
 //                )
                 .withClusteringOrder(DemandByTitleCassandraDto.TIMESTAMP, ClusteringOrder.DESC)
+                .withClusteringOrder(DemandByTitleCassandraDto.ID, ClusteringOrder.ASC)
+                .withClusteringOrder(DemandByTitleCassandraDto.TITLE_INDEX, ClusteringOrder.ASC)
                 .build()
         )
         execute(
@@ -197,6 +202,18 @@ class DemandRepositoryCassandra(
                     DataTypes.setOf(SchemaBuilder.udt(TechDetCassandraDto.TYPE_NAME, true))
                 )
                 .withColumn(DemandByIdCassandraDto.LOCK_VERSION, DataTypes.TEXT)
+                .build()
+        )
+    }
+
+    override fun CqlSession.createIndexes() {
+        execute(
+            SchemaBuilder.createIndex()
+                .ifNotExists()
+                .usingSASI()
+                .onTable(DemandByTitleCassandraDto.DEMANDS_TITLE_TABLE_NAME)
+                .andColumn(DemandByTitleCassandraDto.TITLE_INDEX)
+                .withSASIOptions(mapOf("mode" to "CONTAINS", "tokenization_locale" to "en"))
                 .build()
         )
     }

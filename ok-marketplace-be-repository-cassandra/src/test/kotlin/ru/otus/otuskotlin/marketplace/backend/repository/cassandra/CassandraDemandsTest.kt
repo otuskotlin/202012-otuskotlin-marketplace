@@ -58,11 +58,7 @@ internal class CassandraDemandsTest {
                         id = MpDemandIdModel("test-id"),
                         title = "test-demand",
                         tagIds = mutableSetOf("id1", "id2"),
-                        techDets = mutableSetOf(
-//                            techDet.copy(value = "200"),
-                            techDet
-//                            techDet.copy(comparableValue = 2.5)
-                            )
+//                        techDets = mutableSetOf(techDet)
                     )
                 )
             ).init()
@@ -84,6 +80,21 @@ internal class CassandraDemandsTest {
             val model = repo.read(context)
             println(model)
             assertEquals(model, context.responseDemand)
+        }
+    }
+
+    @Test
+    fun demandListTest() {
+        runBlocking {
+            val context = MpBeContext(
+                demandFilter = MpDemandFilterModel(
+                    text = "test",
+                    offset = 0,
+                    count = 1,
+                )
+            )
+            val model = repo.list(context)
+            println(model)
         }
     }
 }

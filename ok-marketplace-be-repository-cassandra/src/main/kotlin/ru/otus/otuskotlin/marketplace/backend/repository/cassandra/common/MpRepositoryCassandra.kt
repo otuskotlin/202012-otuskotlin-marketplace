@@ -38,6 +38,7 @@ abstract class MpRepositoryCassandra(
         builder.withKeyspace(keyspaceName).build().apply {
             createTypeProducer() // регистрация udt
             createTables()
+            createIndexes()
         }
     }
 
@@ -100,6 +101,8 @@ abstract class MpRepositoryCassandra(
 
 
     abstract fun CqlSession.createTables()
+
+    abstract fun CqlSession.createIndexes()
 
     abstract fun init(): MpRepositoryCassandra
 }
