@@ -44,4 +44,7 @@ include("ok-marketplace-be-business-logic")
 //include("ok-marketplace-be-app-spring")
 include("ok-marketplace-be-app-ktor")
 include("ok-marketplace-be-app-kotless")
+
+// Базы данных
 include("ok-marketplace-be-repository-inmemory")
+include("ok-marketplace-be-repository-sql")
