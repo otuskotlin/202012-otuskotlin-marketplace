@@ -4,7 +4,6 @@ import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.metadata.schema.ClusteringOrder
 import com.datastax.oss.driver.api.core.type.DataTypes
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder
-import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableMap
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.guava.await
@@ -128,13 +127,15 @@ class DemandRepositoryCassandra(
 
     override suspend fun list(context: MpBeContext): Collection<MpDemandModel> {
         val filter = context.demandFilter
-        val minCount = filter.offset + filter.count
+        var lastIndex = filter.offset + filter.count
         if (filter.text.length < 3) throw MpRepoIndexException(filter.text)
          return withTimeout(timeout.toMillis()) {
             val records = daoByTitle.filterByTitleAsync("%${filter.text}%").await().toList()
-             if (records.count() < minCount) throw MpRepoIndexException(filter.text)
+                .sortedByDescending { it.timestamp }
+             val recordsCount = records.count()
+             if (recordsCount < lastIndex) lastIndex = recordsCount
              val list = flow {
-                 for (pos in filter.offset until minCount) {
+                 for (pos in filter.offset until lastIndex) {
                          records[pos].id?.let { id ->
                              emit(daoById.readAsync(id).await()?.toModel() ?: throw MpRepoNotFoundException(id))
                          }
@@ -142,7 +143,7 @@ class DemandRepositoryCassandra(
              }.toList()
              context.responseDemands = list.toMutableList()
              context.pageCount = list.count().takeIf { it != 0 }
-                 ?.let { (records.count().toDouble() / it + 0.5).toInt() }
+                 ?.let { (recordsCount.toDouble() / it + 0.5).toInt() }
                  ?: Int.MIN_VALUE
              list
         }
@@ -177,13 +178,6 @@ class DemandRepositoryCassandra(
                 .withClusteringColumn(DemandByTitleCassandraDto.TIMESTAMP, DataTypes.TIMESTAMP)
                 .withClusteringColumn(DemandByTitleCassandraDto.ID, DataTypes.TEXT)
                 .withClusteringColumn(DemandByTitleCassandraDto.TITLE_INDEX, DataTypes.TEXT)
-//                .withColumn(DemandByTitleCassandraDto.AVATAR, DataTypes.TEXT)
-//                .withColumn(DemandByTitleCassandraDto.DESCRIPTION, DataTypes.TEXT)
-//                .withColumn(DemandByTitleCassandraDto.TAG_ID_LIST, DataTypes.setOf(DataTypes.TEXT))
-//                .withColumn(
-//                    DemandByTitleCassandraDto.TECH_DETS,
-//                    DataTypes.setOf(SchemaBuilder.udt(TechDetCassandraDto.TYPE_NAME, true))
-//                )
                 .withClusteringOrder(DemandByTitleCassandraDto.TIMESTAMP, ClusteringOrder.DESC)
                 .withClusteringOrder(DemandByTitleCassandraDto.ID, ClusteringOrder.ASC)
                 .withClusteringOrder(DemandByTitleCassandraDto.TITLE_INDEX, ClusteringOrder.ASC)

@@ -55,11 +55,30 @@ internal class CassandraDemandsTest {
                 port = container.getMappedPort(PORT),
                 initObjects = listOf(
                     MpDemandModel(
-                        id = MpDemandIdModel("test-id"),
+                        id = MpDemandIdModel("test-id1"),
                         title = "test-demand",
                         tagIds = mutableSetOf("id1", "id2"),
-//                        techDets = mutableSetOf(techDet)
-                    )
+                    ),
+                    MpDemandModel(
+                        id = MpDemandIdModel("test-id2"),
+                        title = "test-demand1",
+                        tagIds = mutableSetOf("id1", "id2"),
+                    ),
+                    MpDemandModel(
+                        id = MpDemandIdModel("test-id3"),
+                        title = "demand-0",
+                        tagIds = mutableSetOf("id1", "id2"),
+                    ),
+                    MpDemandModel(
+                        id = MpDemandIdModel("test-id4"),
+                        title = "test-demand2",
+                        tagIds = mutableSetOf("id1", "id2"),
+                    ),
+                    MpDemandModel(
+                        id = MpDemandIdModel("test-id5"),
+                        title = "demand-1",
+                        tagIds = mutableSetOf("id1", "id2"),
+                    ),
                 )
             ).init()
         }
@@ -89,12 +108,13 @@ internal class CassandraDemandsTest {
             val context = MpBeContext(
                 demandFilter = MpDemandFilterModel(
                     text = "test",
-                    offset = 0,
+                    offset = 2,
                     count = 1,
                 )
             )
             val model = repo.list(context)
             println(model)
+            println(context.pageCount)
         }
     }
 }

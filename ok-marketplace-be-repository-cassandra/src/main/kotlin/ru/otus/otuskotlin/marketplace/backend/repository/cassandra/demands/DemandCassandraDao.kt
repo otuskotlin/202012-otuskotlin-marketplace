@@ -36,7 +36,6 @@ interface DemandByTitleCassandraDao {
 
     @Select(
         customWhereClause = "${DemandByTitleCassandraDto.TITLE_INDEX} LIKE :filter",
-//        orderBy = ["${DemandByTitleCassandraDto.TIMESTAMP} DESC"]
     )
     fun filterByTitleAsync(filter: String): ListenableFuture<Collection<DemandByTitleCassandraDto>>
 //
