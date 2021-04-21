@@ -2,6 +2,7 @@ package ru.otus.otuskotlin.marketplace.backend.mappers.kmp
 
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.models.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpResponseDemandCreate
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 import java.time.Instant
 
@@ -11,6 +12,7 @@ fun MpBeContext.setQuery(query: MpRequestProposalRead) = setQuery(query) {
         MpRequestProposalRead.StubCase.SUCCESS -> MpStubCase.PROPOSAL_READ_SUCCESS
         else -> MpStubCase.NONE
     }
+    workMode = query.debug?.mode.toModel()
 }
 
 fun MpBeContext.setQuery(query: MpRequestProposalCreate) = setQuery(query) {
@@ -19,6 +21,7 @@ fun MpBeContext.setQuery(query: MpRequestProposalCreate) = setQuery(query) {
         MpRequestProposalCreate.StubCase.SUCCESS -> MpStubCase.PROPOSAL_CREATE_SUCCESS
         else -> MpStubCase.NONE
     }
+    workMode = query.debug?.mode.toModel()
 }
 
 fun MpBeContext.setQuery(query: MpRequestProposalUpdate) = setQuery(query) {
@@ -27,6 +30,7 @@ fun MpBeContext.setQuery(query: MpRequestProposalUpdate) = setQuery(query) {
         MpRequestProposalUpdate.StubCase.SUCCESS -> MpStubCase.PROPOSAL_UPDATE_SUCCESS
         else -> MpStubCase.NONE
     }
+    workMode = query.debug?.mode.toModel()
 }
 
 fun MpBeContext.setQuery(query: MpRequestProposalDelete) = setQuery(query) {
@@ -35,18 +39,24 @@ fun MpBeContext.setQuery(query: MpRequestProposalDelete) = setQuery(query) {
         MpRequestProposalDelete.StubCase.SUCCESS -> MpStubCase.PROPOSAL_DELETE_SUCCESS
         else -> MpStubCase.NONE
     }
+    workMode = query.debug?.mode.toModel()
 }
 
 fun MpBeContext.setQuery(query: MpRequestProposalList) = setQuery(query) {
     proposalFilter = query.filterData?.let {
         MpProposalFilterModel(
-            text = it.text?: ""
+            text = it.text?: "",
+            includeDescription = it.includeDescription?: false,
+            sortBy = it.sortBy?.let { MpSortModel.valueOf(it.name) }?: MpSortModel.NONE,
+            offset = it.offset?: Int.MIN_VALUE,
+            count = it.count?: Int.MIN_VALUE,
         )
     }?: MpProposalFilterModel.NONE
     stubCase = when (query.debug?.stubCase) {
         MpRequestProposalList.StubCase.SUCCESS -> MpStubCase.PROPOSAL_LIST_SUCCESS
         else -> MpStubCase.NONE
     }
+    workMode = query.debug?.mode.toModel()
 }
 
 fun MpBeContext.setQuery(query: MpRequestProposalOffers) = setQuery(query) {
@@ -55,6 +65,7 @@ fun MpBeContext.setQuery(query: MpRequestProposalOffers) = setQuery(query) {
         MpRequestProposalOffers.StubCase.SUCCESS -> MpStubCase.PROPOSAL_OFFERS_SUCCESS
         else -> MpStubCase.NONE
     }
+    workMode = query.debug?.mode.toModel()
 }
 
 fun MpBeContext.respondProposalRead() = MpResponseProposalRead(
@@ -63,7 +74,10 @@ fun MpBeContext.respondProposalRead() = MpResponseProposalRead(
     status = status.toTransport(),
     responseId = responseId,
     onRequest = onRequest,
-    endTime = Instant.now().toString()
+    endTime = Instant.now().toString(),
+    debug = MpResponseProposalRead.Debug(
+        mode = workMode.takeIf { it != MpWorkMode.DEFAULT }?.toTransport()
+    )
 )
 
 fun MpBeContext.respondProposalCreate() = MpResponseProposalCreate(
@@ -72,7 +86,10 @@ fun MpBeContext.respondProposalCreate() = MpResponseProposalCreate(
     status = status.toTransport(),
     responseId = responseId,
     onRequest = onRequest,
-    endTime = Instant.now().toString()
+    endTime = Instant.now().toString(),
+    debug = MpResponseProposalCreate.Debug(
+        mode = workMode.takeIf { it != MpWorkMode.DEFAULT }?.toTransport()
+    )
 )
 
 fun MpBeContext.respondProposalUpdate() = MpResponseProposalUpdate(
@@ -81,7 +98,10 @@ fun MpBeContext.respondProposalUpdate() = MpResponseProposalUpdate(
     status = status.toTransport(),
     responseId = responseId,
     onRequest = onRequest,
-    endTime = Instant.now().toString()
+    endTime = Instant.now().toString(),
+    debug = MpResponseProposalUpdate.Debug(
+        mode = workMode.takeIf { it != MpWorkMode.DEFAULT }?.toTransport()
+    )
 )
 
 fun MpBeContext.respondProposalDelete() = MpResponseProposalDelete(
@@ -90,7 +110,10 @@ fun MpBeContext.respondProposalDelete() = MpResponseProposalDelete(
     status = status.toTransport(),
     responseId = responseId,
     onRequest = onRequest,
-    endTime = Instant.now().toString()
+    endTime = Instant.now().toString(),
+    debug = MpResponseProposalDelete.Debug(
+        mode = workMode.takeIf { it != MpWorkMode.DEFAULT }?.toTransport()
+    )
 )
 
 fun MpBeContext.respondProposalList() = MpResponseProposalList(
@@ -100,7 +123,10 @@ fun MpBeContext.respondProposalList() = MpResponseProposalList(
     status = status.toTransport(),
     responseId = responseId,
     onRequest = onRequest,
-    endTime = Instant.now().toString()
+    endTime = Instant.now().toString(),
+    debug = MpResponseProposalList.Debug(
+        mode = workMode.takeIf { it != MpWorkMode.DEFAULT }?.toTransport()
+    )
 )
 
 fun MpBeContext.respondProposalOffers() = MpResponseProposalOffers(
@@ -110,7 +136,10 @@ fun MpBeContext.respondProposalOffers() = MpResponseProposalOffers(
     status = status.toTransport(),
     responseId = responseId,
     onRequest = onRequest,
-    endTime = Instant.now().toString()
+    endTime = Instant.now().toString(),
+    debug = MpResponseProposalOffers.Debug(
+        mode = workMode.takeIf { it != MpWorkMode.DEFAULT }?.toTransport()
+    )
 )
 
 private fun MpProposalUpdateDto.toModel() = MpProposalModel(

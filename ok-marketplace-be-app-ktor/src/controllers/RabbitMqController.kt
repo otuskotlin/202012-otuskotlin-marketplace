@@ -76,8 +76,8 @@ fun Application.rabbitMq(
         consume<MpMessage>(queueIn) { consumerTag, query ->
             println("Consumed message $query, consumer tag: $consumerTag")
             val ctx = MpBeContext(
-                responseId = UUID.randomUUID().toString(),
                 timeStarted = Instant.now(),
+                responseId = UUID.randomUUID().toString(),
             )
             try {
                 ctx.status = MpBeContextStatus.RUNNING

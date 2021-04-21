@@ -82,6 +82,17 @@ internal fun TechParamDto.toModel() = MpTechParamModel(
     units = units?.map { it.toModel() }?.toMutableSet()?: mutableSetOf(),
 )
 
+internal fun MpWorkModeDto?.toModel() = when(this) {
+    MpWorkModeDto.PROD -> MpWorkMode.PROD
+    MpWorkModeDto.TEST -> MpWorkMode.TEST
+    else -> MpWorkMode.DEFAULT
+}
+
+internal fun MpWorkMode.toTransport() = when(this) {
+    MpWorkMode.PROD -> MpWorkModeDto.PROD
+    MpWorkMode.TEST -> MpWorkModeDto.TEST
+}
+
 fun <T: IMpRequest> MpBeContext.setQuery(query: T, block: MpBeContext.() -> Unit) = apply {
     onRequest = query.requestId ?: ""
     block()

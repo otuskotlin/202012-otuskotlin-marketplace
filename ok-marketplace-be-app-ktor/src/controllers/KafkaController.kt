@@ -6,8 +6,6 @@ import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
-import org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG
-import org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
@@ -73,8 +71,8 @@ fun Routing.kafkaController(
             println("GOT items")
             for (item in items.items) {
                 val ctx = MpBeContext(
-                    responseId = UUID.randomUUID().toString(),
                     timeStarted = Instant.now(),
+                    responseId = UUID.randomUUID().toString(),
                 )
                 try {
                     ctx.status = MpBeContextStatus.RUNNING

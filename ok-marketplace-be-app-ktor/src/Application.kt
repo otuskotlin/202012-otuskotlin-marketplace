@@ -7,27 +7,43 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
-import io.ktor.websocket.*
-import kotlinx.serialization.InternalSerializationApi
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.proposals.ProposalRepoInMemory
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
 import ru.otus.otuskotlin.marketplace.business.logic.backend.ProposalCrud
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandRepository
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepository
+import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@OptIn(ExperimentalTime::class)
 @Suppress("unused") // Referenced in application.conf
 fun Application.module(
     testing: Boolean = false,
     kafkaTestConsumer: Consumer<String, String>? = null,
-    kafkaTestProducer: Producer<String, String>? = null
+    kafkaTestProducer: Producer<String, String>? = null,
+    testDemandRepo: IDemandRepository? = null,
+    testProposalRepo: IProposalRepository? = null,
 ) {
 
-    val demandCrud = DemandCrud()
-    val proposalCrud = ProposalCrud()
+    val demandRepoTest = testDemandRepo ?: DemandRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
+    val proposalRepoTest = testProposalRepo ?: ProposalRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
+    val demandCrud = DemandCrud(
+        proposalRepoTest = proposalRepoTest,
+        demandRepoTest = demandRepoTest,
+    )
+    val proposalCrud = ProposalCrud(
+        proposalRepoTest = proposalRepoTest,
+        demandRepoTest = demandRepoTest,
+    )
     val demandService = DemandService(demandCrud)
     val proposalService = ProposalService(proposalCrud)
 
