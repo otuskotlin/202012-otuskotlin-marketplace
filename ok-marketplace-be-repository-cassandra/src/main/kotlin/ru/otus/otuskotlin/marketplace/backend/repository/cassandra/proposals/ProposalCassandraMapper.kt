@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.marketplace.backend.repository.cassandra.proposals
 
+import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.mapper.annotations.DaoFactory
 import com.datastax.oss.driver.api.mapper.annotations.DaoKeyspace
 import com.datastax.oss.driver.api.mapper.annotations.DaoTable
@@ -13,4 +14,8 @@ interface ProposalCassandraMapper {
         @DaoKeyspace keyspace: String,
         @DaoTable table: String
     ): ProposalCassandraDao
+
+    companion object {
+        fun builder(session: CqlSession) = ProposalCassandraMapperBuilder(session)
+    }
 }

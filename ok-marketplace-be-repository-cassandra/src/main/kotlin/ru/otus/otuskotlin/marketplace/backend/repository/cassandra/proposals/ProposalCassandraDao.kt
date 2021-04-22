@@ -10,7 +10,7 @@ interface ProposalCassandraDao {
     fun createAsync(dto: ProposalCassandraDto): ListenableFuture<Unit>
 
     @Select
-    fun readAsync(id: String): ListenableFuture<ProposalCassandraDto>
+    fun readAsync(id: String): ListenableFuture<ProposalCassandraDto?>
 
     /**
      *  В данном случае условие в Update избыточно, так как обновляется вся модель.
@@ -26,4 +26,7 @@ interface ProposalCassandraDao {
      */
     @Delete(ifExists = true, entityClass = [ProposalCassandraDto::class])
     fun deleteAsync(id: String): ListenableFuture<Boolean>
+
+    @Select(customWhereClause = "${ProposalCassandraDto.TITLE} LIKE :filter")
+    fun filterByTitleAsync(filter: String): ListenableFuture<Collection<ProposalCassandraDto>>
 }

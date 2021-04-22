@@ -1,11 +1,13 @@
 package ru.otus.otuskotlin.marketplace.backend.repository.cassandra.proposals
 
+import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn
 import com.datastax.oss.driver.api.mapper.annotations.CqlName
 import com.datastax.oss.driver.api.mapper.annotations.Entity
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto.TechDetCassandraDto
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
+import java.time.Instant
 import java.util.*
 
 @Entity
@@ -13,10 +15,14 @@ data class ProposalCassandraDto(
     @PartitionKey
     @CqlName(ID)
     val id: String? = null,
-    @CqlName(AVATAR)
-    val avatar: String? = null,
+    @ClusteringColumn(0)
+    @CqlName(TIMESTAMP)
+    val timestamp: Instant? = null,
+    @ClusteringColumn(1)
     @CqlName(TITLE)
     val title: String? = null,
+    @CqlName(AVATAR)
+    val avatar: String? = null,
     @CqlName(DESCRIPTION)
     val description: String? = null,
     @CqlName(TAG_ID_LIST)
@@ -24,7 +30,7 @@ data class ProposalCassandraDto(
     @CqlName(TECH_DETS)
     val techDets: Set<TechDetCassandraDto>? = null,
     @CqlName(LOCK_VERSION)
-    val lockVersion: String = UUID.randomUUID().toString(),
+    val lockVersion: String? = null,
 ) {
     fun toModel() = MpProposalModel(
         id = id?.let { MpProposalIdModel(it) }?: MpProposalModel.NONE.id,
@@ -41,9 +47,10 @@ data class ProposalCassandraDto(
         const val AVATAR = "avatar"
         const val TITLE = "title"
         const val DESCRIPTION = "description"
-        const val TAG_ID_LIST = "tag_id_list"
+        const val TAG_ID_LIST = "tag_ids"
         const val TECH_DETS = "tech_dets"
         const val LOCK_VERSION = "lock_version"
+        const val TIMESTAMP = "timestamp"
 
         fun of(model: MpProposalModel) = of(model, model.id.id)
 
@@ -54,6 +61,7 @@ data class ProposalCassandraDto(
             description = model.description.takeIf { it != MpProposalModel.NONE.description },
             tagIds = model.tagIds.takeIf { it != MpProposalModel.NONE.tagIds },
             techDets = model.techDets.takeIf { it != MpProposalModel.NONE.techDets }?.map { TechDetCassandraDto.of(it) }?.toSet(),
+            lockVersion = UUID.randomUUID().toString()
         )
     }
 }
