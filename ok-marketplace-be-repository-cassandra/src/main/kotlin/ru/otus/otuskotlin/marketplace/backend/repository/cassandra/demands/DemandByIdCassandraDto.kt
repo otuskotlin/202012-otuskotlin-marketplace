@@ -6,6 +6,7 @@ import com.datastax.oss.driver.api.mapper.annotations.PartitionKey
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.common.dto.TechDetCassandraDto
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
+import java.util.*
 
 @Entity
 data class DemandByIdCassandraDto(
@@ -53,6 +54,7 @@ data class DemandByIdCassandraDto(
             description = model.description.takeIf { it != MpDemandModel.NONE.description },
             tagIds = model.tagIds.takeIf { it != MpDemandModel.NONE.tagIds },
             techDets = model.techDets.takeIf { it != MpDemandModel.NONE.techDets }?.map { TechDetCassandraDto.of(it) }?.toSet(),
+            lockVersion = UUID.randomUUID().toString(),
         )
     }
 }

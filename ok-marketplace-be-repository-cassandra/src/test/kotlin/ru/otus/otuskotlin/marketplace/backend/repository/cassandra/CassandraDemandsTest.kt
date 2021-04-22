@@ -94,11 +94,11 @@ internal class CassandraDemandsTest {
     fun demandReadTest() {
         runBlocking {
             val context = MpBeContext(
-                requestDemandId = MpDemandIdModel("test-id")
+                requestDemandId = MpDemandIdModel("test-id2")
             )
             val model = repo.read(context)
-            println(model)
             assertEquals(model, context.responseDemand)
+            assertEquals("test-demand1", model.title)
         }
     }
 
@@ -108,13 +108,81 @@ internal class CassandraDemandsTest {
             val context = MpBeContext(
                 demandFilter = MpDemandFilterModel(
                     text = "test",
-                    offset = 2,
-                    count = 1,
+                    offset = 1,
+                    count = 2,
                 )
             )
-            val model = repo.list(context)
-            println(model)
-            println(context.pageCount)
+            val response = repo.list(context)
+            assertEquals(response, context.responseDemands)
+            assertEquals(2, context.pageCount)
+            assertEquals(2, response.size)
+        }
+    }
+
+    @Test
+    fun demandCreateTest() {
+        runBlocking {
+            val demand = MpDemandModel(
+                title = "created-demand",
+                description = "about demand",
+            )
+            val context = MpBeContext(
+                requestDemand = demand
+            )
+            val result = repo.create(context)
+            assertEquals(result, context.responseDemand)
+            assertEquals("created-demand", result.title)
+            assertEquals("about demand", result.description)
+            val context2 = MpBeContext(requestDemandId = result.id)
+            repo.read(context2)
+            assertEquals("created-demand", context2.responseDemand.title)
+            assertEquals("about demand", context2.responseDemand.description)
+        }
+    }
+
+    @Test
+    fun demandUpdateTest() {
+        runBlocking {
+            val demand = MpDemandModel(
+                id = MpDemandIdModel("test-id1"),
+                title = "updated-demand",
+                description = "about demand",
+            )
+            val context = MpBeContext(
+                requestDemand = demand
+            )
+            val result = repo.update(context)
+            assertEquals(result, context.responseDemand)
+            assertEquals("updated-demand", result.title)
+            assertEquals("about demand", result.description)
+            val context2 = MpBeContext(requestDemandId = MpDemandIdModel("test-id1"))
+            repo.read(context2)
+            assertEquals("updated-demand", context2.responseDemand.title)
+            assertEquals("about demand", context2.responseDemand.description)
+        }
+    }
+
+    @Test
+    fun demandDeleteTest() {
+        runBlocking {
+            val context = MpBeContext(
+                requestDemandId = MpDemandIdModel("test-id2")
+            )
+            val model = repo.delete(context)
+            assertEquals(model, context.responseDemand)
+            assertEquals("test-demand1", model.title)
+        }
+    }
+
+    @Test
+    fun demandOffersTest() {
+        runBlocking{
+            val context = MpBeContext(
+                requestProposal = MpProposalModel(title = "test")
+            )
+            val result = repo.offers(context)
+            assertEquals(result, context.responseDemands)
+            assertEquals(3, result.size)
         }
     }
 }
