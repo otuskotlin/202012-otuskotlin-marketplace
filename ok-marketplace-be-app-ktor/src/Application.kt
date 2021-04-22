@@ -9,9 +9,12 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.CassandraConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
+import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands.DemandRepositoryCassandra
+import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.proposals.ProposalRepositoryCassandra
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.proposals.ProposalRepoInMemory
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
@@ -33,16 +36,47 @@ fun Application.module(
     testDemandRepo: IDemandRepository? = null,
     testProposalRepo: IProposalRepository? = null,
 ) {
+    val cassandraConfig by lazy {
+        CassandraConfig(environment)
+    }
 
+    val repoProdName by lazy {
+        environment.config.property("marketplace.repository.prod").getString().trim().toLowerCase()
+    }
+
+    val demandRepoProd = when(repoProdName) {
+        "cassandra" -> DemandRepositoryCassandra(
+            keyspaceName = cassandraConfig.keyspace,
+            hosts = cassandraConfig.hosts,
+            port = cassandraConfig.port,
+            user = cassandraConfig.user,
+            pass = cassandraConfig.pass,
+        )
+        else -> IDemandRepository.NONE
+    }
+    val proposalRepoProd = when(repoProdName) {
+        "cassandra" -> ProposalRepositoryCassandra(
+            keyspaceName = cassandraConfig.keyspace,
+            hosts = cassandraConfig.hosts,
+            port = cassandraConfig.port,
+            user = cassandraConfig.user,
+            pass = cassandraConfig.pass,
+        )
+        else -> IProposalRepository.NONE
+    }
     val demandRepoTest = testDemandRepo ?: DemandRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
     val proposalRepoTest = testProposalRepo ?: ProposalRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
     val demandCrud = DemandCrud(
         proposalRepoTest = proposalRepoTest,
         demandRepoTest = demandRepoTest,
+        proposalRepoProd = proposalRepoProd,
+        demandRepoProd = demandRepoProd,
     )
     val proposalCrud = ProposalCrud(
         proposalRepoTest = proposalRepoTest,
         demandRepoTest = demandRepoTest,
+        proposalRepoProd = proposalRepoProd,
+        demandRepoProd = demandRepoProd,
     )
     val demandService = DemandService(demandCrud)
     val proposalService = ProposalService(proposalCrud)
