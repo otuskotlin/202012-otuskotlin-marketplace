@@ -8,6 +8,8 @@ version = rootProject.version
 dependencies {
 
     val exposedVersion: String by project
+    val testContainersVersion: String by project
+    val postgresDriverVersion: String by project
 
     implementation(kotlin("stdlib"))
 
@@ -15,5 +17,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.postgresql:postgresql:$postgresDriverVersion")
 
+    testImplementation(kotlin("test-junit"))
+    testImplementation("org.testcontainers:postgresql:$testContainersVersion")
 }

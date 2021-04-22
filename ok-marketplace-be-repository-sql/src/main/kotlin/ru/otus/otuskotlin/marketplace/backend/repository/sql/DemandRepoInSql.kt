@@ -1,9 +1,12 @@
 package ru.otus.otuskotlin.marketplace.backend.repository.sql
 
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.DemandDto
+import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.DemandTagDto
+import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.DemandsTable
+import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.DemandsTagsTable
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoWrongIdException
@@ -16,45 +19,58 @@ class DemandRepoInSql(
     driver: String = "org.postgresql.Driver",
     user: String = "postgres",
     password: String = "postgres",
+    val printLogs: Boolean = false,
     initObjects: Collection<MpDemandModel> = emptyList()
 ) : IDemandRepository {
 
     private val db by lazy {
-        Database.connect(
+        val _db = Database.connect(
             url = url,
             driver = driver,
             user = user,
             password = password
         )
+        transaction { SchemaUtils.create (DemandsTable, DemandsTagsTable) }
+        _db
     }
 
     init {
         runBlocking {
             initObjects.forEach {
-                create(
-                    MpBeContext(
-                        requestDemand = it
-                    )
-                )
+                createWithId(MpBeContext(requestDemand = it), true)
             }
         }
     }
 
     override suspend fun list(context: MpBeContext): Collection<MpDemandModel> {
         val textFilter = context.demandFilter.text
-        if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
+//        if (textFilter.length < 3) throw MpRepoIndexException(textFilter)
         return transaction(db) {
-            DemandDto.all().map { it.toModel() }
+            if(printLogs) addLogger(StdOutSqlLogger)
+            context.responseDemands = DemandDto.all().map { it.toModel() }.toMutableList()
+            context.responseDemands
         }
     }
 
-    override suspend fun create(context: MpBeContext): MpDemandModel {
+    override suspend fun create(context: MpBeContext): MpDemandModel = createWithId(context)
+
+    private suspend fun createWithId(context: MpBeContext, setId: Boolean = false): MpDemandModel {
         val model = context.requestDemand
         return transaction(db) {
-            val id = DemandDto.new {
+            if(printLogs) addLogger(StdOutSqlLogger)
+            val demandNew = DemandDto.new(model.id.asUUID().takeIf { setId }) {
                 avatar = model.avatar
-            }.id
-            DemandDto[id].toModel()
+                title = model.title
+                description = model.description
+            }
+            val demandNewId = demandNew.id
+            model.tagIds.forEach {
+                DemandTagDto.new {
+                    this.tagId = it
+                    this.demand = demandNew
+                }
+            }
+            DemandDto[demandNewId].toModel()
         }
     }
 
@@ -62,20 +78,31 @@ class DemandRepoInSql(
         val id = context.requestDemandId
         if (id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(id.id)
         return transaction {
-            context.responseDemand = DemandDto[id.asUUID()]
-                .toModel()
-            context.requestDemand
+            if(printLogs) addLogger(StdOutSqlLogger)
+            context.responseDemand = DemandDto[id.asUUID()].toModel()
+            context.responseDemand
         }
     }
 
     override suspend fun update(context: MpBeContext): MpDemandModel {
         if (context.requestDemand.id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(context.requestDemand.id.id)
         val model = context.requestDemand
+        val demandId = model.id.asUUID()
         return transaction(db) {
-            context.responseDemand = DemandDto[model.id.asUUID()]
+            if(printLogs) addLogger(StdOutSqlLogger)
+            val demandToUpdate = DemandDto[demandId]
+            demandToUpdate
                 .apply { of(model) }
                 .toModel()
-            context.requestDemand
+            DemandsTagsTable.deleteWhere { DemandsTagsTable.demand eq demandId }
+            model.tagIds.forEach {
+                DemandTagDto.new {
+                    this.tagId = it
+                    this.demand = demandToUpdate
+                }
+            }
+            context.responseDemand = DemandDto[demandId].toModel()
+            context.responseDemand
         }
     }
 
@@ -83,9 +110,11 @@ class DemandRepoInSql(
         val id = context.requestDemandId
         if (id == MpDemandIdModel.NONE) throw MpRepoWrongIdException(id.id)
         return transaction(db) {
+            if(printLogs) addLogger(StdOutSqlLogger)
             val old = DemandDto[id.asUUID()]
             old.delete()
-            old.toModel()
+            context.responseDemand = old.toModel()
+            context.responseDemand
         }
     }
 

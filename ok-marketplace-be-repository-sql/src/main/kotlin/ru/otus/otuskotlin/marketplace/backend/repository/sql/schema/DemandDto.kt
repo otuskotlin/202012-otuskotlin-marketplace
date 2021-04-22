@@ -18,7 +18,7 @@ class DemandDto(id: EntityID<UUID>): UUIDEntity(id) {
         avatar = avatar?: "",
         title = title?: "",
         description = description?: "",
-        tagIds = tagIds.limit(10).map { it.tagId }.toMutableSet(),
+        tagIds = tagIds.limit(100).map { it.tagId }.toMutableSet(),
     )
 
     fun of(model: MpDemandModel) {
@@ -28,10 +28,5 @@ class DemandDto(id: EntityID<UUID>): UUIDEntity(id) {
     }
 
     companion object: UUIDEntityClass<DemandDto>(DemandsTable) {
-    }
-}
-
-fun x() {
-    DemandDto.new {
     }
 }

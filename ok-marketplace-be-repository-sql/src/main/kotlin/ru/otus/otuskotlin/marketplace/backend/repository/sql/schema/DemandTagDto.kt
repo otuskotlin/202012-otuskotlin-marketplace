@@ -6,7 +6,8 @@ import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
 class DemandTagDto(id: EntityID<UUID>): UUIDEntity(id) {
-    val tagId by DemandsTagsTable.tagId
+    var tagId by DemandsTagsTable.tagId
+    var demand by DemandDto referencedOn DemandsTagsTable.demand
 
     companion object: UUIDEntityClass<DemandTagDto>(DemandsTagsTable) {
     }

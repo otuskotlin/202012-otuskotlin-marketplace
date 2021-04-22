@@ -45,8 +45,8 @@ openApiGenerate {
     globalProperties.apply {
         put("models", "")
         put("modelDocs", "false")
-        put("invoker", "false")
-        put("apis", "false")
+//        put("invoker", "false")
+//        put("apis", "false")
     }
     inputSpec.set("${rootProject.projectDir}/specs/marketplace-all.yaml")
 }
