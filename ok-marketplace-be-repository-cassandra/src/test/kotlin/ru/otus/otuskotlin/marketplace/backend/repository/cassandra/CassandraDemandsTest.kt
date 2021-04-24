@@ -53,6 +53,7 @@ internal class CassandraDemandsTest {
                 keyspaceName = keyspace,
                 hosts = container.host,
                 port = container.getMappedPort(PORT),
+                testing = true,
                 initObjects = listOf(
                     MpDemandModel(
                         id = MpDemandIdModel("test-id1"),

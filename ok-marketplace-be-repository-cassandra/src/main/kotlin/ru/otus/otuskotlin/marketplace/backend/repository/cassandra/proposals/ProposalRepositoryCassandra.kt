@@ -29,6 +29,7 @@ class ProposalRepositoryCassandra(
     override val user: String = "cassandra",
     override val pass: String = "cassandra",
     override val replicationFactor: Int = 1,
+    override val testing: Boolean = false,
     private val timeout: Duration = Duration.ofSeconds(30),
     initObjects: Collection<MpProposalModel> = emptyList(),
 ): IProposalRepository, MpRepositoryCassandra(keyspaceName, hosts, port, user, pass, replicationFactor) {

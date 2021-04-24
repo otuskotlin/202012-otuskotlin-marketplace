@@ -21,6 +21,7 @@ abstract class MpRepositoryCassandra(
     protected open val user: String = "cassandra",
     protected open val pass: String = "cassandra",
     protected open val replicationFactor: Int = 1,
+    protected open val testing: Boolean = false,
 ): CoroutineScope, Closeable {
     private val job = Job()
 
@@ -33,12 +34,16 @@ abstract class MpRepositoryCassandra(
             .withLocalDatacenter("datacenter1")
             .withAuthCredentials(user, pass)
         builder.build().apply {
-            createKeyspace() // создание кейспейса
+            if (testing)
+                createKeyspace() // создание кейспейса
         }
         builder.withKeyspace(keyspaceName).build().apply {
-            createTypeProducer() // регистрация udt
-            createTables()
-            createIndexes()
+                if (testing) {
+//                    createKeyspace()
+                    createTypeProducer() // регистрация udt
+                    createTables()
+                    createIndexes()
+                }
         }
     }
 
