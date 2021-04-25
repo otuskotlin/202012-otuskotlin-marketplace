@@ -13,6 +13,8 @@ import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepos
 class DemandCrud(
     private val demandRepoTest: IDemandRepository = IDemandRepository.NONE,
     private val proposalRepoTest: IProposalRepository = IProposalRepository.NONE,
+    private val demandRepoProd: IDemandRepository = IDemandRepository.NONE,
+    private val proposalRepoProd: IProposalRepository = IProposalRepository.NONE,
 ) {
     suspend fun list(context: MpBeContext) {
         DemandFilter.execute(context.apply(this::configureContext))
@@ -41,5 +43,7 @@ class DemandCrud(
     private fun configureContext(context: MpBeContext) {
         context.demandRepoTest = demandRepoTest
         context.proposalRepoTest = proposalRepoTest
+        context.demandRepoProd = demandRepoProd
+        context.proposalRepoProd = proposalRepoProd
     }
 }
