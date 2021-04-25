@@ -53,6 +53,8 @@ Marketplace -- это площадка, на которой пользовате
 
 ### Общие модули для фронтенда и бэкенда
 
+Модули, которые используются как фронтендом, так и бэкендом
+
 1. [`ok-marketplace-mp-common`](ok-marketplace-mp-common) -- Базовые общие модули для фронтенда и бэкенда: валидация,
    тестирование
 
@@ -67,6 +69,8 @@ Marketplace -- это площадка, на которой пользовате
 
 ### Модули фронтенда
 
+Небольшоая демонстрация фронтенда на базе Kotlin React.
+
 1. [`ok-marketplace-fe-common`](ok-marketplace-fe-common) -- Общие классы для компонентов фронтенд-приложения. Прежде
    всего, внутренние модели
 
@@ -75,7 +79,10 @@ Marketplace -- это площадка, на которой пользовате
 
 1. [`ok-marketplace-fe-app-kreact`](ok-marketplace-fe-app-kreact) -- Фронтенд-приложение на Kotlin-React
 
-### Модули бэкенда
+### Общие модули бэкенда
+
+Инфраструктурные модули, несущие в себе либо общие объявления для других модулей, либо бизнес-логику, которая не зависит
+от конкретных реализаций хранилища, фреймворков и пр.
 
 1. [`ok-marketplace-be-common`](ok-marketplace-be-common) -- Общие классы для компонентов бэкенд-приложения. Прежде
    всего, внутренние модели и интерфейсы
@@ -88,6 +95,8 @@ Marketplace -- это площадка, на которой пользовате
 
 ### Модули приложений (фреймворки)
 
+Модули демонстрируют использование различных фреймворков для приложения Маркетплейса
+
 1. [`ok-marketplace-be-app-spring`](ok-marketplace-be-app-spring) -- Бэкенд-приложение на базе фреймвока Spring Boot с
    использованием библиотеки [Spring-Fu](https://github.com/spring-projects-experimental/spring-fu)
 
@@ -96,5 +105,16 @@ Marketplace -- это площадка, на которой пользовате
 1. [`ok-marketplace-be-app-kotless`](ok-marketplace-be-app-kotless) -- Бэкенд-приложение на базе фреймвока Kotlin
    Kotless с демонстрацией возможностей бессерверных вычислений в Amazon Web Services (AWS)
 
+### Модули баз данных
 
+Модули реализуют персистентное хранилище в бэкенд-проекте Маркетплейса
+
+1. [`ok-marketplace-be-repository-inmemory`](ok-marketplace-be-repository-inmemory) -- Репозитарий in-memory-базы
+   данных. Используется для тестирования бизнес-логики и интеграции.
+
+1. [`ok-marketplace-be-repository-sql`](ok-marketplace-be-repository-sql) -- Репозитарий базы данных с использованием
+   SQL. В проекте используется PostgreSQL.
+
+1. [`ok-marketplace-be-repository-cassandra`](ok-marketplace-be-repository-cassandra) -- Репозитарий базы данных
+   Cassandra.
 
