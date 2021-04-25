@@ -14,6 +14,8 @@ tags:
     description: Рабоа с Потребностями
   - name: proposal
 paths:
+  /demand:
+    $ref: './marketplace-demand-api.yaml#/paths/~1demand'
   /demand/list:
     $ref: './marketplace-demand-api.yaml#/paths/~1demand~1list'
   /demand/create:

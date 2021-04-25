@@ -15,6 +15,28 @@ tags:
   - name: proposal
     description: Работа с Предложениями
 paths:
+  /demand:
+    post:
+      tags:
+        - demand
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/MpRequestDemandList'
+      responses:
+        200:
+          description: normal flow
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/MpResponseDemandList'
+                  - $ref: '#/components/schemas/MpResponseDemandCreate'
+                  - $ref: '#/components/schemas/MpResponseDemandRead'
+                  - $ref: '#/components/schemas/MpResponseDemandUpdate'
+                  - $ref: '#/components/schemas/MpResponseDemandDelete'
   /demand/list:
     post:
       tags:
