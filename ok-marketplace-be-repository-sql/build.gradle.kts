@@ -10,6 +10,7 @@ dependencies {
     val exposedVersion: String by project
     val testContainersVersion: String by project
     val postgresDriverVersion: String by project
+    val mockkVersion: String by project
 
     implementation(kotlin("stdlib"))
 
@@ -21,4 +22,5 @@ dependencies {
 
     testImplementation(kotlin("test-junit"))
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
