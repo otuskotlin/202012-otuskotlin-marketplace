@@ -11,48 +11,44 @@ repositories {
 }
 
 dependencies {
-
-    val ktorVersion: String by project
-    val logbackVersion: String by project
-
+    val jacksonVersion: String by project
     implementation(kotlin("stdlib"))
-//    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-//    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
-//    implementation("com.squareup.moshi:moshi-adapters:1.9.2")
-//    implementation("com.squareup.okhttp3:okhttp:4.2.2")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-//    implementation("io.ktor:ktor-metrics:$ktorVersion")
-    implementation("io.ktor:ktor-locations:$ktorVersion")
-    implementation("io.ktor:ktor-gson:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-
+    testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-//    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.0")
-
 }
 
 openApiGenerate {
     val basePackage = "${project.group}.transport.openapi.demand"
     packageName.set(basePackage)
-    generatorName.set("kotlin-server")
-    configOptions.apply {
-//        put("library", "jvm-okhttp4")
-//        put("requestDateConverter", "toString")
-    }
+    generatorName.set("kotlin")
+    apiPackage.set("$basePackage.api")
+    invokerPackage.set("$basePackage.invoker")
+    modelPackage.set("$basePackage.models")
     globalProperties.apply {
         put("models", "")
         put("modelDocs", "false")
         put("invoker", "false")
         put("apis", "false")
     }
+    configOptions.set(mapOf(
+        "dateLibrary" to "string",
+        "enumPropertyNaming" to "UPPERCASE",
+        "library" to "multiplatform",
+        "serializationLibrary" to "jackson",
+        "collectionType" to "list"
+    ))
     inputSpec.set("${rootProject.projectDir}/specs/marketplace-all.yaml")
 }
 
-sourceSets.main {
-    java.srcDirs("$buildDir/generate-resources/main/src/main/kotlin")
+sourceSets {
+    main {
+        java.srcDirs("$buildDir/generate-resources/main/src/main/kotlin")
+    }
+    test {
+        java.srcDirs("$buildDir/generate-resources/main/src/main/kotlin")
+    }
 }
 
 tasks {
