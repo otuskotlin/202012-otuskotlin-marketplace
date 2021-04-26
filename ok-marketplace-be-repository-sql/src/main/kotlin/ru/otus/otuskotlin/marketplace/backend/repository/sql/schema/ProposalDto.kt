@@ -8,7 +8,7 @@ import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalIdModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
 import java.util.*
 
-class ProposalDto(id: EntityID<UUID>): AdDto<MpProposalModel>(id, ProposalsTable) {
+class ProposalDto(id: EntityID<UUID>): AdDto<MpProposalModel, ProposalDto>(id, ProposalsTable, ProposalsTagsTable, Companion) {
 
     fun toModel() = MpProposalModel(
         id = MpProposalIdModel(id.value.toString()),

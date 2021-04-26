@@ -4,13 +4,13 @@ import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
-class DemandTagDto(id: EntityID<UUID>) : AdTagDto<DemandDto>(id, DemandsTagsTable, DemandDto) {
-    var demand
+class ProposalTagDto(id: EntityID<UUID>) : AdTagDto<ProposalDto>(id, ProposalsTagsTable, ProposalDto) {
+    var proposal
         get() = ad
         set(value) {
             ad = value
         }
 
-    companion object : UUIDEntityClass<DemandTagDto>(DemandsTagsTable) {
+    companion object : UUIDEntityClass<ProposalTagDto>(ProposalsTagsTable) {
     }
 }

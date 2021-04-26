@@ -12,13 +12,15 @@ import ru.otus.otuskotlin.marketplace.common.backend.models.*
 import ru.otus.otuskotlin.marketplace.common.backend.repositories.IAdRepository
 import java.sql.Connection
 
-abstract class AdRepoSql<T : IMpItemModel, D : AdDto<T>>(
+abstract class AdRepoSql<T : IMpItemModel, D : AdDto<T,D>, DT: AdTagDto<D>>(
     url: String,
     driver: String,
     user: String,
     password: String,
     val dtoCompanion: UUIDEntityClass<D>,
     val adsTable: AdsTable,
+    val adsTagsTable: AdsTagsTable,
+    val adTagCompanion: UUIDEntityClass<DT>,
     open val printLogs: Boolean = false,
     initObjects: Collection<T> = emptyList(),
     val toModel: D.() -> T
@@ -36,6 +38,7 @@ abstract class AdRepoSql<T : IMpItemModel, D : AdDto<T>>(
                 DemandsTable,
                 ProposalsTable,
                 DemandsTagsTable,
+                ProposalsTagsTable,
             )
         }
         _db
@@ -81,12 +84,12 @@ abstract class AdRepoSql<T : IMpItemModel, D : AdDto<T>>(
                 description = model.description
             }
             val adNewId = adNew.id
-//            model.tagIds.forEach {
-//                DemandTagDto.new {
-//                    this.tagId = it
-//                    this.demand = adNew
-//                }
-//            }
+            model.tagIds.forEach {
+                adTagCompanion.new {
+                    this.tagId = it
+                    this.ad = adNew
+                }
+            }
             dtoCompanion[adNewId].toModel()
         }
     }
@@ -107,13 +110,13 @@ abstract class AdRepoSql<T : IMpItemModel, D : AdDto<T>>(
             adToUpdate
                 .apply { of(model) }
                 .toModel()
-//            DemandsTagsTable.deleteWhere { DemandsTagsTable.demand eq adId }
-//            model.tagIds.forEach {
-//                DemandTagDto.new {
-//                    this.tagId = it
-//                    this.demand = adToUpdate
-//                }
-//            }
+            adsTagsTable.deleteWhere { adsTagsTable.ad eq adId }
+            model.tagIds.forEach {
+                adTagCompanion.new {
+                    this.tagId = it
+                    this.ad = adToUpdate
+                }
+            }
             dtoCompanion[adId].toModel()
         }
     }
@@ -123,7 +126,7 @@ abstract class AdRepoSql<T : IMpItemModel, D : AdDto<T>>(
         return transaction(db) {
             if (printLogs) addLogger(StdOutSqlLogger)
             val old = dtoCompanion[id.asUUID()]
-//            adsTable.deleteWhere { DemandsTagsTable.demand eq old.id }
+            adsTagsTable.deleteWhere { adsTagsTable.ad eq old.id }
             old.delete()
             old.toModel()
         }

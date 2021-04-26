@@ -1,7 +1,9 @@
 package ru.otus.otuskotlin.marketplace.backend.repository.sql
 
 import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.ProposalDto
+import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.ProposalTagDto
 import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.ProposalsTable
+import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.ProposalsTagsTable
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
@@ -13,13 +15,15 @@ class ProposalRepoSql(
     password: String = "postgres",
     printLogs: Boolean = false,
     initObjects: Collection<MpProposalModel> = emptyList()
-) : AdRepoSql<MpProposalModel, ProposalDto>(
+) : AdRepoSql<MpProposalModel, ProposalDto, ProposalTagDto>(
     url = url,
     driver = driver,
     user = user,
     password = password,
     dtoCompanion = ProposalDto.Companion,
     adsTable = ProposalsTable,
+    adsTagsTable = ProposalsTagsTable,
+    adTagCompanion = ProposalTagDto,
     printLogs = printLogs,
     toModel = { toModel() },
     initObjects = initObjects

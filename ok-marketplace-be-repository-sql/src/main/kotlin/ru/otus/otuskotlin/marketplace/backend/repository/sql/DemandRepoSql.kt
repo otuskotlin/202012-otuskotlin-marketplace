@@ -1,7 +1,6 @@
 package ru.otus.otuskotlin.marketplace.backend.repository.sql
 
-import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.DemandDto
-import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.DemandsTable
+import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.*
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
@@ -13,13 +12,15 @@ class DemandRepoSql(
     password: String = "postgres",
     printLogs: Boolean = false,
     initObjects: Collection<MpDemandModel> = emptyList()
-) : AdRepoSql<MpDemandModel, DemandDto>(
+) : AdRepoSql<MpDemandModel, DemandDto, DemandTagDto>(
     url = url,
     driver = driver,
     user = user,
     password = password,
     dtoCompanion = DemandDto.Companion,
     adsTable = DemandsTable,
+    adsTagsTable = DemandsTagsTable,
+    adTagCompanion = DemandTagDto,
     printLogs = printLogs,
     toModel = { toModel() },
     initObjects = initObjects
