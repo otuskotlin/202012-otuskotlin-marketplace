@@ -23,6 +23,8 @@ dependencies {
     implementation(project(":ok-marketplace-mp-transport-mp"))
     implementation(project(":ok-marketplace-be-mappers-mp"))
     implementation(project(":ok-marketplace-be-business-logic"))
+    implementation(project(":ok-marketplace-be-repository-inmemory"))
+    implementation(project(":ok-marketplace-be-repository-dynamodb"))
 
     implementation(kotlin("stdlib"))
     implementation("io.kotless", "kotless-lang", kotlessVersion)
@@ -32,7 +34,7 @@ dependencies {
 
 kotless {
     config {
-        bucket = "com.crowdproj.marketplace"
+        bucket = "otuskotlin-202012-marketplace"
         dsl {
             type = io.kotless.DSLType.Kotless
         }
@@ -46,9 +48,13 @@ kotless {
         }
     }
     webapp {
-        route53 = io.kotless.plugin.gradle.dsl.Webapp.Route53("marketplace", "crowdproj.com","crowdproj.com")
+        route53 = io.kotless.plugin.gradle.dsl.Webapp.Route53(
+            "marketplace",
+            "marketplace-202012.kotlin-is.fun",
+            "marketplace-202012.kotlin-is.fun"
+        )
         lambda {
-            memoryMb = 256
+            memoryMb = 512
             runtime = Runtime.Java11
         }
     }
@@ -60,6 +66,10 @@ kotless {
         }
         terraform {
             allowDestroy = true
+            files {
+                add(file("src/main/tf/dynamodb.tf"))
+                add(file("src/main/tf/dynamodb-access.tf"))
+            }
         }
     }
 }
