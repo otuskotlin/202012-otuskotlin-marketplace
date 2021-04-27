@@ -44,8 +44,9 @@ include("ok-marketplace-be-business-logic")
 // Репозитарии
 include("ok-marketplace-be-repository-cassandra")
 include("ok-marketplace-be-repository-inmemory")
+include("ok-marketplace-be-repository-dynamodb")
 
 // Приложения
 //include("ok-marketplace-be-app-spring")
 include("ok-marketplace-be-app-ktor")
-//include("ok-marketplace-be-app-kotless")
+include("ok-marketplace-be-app-kotless")
