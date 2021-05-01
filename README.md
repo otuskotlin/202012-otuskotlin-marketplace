@@ -118,3 +118,9 @@ Marketplace -- это площадка, на которой пользовате
 1. [`ok-marketplace-be-repository-cassandra`](ok-marketplace-be-repository-cassandra) -- Репозитарий базы данных
    Cassandra.
 
+1. [`ok-marketplace-be-repository-dynamodb`](ok-marketplace-be-repository-dynamodb) -- Репозитарий базы данных AWS
+   DynamoDB.
+
+1. [`ok-marketplace-be-repository-tests`](ok-marketplace-be-repository-tests) -- Модуль для общих автоматических тестов
+   различных версий репозиатрия
+
