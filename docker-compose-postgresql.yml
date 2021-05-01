@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+
+  postgres:
+    image: postgres
+    expose:
+      - "5432"
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=marketplace
+
+volumes:
+    pgdata:
