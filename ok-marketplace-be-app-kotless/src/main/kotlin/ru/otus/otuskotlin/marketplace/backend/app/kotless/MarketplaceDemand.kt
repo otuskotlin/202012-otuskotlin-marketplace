@@ -1,12 +1,34 @@
 package ru.otus.otuskotlin.marketplace.backend.app.kotless
 
 import io.kotless.dsl.lang.http.Post
-import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.*
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.respondDemandCreate
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.respondDemandDelete
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.respondDemandList
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.respondDemandOffers
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.respondDemandRead
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.respondDemandUpdate
+import ru.otus.otuskotlin.marketplace.backend.mappers.kmp.setQuery
+import ru.otus.otuskotlin.marketplace.backend.repository.dynamodb.DemandRepositoryDynamoDB
+import ru.otus.otuskotlin.marketplace.backend.repository.dynamodb.ProposalRepositoryDynamoDB
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
+import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.proposals.ProposalRepoInMemory
 import ru.otus.otuskotlin.marketplace.business.logic.backend.DemandCrud
-import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
-import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandCreate
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandDelete
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandList
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandOffers
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandRead
+import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.MpRequestDemandUpdate
+import kotlin.time.ExperimentalTime
+import kotlin.time.hours
 
-private val crud = DemandCrud()
+@OptIn(ExperimentalTime::class)
+private val crud = DemandCrud(
+    demandRepoProd = DemandRepositoryDynamoDB(),
+    demandRepoTest = DemandRepoInMemory(ttl = 2.hours),
+    proposalRepoProd = ProposalRepositoryDynamoDB(),
+    proposalRepoTest = ProposalRepoInMemory(ttl = 2.hours)
+)
 
 @Post("/demand/list")
 fun demandList(): String? = handle { query: MpRequestDemandList? ->

@@ -1,0 +1,56 @@
+POST https://marketplace.marketplace-202012.kotlin-is.fun/proposal/create
+Content-Type: application/json
+
+{
+  "createData": {
+    "title": "My awesome something",
+    "description": "Nuff said",
+    "tagIds": ["my", "awesome", "something", "proposal"]
+  }
+}
+
+###
+
+POST https://marketplace.marketplace-202012.kotlin-is.fun/demand/create
+Content-Type: application/json
+
+{
+  "createData": {
+    "title": "My awesome something",
+    "description": "Nuff said",
+    "tagIds": ["my", "awesome", "something", "demand"]
+  }
+}
+
+###
+
+POST https://marketplace.marketplace-202012.kotlin-is.fun/demand/read
+Content-Type: application/json
+
+{
+  "demandId": "dea2b207-5997-4812-8ee9-857736516ee4"
+}
+
+###
+
+POST https://marketplace.marketplace-202012.kotlin-is.fun/demand/offers
+Content-Type: application/json
+
+{
+  "demandId": "dea2b207-5997-4812-8ee9-857736516ee4"
+}
+
+###
+
+POST https://marketplace.marketplace-202012.kotlin-is.fun/demand/list
+Content-Type: application/json
+
+{
+  "filterData": {
+    "text": "awesome",
+    "offset": 0,
+    "count": 10
+  }
+}
+
+###
