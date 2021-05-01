@@ -7,6 +7,7 @@ import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.ProposalsTag
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpProposalModel
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepository
 
 class ProposalRepoSql(
     url: String = "jdbc:postgresql://localhost:5432/marketplace",
@@ -15,7 +16,7 @@ class ProposalRepoSql(
     password: String = "postgres",
     printLogs: Boolean = false,
     initObjects: Collection<MpProposalModel> = emptyList()
-) : AdRepoSql<MpProposalModel, ProposalDto, ProposalTagDto>(
+) : IProposalRepository, AdRepoSql<MpProposalModel, ProposalDto, ProposalTagDto>(
     url = url,
     driver = driver,
     user = user,

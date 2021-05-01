@@ -4,6 +4,7 @@ import ru.otus.otuskotlin.marketplace.backend.repository.sql.schema.*
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.exceptions.MpRepoIndexException
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
+import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandRepository
 
 class DemandRepoSql(
     url: String = "jdbc:postgresql://localhost:5432/marketplace",
@@ -24,7 +25,7 @@ class DemandRepoSql(
     printLogs = printLogs,
     toModel = { toModel() },
     initObjects = initObjects
-) {
+), IDemandRepository {
 
     override suspend fun list(context: MpBeContext): Collection<MpDemandModel> {
         val filter = context.demandFilter

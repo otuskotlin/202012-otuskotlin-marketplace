@@ -20,7 +20,15 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.postgresql:postgresql:$postgresDriverVersion")
 
-    testImplementation(kotlin("test-junit"))
+    testImplementation(kotlin("test-junit5"))
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation(project(":ok-marketplace-be-repository-tests"))
+
+}
+
+tasks {
+    withType<Test> {
+        useJUnitPlatform()
+    }
 }
