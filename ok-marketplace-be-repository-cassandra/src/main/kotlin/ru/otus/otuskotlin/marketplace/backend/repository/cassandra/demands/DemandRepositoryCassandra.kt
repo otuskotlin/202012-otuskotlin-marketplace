@@ -30,7 +30,7 @@ class DemandRepositoryCassandra(
     override val testing: Boolean = false,
     private val timeout: Duration = Duration.ofSeconds(30),
     initObjects: Collection<MpDemandModel> = emptyList(),
-): IDemandRepository, MpRepositoryCassandra(keyspaceName, hosts, port, user, pass, replicationFactor) {
+) : IDemandRepository, MpRepositoryCassandra(keyspaceName, hosts, port, user, pass, replicationFactor) {
 
     private val mapper by lazy {
         DemandCassandraMapperBuilder(session).build()
@@ -86,7 +86,7 @@ class DemandRepositoryCassandra(
         return withTimeout(timeout.toMillis()) {
             daoById.createAsync(dtoById).await()
             daoByTitle.createAsync(dtoByTitle).await()
-            val model = daoById.readAsync(id).await()?.toModel()?: throw MpRepoNotFoundException(id)
+            val model = daoById.readAsync(id).await()?.toModel() ?: throw MpRepoNotFoundException(id)
             context.responseDemand = model
             model
         }
@@ -130,23 +130,23 @@ class DemandRepositoryCassandra(
         val filter = context.demandFilter
         var lastIndex = filter.offset + filter.count
         if (filter.text.length < 3) throw MpRepoIndexException(filter.text)
-         return withTimeout(timeout.toMillis()) {
+        return withTimeout(timeout.toMillis()) {
             val records = daoByTitle.filterByTitleAsync("%${filter.text}%").await().toList()
                 .sortedByDescending { it.timestamp }
-             val recordsCount = records.count()
-             if (recordsCount < lastIndex) lastIndex = recordsCount
-             val list = flow {
-                 for (pos in filter.offset until lastIndex) {
-                         records[pos].id?.let { id ->
-                             emit(daoById.readAsync(id).await()?.toModel() ?: throw MpRepoNotFoundException(id))
-                         }
-                 }
-             }.toList()
-             context.responseDemands = list.toMutableList()
-             context.pageCount = list.count().takeIf { it != 0 }
-                 ?.let { (recordsCount.toDouble() / it + 0.5).toInt() }
-                 ?: Int.MIN_VALUE
-             list
+            val recordsCount = records.count()
+            if (recordsCount < lastIndex) lastIndex = recordsCount
+            val list = flow {
+                for (pos in filter.offset until lastIndex) {
+                    records[pos].id?.let { id ->
+                        emit(daoById.readAsync(id).await()?.toModel() ?: throw MpRepoNotFoundException(id))
+                    }
+                }
+            }.toList()
+            context.responseDemands = list.toMutableList()
+            context.pageCount = list.count().takeIf { it != 0 }
+                ?.let { (recordsCount.toDouble() / it + 0.5).toInt() }
+                ?: Int.MIN_VALUE
+            list
         }
 
     }
