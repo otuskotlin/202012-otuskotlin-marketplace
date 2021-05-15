@@ -21,4 +21,7 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
     implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
     api("ch.qos.logback:logback-classic:$logbackVersion")
+
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit"))
 }
