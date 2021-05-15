@@ -71,4 +71,28 @@ data class MpLogContext(
                     )
                     throw e
                 }
+
+    /**
+     * Функция обертка для выполнения прикладного кода с логированием ошибки
+     */
+    fun <T> doWithErrorLogging(
+            logId: String = "",
+            marker: Marker = DefaultMarker("DEV"),
+            needThrow: Boolean = true,
+            block: () -> T,
+        ): T? = try {
+                    val result = block()
+                    result
+                } catch (e: Throwable) {
+                    log(
+                        msg = "$loggerId Failing $logId",
+                        level = Level.ERROR,
+                        marker = DefaultMarker("ERROR", listOf(marker)),
+                        e = e,
+                    )
+                    if (needThrow)
+                        throw e
+                    else
+                        null
+                }
 }
