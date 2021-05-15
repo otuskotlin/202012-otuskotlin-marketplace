@@ -8,6 +8,8 @@ import ru.otus.otuskotlin.marketplace.common.backend.repositories.IUserSession
 import java.time.Instant
 
 data class MpBeContext(
+    var principal: MpPrincipalModel = MpPrincipalModel.NONE,
+
     var timeStarted: Instant = Instant.MIN,
     var responseId: String = "",
     var onRequest: String = "",

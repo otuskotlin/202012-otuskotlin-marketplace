@@ -1,6 +1,11 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
+import com.auth0.jwk.JwkProviderBuilder
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -9,8 +14,10 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.AuthConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.CassandraConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.exceptions.WrongConfigException
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands.DemandRepositoryCassandra
@@ -36,15 +43,18 @@ fun Application.module(
     testDemandRepo: IDemandRepository? = null,
     testProposalRepo: IProposalRepository? = null,
 ) {
-    val cassandraConfig by lazy {
-        CassandraConfig(environment)
-    }
+    val cassandraConfig by lazy { CassandraConfig(environment) }
+    val authConfig by lazy { AuthConfig(environment) }
 
     val repoProdName by lazy {
-        environment.config.property("marketplace.repository.prod").getString().trim().toLowerCase()
+        environment.config.propertyOrNull("marketplace.repository.prod")
+            ?.getString()
+            ?.trim()
+            ?.toLowerCase()
+            ?: "inmemory"
     }
 
-    val demandRepoProd = when(repoProdName) {
+    val demandRepoProd = when (repoProdName) {
         "cassandra" -> DemandRepositoryCassandra(
             keyspaceName = cassandraConfig.keyspace,
             hosts = cassandraConfig.hosts,
@@ -52,9 +62,10 @@ fun Application.module(
             user = cassandraConfig.user,
             pass = cassandraConfig.pass,
         )
-        else -> IDemandRepository.NONE
+        "inmemory" -> DemandRepoInMemory()
+        else -> throw WrongConfigException("Demand repository is not set")
     }
-    val proposalRepoProd = when(repoProdName) {
+    val proposalRepoProd = when (repoProdName) {
         "cassandra" -> ProposalRepositoryCassandra(
             keyspaceName = cassandraConfig.keyspace,
             hosts = cassandraConfig.hosts,
@@ -62,7 +73,8 @@ fun Application.module(
             user = cassandraConfig.user,
             pass = cassandraConfig.pass,
         )
-        else -> IProposalRepository.NONE
+        "inmemory" -> ProposalRepoInMemory()
+        else -> throw WrongConfigException("Proposal repository is not set")
     }
     val demandRepoTest = testDemandRepo ?: DemandRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
     val proposalRepoTest = testProposalRepo ?: ProposalRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
@@ -97,6 +109,29 @@ fun Application.module(
             contentType = ContentType.Application.Json,
             json = jsonConfig,
         )
+    }
+
+    install(Authentication) {
+        jwt("auth-jwt") {
+            realm = authConfig.realm
+            verifier(
+                JWT
+                    .require(Algorithm.HMAC256(authConfig.secret))
+                    .withAudience(authConfig.audience)
+                    .withIssuer(authConfig.domain)
+                    .build()
+            )
+            validate { credential ->
+                println("AUDIENCE: ${credential.payload.audience} ${authConfig.audience} ${credential.payload.audience.contains(authConfig.audience)}")
+                println("ISSUER: ${credential.payload.issuer}")
+                println("SUBJECT: ${credential.payload.subject}")
+                if (credential.payload.audience.contains(authConfig.audience)) {
+                    JWTPrincipal(credential.payload)
+                } else {
+                    null
+                }
+            }
+        }
     }
 
     // Подключаем Websocket

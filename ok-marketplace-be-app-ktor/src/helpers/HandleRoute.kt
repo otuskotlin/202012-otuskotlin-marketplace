@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers
 
 import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -11,6 +13,7 @@ import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.toModel
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpPrincipalModel
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.IMpRequest
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.common.MpMessage
 import java.time.Instant
@@ -27,6 +30,7 @@ suspend inline fun <reified T : IMpRequest, reified U : MpMessage> PipelineConte
     try {
         val query = call.receive<MpMessage>() as T
         ctx.status = MpBeContextStatus.RUNNING
+        ctx.principal = call.principal<JWTPrincipal>()?.toModel() ?: MpPrincipalModel.NONE
         val response = ctx.block(query)
         val respJson = jsonConfig.encodeToString(MpMessage::class.serializer(), response)
         call.respondText(respJson, contentType = ContentType.parse("application/json"))

@@ -12,10 +12,12 @@ import ru.otus.otuskotlin.marketplace.common.backend.repositories.IProposalRepos
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 class ProposalRepoInMemory @OptIn(ExperimentalTime::class) constructor(
-    ttl: Duration,
+    ttl: Duration = 30.toDuration(DurationUnit.SECONDS),
     initObjects: Collection<MpProposalModel> = emptyList()
 ): IProposalRepository {
     @OptIn(ExperimentalTime::class)

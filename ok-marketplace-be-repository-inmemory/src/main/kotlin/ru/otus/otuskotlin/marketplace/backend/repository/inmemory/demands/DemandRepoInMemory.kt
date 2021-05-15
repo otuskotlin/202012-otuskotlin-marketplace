@@ -13,10 +13,12 @@ import ru.otus.otuskotlin.marketplace.common.backend.repositories.IDemandReposit
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 class DemandRepoInMemory @OptIn(ExperimentalTime::class) constructor(
-    ttl: Duration,
+    ttl: Duration = 30.toDuration(DurationUnit.SECONDS),
     initObjects: Collection<MpDemandModel> = emptyList()
 ): IDemandRepository {
     @OptIn(ExperimentalTime::class)
