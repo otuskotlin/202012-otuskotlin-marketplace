@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":ok-marketplace-be-business-logic"))
     implementation(project(":ok-marketplace-be-repository-inmemory"))
     implementation(project(":ok-marketplace-be-repository-cassandra"))
+    implementation(project(":ok-marketplace-be-logging"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")

@@ -41,7 +41,8 @@ fun Application.module(
     }
 
     val repoProdName by lazy {
-        environment.config.property("marketplace.repository.prod").getString().trim().toLowerCase()
+        environment.config.propertyOrNull("marketplace.repository.prod")
+            ?.getString()?.trim()?.toLowerCase()?: "cassandra"
     }
 
     val demandRepoProd = when(repoProdName) {

@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.logging
 
 import ch.qos.logback.classic.Logger
+import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.Marker
 import org.slf4j.event.Level
 import org.slf4j.event.LoggingEvent
@@ -21,11 +22,12 @@ data class MpLogContext(
     /**
      * Основная функция для логирования
      */
-    fun log(
+    suspend fun log(
         msg: String = "",
         level: Level = Level.TRACE,
         marker: Marker = DefaultMarker("DEV"),
         e: Throwable? = null,
+        data: Any? = null,
         vararg objs: Any?
     ) = logger.log(
         object : LoggingEvent {
@@ -34,7 +36,13 @@ data class MpLogContext(
             override fun getThreadName(): String = Thread.currentThread().name
             override fun getMessage(): String = msg
             override fun getMarker(): Marker = marker
-            override fun getArgumentArray(): Array<out Any> = objs.filterNotNull().toTypedArray()
+            override fun getArgumentArray(): Array<out Any> = data
+                ?.let {
+                    arrayOf(*objs, StructuredArguments.keyValue("data", it))
+                        .filterNotNull()
+                        .toTypedArray()
+                }
+                ?: objs.filterNotNull().toTypedArray()
 
             override fun getLevel(): Level = level
             override fun getLoggerName(): String = logger.name
@@ -44,11 +52,11 @@ data class MpLogContext(
     /**
      * Функция обертка для выполнения прикладного кода с логированием перед выполнением и после
      */
-    fun <T> doWithLogging(
-            logId: String = "",
-            marker: Marker = DefaultMarker("DEV"),
-            level: Level = Level.INFO,
-            block: () -> T,
+    suspend fun <T> doWithLogging(
+        logId: String = "",
+        marker: Marker = DefaultMarker("DEV"),
+        level: Level = Level.INFO,
+        block: suspend () -> T,
         ): T = try {
                     log(
                         msg = "$loggerId Entering $logId",
@@ -75,7 +83,7 @@ data class MpLogContext(
     /**
      * Функция обертка для выполнения прикладного кода с логированием ошибки
      */
-    fun <T> doWithErrorLogging(
+    suspend fun <T> doWithErrorLogging(
             logId: String = "",
             marker: Marker = DefaultMarker("DEV"),
             needThrow: Boolean = true,

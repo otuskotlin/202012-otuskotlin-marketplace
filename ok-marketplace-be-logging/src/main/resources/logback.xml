@@ -10,7 +10,7 @@
     <property name="SERVICE_NAME" value="${SERVICE_NAME:-ok_marketplace}"/>
 
     <!-- Уровень логирования: для пакетов -->
-    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-error}"/>
+    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-debug}"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

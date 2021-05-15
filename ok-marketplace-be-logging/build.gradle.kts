@@ -2,6 +2,7 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 val logbackEncoderVersion: String by project
 val logbackKafkaVersion: String by project
+val coroutinesVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -16,6 +17,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
     // logback
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
