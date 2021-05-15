@@ -1,0 +1,66 @@
+<configuration>
+
+    <!-- Для ELK-Stack: Хост кафки для логов -->
+    <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>
+
+    <!-- Для ELK-Stack: Топик для отправки логов в кафку -->
+    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-ok-marketplace-logs}"/>
+
+    <!-- Для файлов с логами: Имя программы для логов -->
+    <property name="SERVICE_NAME" value="${SERVICE_NAME:-ok_marketplace}"/>
+
+    <!-- Уровень логирования: для пакетов -->
+    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-error}"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level[%marker] %logger{36} - %msg%n%mdc%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="asyncMyLogKafka"
+              class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
+        <if condition='isDefined("LOGS_KAFKA_HOSTS")'>
+            <then>
+                <appender name="kafkaVerboseAppender"
+                          class="com.github.danielwegener.logback.kafka.KafkaAppender">
+                    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                        <providers>
+                            <timestamp/>
+                            <version/>
+                            <pattern>
+                                <pattern>
+                                    {
+                                    "component": "${SERVICE_NAME}",
+                                    "container-id": "${HOSTNAME}"
+                                    }
+                                </pattern>
+                            </pattern>
+                            <message/>
+                            <loggerName/>
+                            <threadName/>
+                            <logLevel/>
+                            <logstashMarkers/>
+                            <callerData/>
+                            <stackTrace/>
+                            <context/>
+                            <mdc/>
+                            <logstashMarkers/>
+                            <arguments/>
+                            <tags/>
+                        </providers>
+                    </encoder>
+                    <topic>${LOGS_KAFKA_TOPIC}</topic>
+                    <deliveryStrategy
+                        class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
+                    <producerConfig>bootstrap.servers=${LOGS_KAFKA_HOSTS}</producerConfig>
+                </appender>
+            </then>
+        </if>
+    </appender>
+
+    <root level="${LOG_COMMON_LEVEL}">
+        <appender-ref ref="asyncMyLogKafka"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
