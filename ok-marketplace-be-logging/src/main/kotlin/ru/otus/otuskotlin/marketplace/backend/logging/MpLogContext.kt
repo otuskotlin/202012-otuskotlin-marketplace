@@ -39,13 +39,13 @@ data class MpLogContext(
             override fun getArgumentArray(): Array<out Any> = data
                 ?.let { d ->
                     arrayOf(
-                        *objs.map { StructuredArguments.keyValue(it?.first, it?.second) }.toTypedArray(),
+                        objs.map { StructuredArguments.keyValue(it?.first, it?.second) },
                         StructuredArguments.keyValue("data", d)
                     )
                         .filterNotNull()
                         .toTypedArray()
                 }
-                ?: objs.filterNotNull().toTypedArray()
+                ?: objs.map { StructuredArguments.keyValue(it?.first, it?.second) }.filterNotNull().toTypedArray()
 
             override fun getLevel(): Level = level
             override fun getLoggerName(): String = logger.name
