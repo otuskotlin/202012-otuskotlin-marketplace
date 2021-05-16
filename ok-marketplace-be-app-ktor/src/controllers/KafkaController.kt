@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
 import ru.datana.smart.common.ktor.kafka.KtorKafkaConsumer
 import ru.datana.smart.common.ktor.kafka.kafka
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService

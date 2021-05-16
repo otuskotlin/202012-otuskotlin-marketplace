@@ -7,8 +7,8 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.serializer
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.WsUserSession
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.WsUserSession
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService

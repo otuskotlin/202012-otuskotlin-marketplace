@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers
+package ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers
 
 import io.ktor.application.*
 import io.ktor.http.*
@@ -10,7 +10,6 @@ import kotlinx.serialization.serializer
 import org.slf4j.event.Level
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.toModel
-import ru.otus.otuskotlin.marketplace.backend.logging.DefaultMarker
 import ru.otus.otuskotlin.marketplace.backend.logging.MpLogContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
@@ -30,7 +29,7 @@ suspend inline fun <reified T : IMpRequest, reified U : MpMessage> PipelineConte
         responseId = UUID.randomUUID().toString()
     )
     try {
-        logger.doWithLogging(logId){
+        logger.doWithLoggingSusp(logId){
             val query = call.receive<MpMessage>() as T
             logger.log(
                 msg = "Request for $logId, query = {}",

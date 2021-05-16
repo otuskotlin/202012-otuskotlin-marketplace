@@ -8,7 +8,7 @@ import pl.jutupe.ktor_rabbitmq.RabbitMQ
 import pl.jutupe.ktor_rabbitmq.consume
 import pl.jutupe.ktor_rabbitmq.publish
 import pl.jutupe.ktor_rabbitmq.rabbitConsumer
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.service
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.jsonConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
