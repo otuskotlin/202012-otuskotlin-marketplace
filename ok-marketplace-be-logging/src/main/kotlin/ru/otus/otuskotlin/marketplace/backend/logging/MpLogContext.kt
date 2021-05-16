@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.marketplace.backend.logging
 
 import ch.qos.logback.classic.Logger
+import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.Marker
 import org.slf4j.event.Level
 import org.slf4j.event.LoggingEvent
@@ -21,12 +22,13 @@ data class MpLogContext(
     /**
      * Основная функция для логирования
      */
-    fun log(
+    suspend fun log(
         msg: String = "",
         level: Level = Level.TRACE,
         marker: Marker = DefaultMarker("DEV"),
         e: Throwable? = null,
-        vararg objs: Any?
+        data: Any? = null,
+        vararg objs: Pair<String, Any>?
     ) = logger.log(
         object : LoggingEvent {
             override fun getThrowable() = e
@@ -34,7 +36,16 @@ data class MpLogContext(
             override fun getThreadName(): String = Thread.currentThread().name
             override fun getMessage(): String = msg
             override fun getMarker(): Marker = marker
-            override fun getArgumentArray(): Array<out Any> = objs.filterNotNull().toTypedArray()
+            override fun getArgumentArray(): Array<out Any> = data
+                ?.let { d ->
+                    arrayOf(
+                        *objs.map { StructuredArguments.keyValue(it?.first, it?.second) }.toTypedArray(),
+                        StructuredArguments.keyValue("data", d)
+                    )
+                        .filterNotNull()
+                        .toTypedArray()
+                }
+                ?: objs.filterNotNull().toTypedArray()
 
             override fun getLevel(): Level = level
             override fun getLoggerName(): String = logger.name
@@ -44,11 +55,11 @@ data class MpLogContext(
     /**
      * Функция обертка для выполнения прикладного кода с логированием перед выполнением и после
      */
-    fun <T> doWithLogging(
+    suspend fun <T> doWithLoggingSusp(
             logId: String = "",
             marker: Marker = DefaultMarker("DEV"),
             level: Level = Level.INFO,
-            block: () -> T,
+            block: suspend () -> T,
         ): T = try {
                     log(
                         msg = "$loggerId Entering $logId",
@@ -75,11 +86,11 @@ data class MpLogContext(
     /**
      * Функция обертка для выполнения прикладного кода с логированием ошибки
      */
-    fun <T> doWithErrorLogging(
+    suspend fun <T> doWithErrorLoggingSusp(
             logId: String = "",
             marker: Marker = DefaultMarker("DEV"),
             needThrow: Boolean = true,
-            block: () -> T,
+            block: suspend () -> T,
         ): T? = try {
                     val result = block()
                     result
