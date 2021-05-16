@@ -28,7 +28,7 @@ data class MpLogContext(
         marker: Marker = DefaultMarker("DEV"),
         e: Throwable? = null,
         data: Any? = null,
-        vararg objs: Any?
+        vararg objs: Pair<String, Any>?
     ) = logger.log(
         object : LoggingEvent {
             override fun getThrowable() = e
@@ -37,12 +37,15 @@ data class MpLogContext(
             override fun getMessage(): String = msg
             override fun getMarker(): Marker = marker
             override fun getArgumentArray(): Array<out Any> = data
-                ?.let {
-                    arrayOf(*objs, StructuredArguments.keyValue("data", it))
+                ?.let { d ->
+                    arrayOf(
+                        objs.map { StructuredArguments.keyValue(it?.first, it?.second) },
+                        StructuredArguments.keyValue("data", d)
+                    )
                         .filterNotNull()
                         .toTypedArray()
                 }
-                ?: objs.filterNotNull().toTypedArray()
+                ?: objs.map { StructuredArguments.keyValue(it?.first, it?.second) }.filterNotNull().toTypedArray()
 
             override fun getLevel(): Level = level
             override fun getLoggerName(): String = logger.name
@@ -52,11 +55,11 @@ data class MpLogContext(
     /**
      * Функция обертка для выполнения прикладного кода с логированием перед выполнением и после
      */
-    suspend fun <T> doWithLogging(
-        logId: String = "",
-        marker: Marker = DefaultMarker("DEV"),
-        level: Level = Level.INFO,
-        block: suspend () -> T,
+    suspend fun <T> doWithLoggingSusp(
+            logId: String = "",
+            marker: Marker = DefaultMarker("DEV"),
+            level: Level = Level.INFO,
+            block: suspend () -> T,
         ): T = try {
                     log(
                         msg = "$loggerId Entering $logId",
@@ -83,11 +86,11 @@ data class MpLogContext(
     /**
      * Функция обертка для выполнения прикладного кода с логированием ошибки
      */
-    suspend fun <T> doWithErrorLogging(
+    suspend fun <T> doWithErrorLoggingSusp(
             logId: String = "",
             marker: Marker = DefaultMarker("DEV"),
             needThrow: Boolean = true,
-            block: () -> T,
+            block: suspend () -> T,
         ): T? = try {
                     val result = block()
                     result
