@@ -3,6 +3,7 @@ val logbackVersion: String by project
 val logbackEncoderVersion: String by project
 val logbackKafkaVersion: String by project
 val coroutinesVersion: String by project
+val janinoVersion: String by project
 
 plugins {
     kotlin("jvm")
@@ -23,6 +24,7 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
     implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
     api("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("org.codehaus.janino:janino:$janinoVersion")
 
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))

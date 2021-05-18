@@ -9,8 +9,11 @@
     <!-- Для файлов с логами: Имя программы для логов -->
     <property name="SERVICE_NAME" value="${SERVICE_NAME:-ok_marketplace}"/>
 
-    <!-- Уровень логирования: для пакетов -->
-    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-debug}"/>
+    <!-- Уровень логирования: для пакетов "ru.otus..." -->
+    <property name="LOG_OTUS_LEVEL" value="${LOG_OTUS_LEVEL:-info}"/>
+
+    <!-- Уровень логирования: для остальных пакетов -->
+    <property name="LOG_COMMON_LEVEL" value="${LOG_COMMON_LEVEL:-error}"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -20,7 +23,8 @@
 
     <appender name="asyncMyLogKafka"
               class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
-        <if condition='isDefined("LOGS_KAFKA_HOSTS")'>
+        <if condition='!property("LOGS_KAFKA_HOSTS").equals("LOGS_KAFKA_HOSTS_IS_UNDEFINED")
+                        &amp;&amp; !property("LOGS_KAFKA_HOSTS").isEmpty()'>
             <then>
                 <appender name="kafkaVerboseAppender"
                           class="com.github.danielwegener.logback.kafka.KafkaAppender">
@@ -58,6 +62,11 @@
             </then>
         </if>
     </appender>
+
+    <logger name="ru.otus" level="${LOG_OTUS_LEVEL}">
+        <appender-ref ref="asyncMyLogKafka"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
     <root level="${LOG_COMMON_LEVEL}">
         <appender-ref ref="asyncMyLogKafka"/>
