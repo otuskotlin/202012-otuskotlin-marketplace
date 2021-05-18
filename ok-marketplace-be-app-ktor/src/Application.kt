@@ -13,6 +13,7 @@ import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.CassandraConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
+import ru.otus.otuskotlin.marketplace.backend.logging.mpLogger
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands.DemandRepositoryCassandra
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.proposals.ProposalRepositoryCassandra
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
@@ -36,6 +37,8 @@ fun Application.module(
     testDemandRepo: IDemandRepository? = null,
     testProposalRepo: IProposalRepository? = null,
 ) {
+    val logget = mpLogger(::main::class.java)
+
     val cassandraConfig by lazy {
         CassandraConfig(environment)
     }

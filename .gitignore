@@ -2,3 +2,4 @@
 **/build/
 /.gradle
 /ok-marketplace-be-repository-cassandra/build/
+/.run/

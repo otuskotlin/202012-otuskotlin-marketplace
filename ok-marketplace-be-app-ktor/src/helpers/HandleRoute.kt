@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers
+package ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers
 
 import io.ktor.application.*
 import io.ktor.http.*

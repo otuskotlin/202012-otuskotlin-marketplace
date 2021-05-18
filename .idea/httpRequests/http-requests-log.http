@@ -1,3 +1,38 @@
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+###
+
+POST http://{{url}}/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+###
+
+POST http://{{url}}/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+###
+
+POST http://{{url}}/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+###
+
 POST http://localhost:8080/demand/offers
 Content-Type: application/json
 

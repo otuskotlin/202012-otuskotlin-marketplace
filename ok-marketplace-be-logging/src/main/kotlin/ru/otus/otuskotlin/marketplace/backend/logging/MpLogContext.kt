@@ -39,7 +39,7 @@ data class MpLogContext(
             override fun getArgumentArray(): Array<out Any> = data
                 ?.let { d ->
                     arrayOf(
-                        objs.map { StructuredArguments.keyValue(it?.first, it?.second) },
+                        *objs.map { StructuredArguments.keyValue(it?.first, it?.second) }.toTypedArray(),
                         StructuredArguments.keyValue("data", d)
                     )
                         .filterNotNull()

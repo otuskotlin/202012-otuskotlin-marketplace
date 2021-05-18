@@ -18,7 +18,7 @@ group = rootProject.group
 version = rootProject.version
 
 application {
-    mainClassName = "io.ktor.server.netty.EngineMain"
+    mainClass.set("ru.otus.otuskotlin.marketplace.backend.app.ktor.ApplicationKt")
 }
 
 docker {

@@ -1,6 +1,6 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers
 
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.handleRoute
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.helpers.handleRoute
 import io.ktor.routing.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.backend.logging.mpLogger
