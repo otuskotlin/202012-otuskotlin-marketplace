@@ -22,7 +22,7 @@ data class MpLogContext(
     /**
      * Основная функция для логирования
      */
-    suspend fun log(
+    fun log(
         msg: String = "",
         level: Level = Level.TRACE,
         marker: Marker = DefaultMarker("DEV"),
