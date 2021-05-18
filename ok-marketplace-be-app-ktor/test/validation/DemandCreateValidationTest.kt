@@ -16,7 +16,7 @@ class DemandCreateValidationTest {
 
     @Test
     fun `non-empty create must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
                 val body = MpRequestDemandCreate(
                     requestId = "321",
@@ -72,7 +72,7 @@ class DemandCreateValidationTest {
 
     @Test
     fun `empty title or description must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
                 val body = MpRequestDemandCreate(
                     requestId = "321",
@@ -115,7 +115,7 @@ class DemandCreateValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandCreate) {
                 val bodyString = "{"
                 setBody(bodyString)

@@ -27,7 +27,7 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
 
     // Валидация учетных данных
     operation {
-        startIf { status == MpBeContextStatus.RUNNING }
+        startIf { status == MpBeContextStatus.RUNNING && useAuth }
         execute {
             if (principal == MpPrincipalModel.NONE) {
                 errors.add(

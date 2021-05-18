@@ -8,9 +8,10 @@ data class AuthConfig(
     val audience: String,
     val domain: String,
     val realm: String,
+    val authOff: Boolean = false,
 ) {
     @OptIn(KtorExperimentalAPI::class)
-    constructor(environment: ApplicationEnvironment) : this(
+    constructor(environment: ApplicationEnvironment, authOff: Boolean = false) : this(
         secret = environment.config.propertyOrNull("$PATH.secret")
             ?.getString()
             ?: "marketplace-secret",
@@ -23,6 +24,7 @@ data class AuthConfig(
         realm = environment.config.propertyOrNull("$PATH.realm")
             ?.getString()
             ?: "Marketplace",
+        authOff = authOff
     )
 
     companion object {

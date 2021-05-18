@@ -9,6 +9,7 @@ import java.time.Instant
 
 data class MpBeContext(
     var principal: MpPrincipalModel = MpPrincipalModel.NONE,
+    var useAuth: Boolean = true,
 
     var timeStarted: Instant = Instant.MIN,
     var responseId: String = "",

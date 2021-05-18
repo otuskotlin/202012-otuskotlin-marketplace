@@ -35,14 +35,14 @@ internal class KafkaTest {
                 delay(60L)
                 val jsonIn = jsonConfig.encodeToString(
                     MpMessage.serializer(),
-                    MpRequestDemandList()
+                    MpRequestDemandList(debug = MpRequestDemandList.Debug(stubCase = MpRequestDemandList.StubCase.SUCCESS))
                 )
                 consumer.send(TOPIC_IN, "xx1", jsonIn)
 
                 delay(100L)
 
                 val responseObjs = producer.getSent()
-                assertTrue("Must contain two messages") {
+                assertTrue("Must return SUCCESS") {
                     val feedBack = responseObjs.first().value()
                     feedBack.contains(Regex("\"status\":\\s*\"SUCCESS\""))
                 }

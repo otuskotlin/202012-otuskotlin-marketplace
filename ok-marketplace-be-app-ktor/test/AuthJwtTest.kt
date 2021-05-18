@@ -51,7 +51,7 @@ class AuthJwtTest {
 //                put("marketplace.kafka.topicOut", TOPIC_OT)
 //                put("marketplace.kafka.brokers", BROKERS)
             }
-            module(testing = true)
+            module()
         }) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandRead) {
                 val body = MpRequestDemandRead(

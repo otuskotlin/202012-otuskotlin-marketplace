@@ -1,23 +1,18 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
-import com.auth0.jwk.JwkProviderBuilder
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.auth.jwt.*
-import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.serialization.*
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.AuthConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.CassandraConfig
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.featureAuth
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.featureRest
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
-import ru.otus.otuskotlin.marketplace.backend.app.ktor.ru.otus.otuskotlin.marketplace.backend.app.ktor.exceptions.WrongConfigException
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.exceptions.WrongConfigException
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands.DemandRepositoryCassandra
@@ -37,14 +32,17 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @OptIn(ExperimentalTime::class)
 @Suppress("unused") // Referenced in application.conf
 fun Application.module(
-    testing: Boolean = false,
+    authOff: Boolean = false,
     kafkaTestConsumer: Consumer<String, String>? = null,
     kafkaTestProducer: Producer<String, String>? = null,
     testDemandRepo: IDemandRepository? = null,
     testProposalRepo: IProposalRepository? = null,
 ) {
+    val authConfig by lazy { AuthConfig(environment, authOff) }
     val cassandraConfig by lazy { CassandraConfig(environment) }
-    val authConfig by lazy { AuthConfig(environment) }
+
+    featureAuth(authConfig)
+    featureRest()
 
     val repoProdName by lazy {
         environment.config.propertyOrNull("marketplace.repository.prod")
@@ -93,47 +91,6 @@ fun Application.module(
     val demandService = DemandService(demandCrud)
     val proposalService = ProposalService(proposalCrud)
 
-    install(CORS) {
-        method(HttpMethod.Options)
-        method(HttpMethod.Put)
-        method(HttpMethod.Delete)
-        method(HttpMethod.Patch)
-        header(HttpHeaders.Authorization)
-        header("MyCustomHeader")
-        allowCredentials = true
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
-    }
-
-    install(ContentNegotiation) {
-        json(
-            contentType = ContentType.Application.Json,
-            json = jsonConfig,
-        )
-    }
-
-    install(Authentication) {
-        jwt("auth-jwt") {
-            realm = authConfig.realm
-            verifier(
-                JWT
-                    .require(Algorithm.HMAC256(authConfig.secret))
-                    .withAudience(authConfig.audience)
-                    .withIssuer(authConfig.domain)
-                    .build()
-            )
-            validate { credential ->
-                println("AUDIENCE: ${credential.payload.audience} ${authConfig.audience} ${credential.payload.audience.contains(authConfig.audience)}")
-                println("ISSUER: ${credential.payload.issuer}")
-                println("SUBJECT: ${credential.payload.subject}")
-                if (credential.payload.audience.contains(authConfig.audience)) {
-                    JWTPrincipal(credential.payload)
-                } else {
-                    null
-                }
-            }
-        }
-    }
-
     // Подключаем Websocket
     websocketEndpoints(
         demandService = demandService,
@@ -173,8 +130,8 @@ fun Application.module(
             resources("static")
         }
 
-        demandRouting(demandService)
-        proposalRouting(proposalService)
+        demandRouting(demandService, authOff)
+        proposalRouting(proposalService, authOff)
 
     }
 }

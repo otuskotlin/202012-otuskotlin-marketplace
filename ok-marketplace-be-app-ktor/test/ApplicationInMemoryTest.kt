@@ -88,7 +88,7 @@ internal class ApplicationInMemoryTest {
 
     @Test
     fun testRead() {
-        withTestApplication({module(testDemandRepo = demandRepo)}) {
+        withTestApplication({module(testDemandRepo = demandRepo, authOff=true)}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandRead) {
                 val body = MpRequestDemandRead(
                     requestId = "12345",
