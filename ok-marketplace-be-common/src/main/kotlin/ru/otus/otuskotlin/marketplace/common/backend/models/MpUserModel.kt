@@ -6,5 +6,7 @@ data class MpUserModel(
     val mname: String = "",
     val lname: String = "",
 ) {
-
+    companion object {
+        val NONE = MpUserModel()
+    }
 }

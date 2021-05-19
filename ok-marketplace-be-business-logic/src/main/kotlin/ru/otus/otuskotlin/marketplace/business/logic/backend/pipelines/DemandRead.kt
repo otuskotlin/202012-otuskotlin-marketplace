@@ -9,6 +9,7 @@ import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpPermission
 import ru.otus.otuskotlin.marketplace.common.backend.models.IMpError
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpPrincipalModel
 import ru.otus.otuskotlin.marketplace.common.kmp.validation.validators.ValidatorStringNonEmpty
@@ -95,8 +96,9 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
         }
     }
 
+    // применение разрешений
     operation {
-        startIf { status == MpBeContextStatus.RUNNING }
+        startIf { status == MpBeContextStatus.RUNNING && useAuth }
         execute {
             if (! permissions.contains(MpPermission.READ)) {
                 errors.add(
@@ -108,6 +110,7 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
                     )
                 )
                 status = MpBeContextStatus.ERROR
+                responseDemand = MpDemandModel.NONE
             }
         }
     }
