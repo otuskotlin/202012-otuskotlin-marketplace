@@ -5,6 +5,7 @@ interface IMpItemModel{
     val avatar: String
     val title: String
     val description: String
+    val owner: MpUserModel
     val tagIds: MutableSet<String>
     val techDets: MutableSet<MpTechDetModel>
 }

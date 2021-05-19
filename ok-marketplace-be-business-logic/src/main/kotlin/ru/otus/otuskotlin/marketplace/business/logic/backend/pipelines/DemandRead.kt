@@ -7,6 +7,7 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.QuerySet
 import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.stubs.DemandReadStub
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpPermission
 import ru.otus.otuskotlin.marketplace.common.backend.models.IMpError
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpPrincipalModel
@@ -74,6 +75,39 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
                     code = "demand-repo-read-error",
                     message = t.message?:"")
                 )
+            }
+        }
+    }
+
+
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING && responseDemand.owner.id == principal.id }
+        execute {
+            permissions += MpPermission.READ
+            permissions += MpPermission.UPDATE
+            permissions += MpPermission.DELETE
+        }
+    }
+    operation {
+//        startIf { status == MpBeContextStatus.RUNNING && responseDemand.visibility == PUBLIC }
+        execute {
+            permissions += MpPermission.READ
+        }
+    }
+
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING }
+        execute {
+            if (! permissions.contains(MpPermission.READ)) {
+                errors.add(
+                    MpError(
+                        code = "unauthorized",
+                        group = IMpError.Group.AUTH,
+                        level = IMpError.Level.ERROR,
+                        message = "Operation is not permitted"
+                    )
+                )
+                status = MpBeContextStatus.ERROR
             }
         }
     }
