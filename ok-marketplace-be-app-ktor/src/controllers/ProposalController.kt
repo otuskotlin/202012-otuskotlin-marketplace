@@ -7,7 +7,7 @@ import ru.otus.otuskotlin.marketplace.backend.logging.mpLogger
 import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.proposals.*
 
-private val logger = mpLogger("proposalRouting")
+private val logger = mpLogger(Routing::proposalRouting::class.java)
 
 fun Routing.proposalRouting(service: ProposalService) {
     post(RestEndpoints.proposalList) {

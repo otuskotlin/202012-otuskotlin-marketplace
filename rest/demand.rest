@@ -13,7 +13,7 @@ Content-Type: application/json
 POST http://{{url}}/demand/read
 Content-Type: application/json
 
-{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
 
 ###
 POST http://{{url}}/demand/update

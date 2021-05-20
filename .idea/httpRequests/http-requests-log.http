@@ -1,6 +1,159 @@
 POST http://localhost:8080/demand/read
 Content-Type: application/json
 
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T231055.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T225519.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T225426.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T222656.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T221459.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T220544.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-19T215922.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T230732.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T225535.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T225145.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T225129.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T215917.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T215403.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"type": "MpRequestDemandRead", "debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T215038.200.json
+
+###
+
+POST http://localhost:8080/proposal/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-7263"}
+
+<> 2021-05-18T214633.200.json
+
+###
+
+POST http://localhost:8080/proposal/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"proposalId": "p-7263"}
+
+<> 2021-05-18T214145.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
+{"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
+
+<> 2021-05-18T213334.200.json
+
+###
+
+POST http://localhost:8080/demand/read
+Content-Type: application/json
+
 {"debug": {"stubCase": "SUCCESS"},"demandId": "d-7263"}
 
 ###

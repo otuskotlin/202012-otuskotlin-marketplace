@@ -13,7 +13,6 @@ import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.CassandraConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
-import ru.otus.otuskotlin.marketplace.backend.logging.mpLogger
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands.DemandRepositoryCassandra
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.proposals.ProposalRepositoryCassandra
 import ru.otus.otuskotlin.marketplace.backend.repository.inmemory.demands.DemandRepoInMemory
@@ -37,7 +36,24 @@ fun Application.module(
     testDemandRepo: IDemandRepository? = null,
     testProposalRepo: IProposalRepository? = null,
 ) {
-    val logget = mpLogger(::main::class.java)
+
+    install(CORS) {
+        method(HttpMethod.Options)
+        method(HttpMethod.Put)
+        method(HttpMethod.Delete)
+        method(HttpMethod.Patch)
+        header(HttpHeaders.Authorization)
+        header("MyCustomHeader")
+        allowCredentials = true
+        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
+    }
+
+    install(ContentNegotiation) {
+        json(
+            contentType = ContentType.Application.Json,
+            json = jsonConfig,
+        )
+    }
 
     val cassandraConfig by lazy {
         CassandraConfig(environment)
@@ -85,24 +101,6 @@ fun Application.module(
     val demandService = DemandService(demandCrud)
     val proposalService = ProposalService(proposalCrud)
 
-    install(CORS) {
-        method(HttpMethod.Options)
-        method(HttpMethod.Put)
-        method(HttpMethod.Delete)
-        method(HttpMethod.Patch)
-        header(HttpHeaders.Authorization)
-        header("MyCustomHeader")
-        allowCredentials = true
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
-    }
-
-    install(ContentNegotiation) {
-        json(
-            contentType = ContentType.Application.Json,
-            json = jsonConfig,
-        )
-    }
-
     // Подключаем Websocket
     websocketEndpoints(
         demandService = demandService,
@@ -110,26 +108,26 @@ fun Application.module(
     )
 
     // Подключаем RabbitMQ
-    val rabbitMqEndpoint = environment.config.propertyOrNull("marketplace.rabbitmq.endpoint")?.getString()
-    if (rabbitMqEndpoint != null) {
-        rabbitMqEndpoints(
-            rabbitMqEndpoint = rabbitMqEndpoint,
-            demandService = demandService,
-            proposalService = proposalService
-        )
-    }
+//    val rabbitMqEndpoint = environment.config.propertyOrNull("marketplace.rabbitmq.endpoint")?.getString()
+//    if (rabbitMqEndpoint != null) {
+//        rabbitMqEndpoints(
+//            rabbitMqEndpoint = rabbitMqEndpoint,
+//            demandService = demandService,
+//            proposalService = proposalService
+//        )
+//    }
 
     // Подключаем Kafka
-    val brokers = environment.config.propertyOrNull("marketplace.kafka.brokers")?.getString()
-    if (brokers != null) {
-        kafkaEndpoints(
-            brokers = brokers,
-            kafkaConsumer = kafkaTestConsumer,
-            kafkaProducer = kafkaTestProducer,
-            demandService = demandService,
-            proposalService = proposalService
-        )
-    }
+//    val brokers = environment.config.propertyOrNull("marketplace.kafka.brokers")?.getString()
+//    if (brokers != null) {
+//        kafkaEndpoints(
+//            brokers = brokers,
+//            kafkaConsumer = kafkaTestConsumer,
+//            kafkaProducer = kafkaTestProducer,
+//            demandService = demandService,
+//            proposalService = proposalService
+//        )
+//    }
 
 
     routing {

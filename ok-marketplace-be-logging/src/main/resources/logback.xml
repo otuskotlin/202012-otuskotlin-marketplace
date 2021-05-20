@@ -1,10 +1,10 @@
-<configuration>
+<configuration debug="true">
 
     <!-- Для ELK-Stack: Хост кафки для логов -->
     <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>
 
     <!-- Для ELK-Stack: Топик для отправки логов в кафку -->
-    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-ok-marketplace-logs}"/>
+    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-ok-mp-logs}"/>
 
     <!-- Для файлов с логами: Имя программы для логов -->
     <property name="SERVICE_NAME" value="${SERVICE_NAME:-ok_marketplace}"/>

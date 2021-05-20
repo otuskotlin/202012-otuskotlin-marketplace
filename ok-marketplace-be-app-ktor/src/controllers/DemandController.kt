@@ -7,7 +7,7 @@ import ru.otus.otuskotlin.marketplace.backend.logging.mpLogger
 import ru.otus.otuskotlin.marketplace.common.kmp.RestEndpoints
 import ru.otus.otuskotlin.marketplace.transport.kmp.models.demands.*
 
-private val logger = mpLogger("demandRouting")
+private val logger = mpLogger(Routing::demandRouting::class.java)
 
 fun Routing.demandRouting(service: DemandService) {
     post(RestEndpoints.demandList) {
