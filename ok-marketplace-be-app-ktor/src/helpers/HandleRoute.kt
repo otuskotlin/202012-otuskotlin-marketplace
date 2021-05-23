@@ -31,20 +31,10 @@ suspend inline fun <reified T : IMpRequest, reified U : MpMessage> PipelineConte
     try {
         logger.doWithLoggingSusp(logId){
             val query = call.receive<MpMessage>() as T
-            logger.log(
-                msg = "Request for $logId, query = {}",
-                level = Level.INFO,
-                data = query,
-            )
             ctx.status = MpBeContextStatus.RUNNING
             val response = ctx.block(query)
             val respJson = jsonConfig.encodeToString(MpMessage::class.serializer(), response)
             call.respondText(respJson, contentType = ContentType.parse("application/json"))
-            logger.log(
-                msg = "Respond for $logId, response = {}",
-                level = Level.INFO,
-                data = response,
-            )
         }
     } catch (e: Throwable) {
         ctx.status = MpBeContextStatus.FAILING
