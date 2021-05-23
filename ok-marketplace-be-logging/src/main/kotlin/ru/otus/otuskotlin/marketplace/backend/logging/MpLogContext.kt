@@ -61,16 +61,19 @@ data class MpLogContext(
             level: Level = Level.INFO,
             block: suspend () -> T,
         ): T = try {
+                    val timeStart = Instant.now()
                     log(
                         msg = "$loggerId Entering $logId",
                         level = level,
                         marker = DefaultMarker("START", listOf(marker))
                     )
                     val result = block()
+                    val diffTime = Instant.now().toEpochMilli() - timeStart.toEpochMilli()
                     log(
                         msg = "$loggerId Finishing $logId",
                         level = level,
-                        marker = DefaultMarker("END", listOf(marker))
+                        marker = DefaultMarker("END", listOf(marker)),
+                        objs = arrayOf(Pair("metricHandleTime", diffTime))
                     )
                     result
                 } catch (e: Throwable) {

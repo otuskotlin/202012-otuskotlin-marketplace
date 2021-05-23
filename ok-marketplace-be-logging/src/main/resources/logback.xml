@@ -4,7 +4,7 @@
     <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>
 
     <!-- Для ELK-Stack: Топик для отправки логов в кафку -->
-    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-ok-mp-logs}"/>
+    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-otuskotlin-marketplace-logs}"/>
 
     <!-- Для файлов с логами: Имя программы для логов -->
     <property name="SERVICE_NAME" value="${SERVICE_NAME:-ok_marketplace}"/>
@@ -63,7 +63,7 @@
         </if>
     </appender>
 
-    <logger name="ru.otus" level="${LOG_OTUS_LEVEL}">
+    <logger name="ru.otus" level="${LOG_OTUS_LEVEL}" additivity="false">
         <appender-ref ref="asyncMyLogKafka"/>
         <appender-ref ref="STDOUT"/>
     </logger>

@@ -6,6 +6,6 @@ for i in elasticsearch kibana logstash
 do
     docker build -t $i:$VERS $i
 done
-docker build -t wurstmeister/zookeeper:3.4.6 zookeeper
-docker build -t wurstmeister/kafka:2.12-2.5.0 kafka
-docker build -t obsidiandynamics/kafdrop:latest kafdrop
+docker pull wurstmeister/zookeeper:3.4.6
+docker pull wurstmeister/kafka:2.12-2.5.0
+docker pull obsidiandynamics/kafdrop:latest
