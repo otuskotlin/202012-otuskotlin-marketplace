@@ -1,16 +1,18 @@
 package ru.otus.otuskotlin.marketplace.backend.app.ktor
 
 import io.ktor.application.*
-import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.serialization.*
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.producer.Producer
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.AuthConfig
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.CassandraConfig
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.featureAuth
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.configs.featureRest
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.controllers.*
+import ru.otus.otuskotlin.marketplace.backend.app.ktor.exceptions.WrongConfigException
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.DemandService
 import ru.otus.otuskotlin.marketplace.backend.app.ktor.services.ProposalService
 import ru.otus.otuskotlin.marketplace.backend.repository.cassandra.demands.DemandRepositoryCassandra
@@ -30,21 +32,27 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @OptIn(ExperimentalTime::class)
 @Suppress("unused") // Referenced in application.conf
 fun Application.module(
-    testing: Boolean = false,
+    authOff: Boolean = false,
     kafkaTestConsumer: Consumer<String, String>? = null,
     kafkaTestProducer: Producer<String, String>? = null,
     testDemandRepo: IDemandRepository? = null,
     testProposalRepo: IProposalRepository? = null,
 ) {
-    val cassandraConfig by lazy {
-        CassandraConfig(environment)
-    }
+    val authConfig by lazy { AuthConfig(environment, authOff) }
+    val cassandraConfig by lazy { CassandraConfig(environment) }
+
+    featureAuth(authConfig)
+    featureRest()
 
     val repoProdName by lazy {
-        environment.config.property("marketplace.repository.prod").getString().trim().toLowerCase()
+        environment.config.propertyOrNull("marketplace.repository.prod")
+            ?.getString()
+            ?.trim()
+            ?.toLowerCase()
+            ?: "inmemory"
     }
 
-    val demandRepoProd = when(repoProdName) {
+    val demandRepoProd = when (repoProdName) {
         "cassandra" -> DemandRepositoryCassandra(
             keyspaceName = cassandraConfig.keyspace,
             hosts = cassandraConfig.hosts,
@@ -52,9 +60,10 @@ fun Application.module(
             user = cassandraConfig.user,
             pass = cassandraConfig.pass,
         )
-        else -> IDemandRepository.NONE
+        "inmemory" -> DemandRepoInMemory()
+        else -> throw WrongConfigException("Demand repository is not set")
     }
-    val proposalRepoProd = when(repoProdName) {
+    val proposalRepoProd = when (repoProdName) {
         "cassandra" -> ProposalRepositoryCassandra(
             keyspaceName = cassandraConfig.keyspace,
             hosts = cassandraConfig.hosts,
@@ -62,7 +71,8 @@ fun Application.module(
             user = cassandraConfig.user,
             pass = cassandraConfig.pass,
         )
-        else -> IProposalRepository.NONE
+        "inmemory" -> ProposalRepoInMemory()
+        else -> throw WrongConfigException("Proposal repository is not set")
     }
     val demandRepoTest = testDemandRepo ?: DemandRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
     val proposalRepoTest = testProposalRepo ?: ProposalRepoInMemory(ttl = 2.toDuration(DurationUnit.HOURS))
@@ -80,24 +90,6 @@ fun Application.module(
     )
     val demandService = DemandService(demandCrud)
     val proposalService = ProposalService(proposalCrud)
-
-    install(CORS) {
-        method(HttpMethod.Options)
-        method(HttpMethod.Put)
-        method(HttpMethod.Delete)
-        method(HttpMethod.Patch)
-        header(HttpHeaders.Authorization)
-        header("MyCustomHeader")
-        allowCredentials = true
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
-    }
-
-    install(ContentNegotiation) {
-        json(
-            contentType = ContentType.Application.Json,
-            json = jsonConfig,
-        )
-    }
 
     // Подключаем Websocket
     websocketEndpoints(
@@ -138,8 +130,8 @@ fun Application.module(
             resources("static")
         }
 
-        demandRouting(demandService)
-        proposalRouting(proposalService)
+        demandRouting(demandService, authOff)
+        proposalRouting(proposalService, authOff)
 
     }
 }

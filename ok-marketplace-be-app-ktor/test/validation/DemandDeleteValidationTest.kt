@@ -16,7 +16,7 @@ class DemandDeleteValidationTest {
 
     @Test
     fun `non-empty delete must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
                 val body = MpRequestDemandDelete(
                     requestId = "321",
@@ -50,7 +50,7 @@ class DemandDeleteValidationTest {
 
     @Test
     fun `empty demand id must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
                 val body = MpRequestDemandDelete(
                     requestId = "321",
@@ -84,7 +84,7 @@ class DemandDeleteValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandDelete) {
                 val bodyString = "{"
                 setBody(bodyString)

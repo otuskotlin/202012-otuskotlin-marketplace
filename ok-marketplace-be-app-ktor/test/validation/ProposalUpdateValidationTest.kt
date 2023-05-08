@@ -16,7 +16,7 @@ class ProposalUpdateValidationTest {
 
     @Test
     fun `non-empty update must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalUpdate) {
                 val body = MpRequestProposalUpdate(
                     requestId = "321",
@@ -74,7 +74,7 @@ class ProposalUpdateValidationTest {
 
     @Test
     fun `empty id or title or description must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalUpdate) {
                 val body = MpRequestProposalUpdate(
                     requestId = "321",
@@ -117,7 +117,7 @@ class ProposalUpdateValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalUpdate) {
                 val bodyString = "{"
                 setBody(bodyString)

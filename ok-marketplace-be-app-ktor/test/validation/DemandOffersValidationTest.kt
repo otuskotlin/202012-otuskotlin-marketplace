@@ -18,7 +18,7 @@ class DemandOffersValidationTest {
 
     @Test
     fun `non-empty demandId must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandOffers) {
                 val body = MpRequestDemandOffers(
                     requestId = "321",
@@ -49,7 +49,7 @@ class DemandOffersValidationTest {
 
     @Test
     fun `empty demandId must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandOffers) {
                 val body = MpRequestDemandOffers(
                     requestId = "321",
@@ -78,7 +78,7 @@ class DemandOffersValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandOffers) {
                 val bodyString = "{"
                 setBody(bodyString)

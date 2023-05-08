@@ -18,7 +18,7 @@ class ProposalReadValidationTest {
 
     @Test
     fun `non-empty proposalId must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalRead) {
                 val body = MpRequestProposalRead(
                     requestId = "321",
@@ -49,7 +49,7 @@ class ProposalReadValidationTest {
 
     @Test
     fun `empty proposalId must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalRead) {
                 val body = MpRequestProposalRead(
                     requestId = "321",
@@ -78,7 +78,7 @@ class ProposalReadValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalRead) {
                 val bodyString = "{"
                 setBody(bodyString)

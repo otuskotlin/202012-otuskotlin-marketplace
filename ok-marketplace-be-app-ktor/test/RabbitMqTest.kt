@@ -31,7 +31,7 @@ internal class RabbitMqTest {
             }
 
             // Запускаем наше приложение в виде расширения
-            module(testing = true)
+            module()
         }) {
 
             // Выполняем соединение с RabbitMQ

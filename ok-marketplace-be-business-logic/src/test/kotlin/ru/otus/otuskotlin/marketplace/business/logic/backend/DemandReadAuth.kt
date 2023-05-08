@@ -10,14 +10,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-internal class DemandReadValidation {
+internal class DemandReadAuth {
 
     @Test
     fun `demandId success non-empty`() {
         val ctx = MpBeContext(
             requestDemandId = MpDemandIdModel("123"),
             stubCase = MpStubCase.DEMAND_READ_SUCCESS,
-            useAuth = false
+            useAuth = true
         )
 
         runBlocking {

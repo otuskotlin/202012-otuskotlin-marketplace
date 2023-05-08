@@ -5,6 +5,7 @@ data class MpDemandModel(
     override val avatar: String = "",
     override val title: String = "",
     override val description: String = "",
+    override val owner: MpUserModel = MpUserModel.NONE,
     override val tagIds: MutableSet<String> = mutableSetOf(),
     override val techDets: MutableSet<MpTechDetModel> = mutableSetOf(),
 ): IMpItemModel {

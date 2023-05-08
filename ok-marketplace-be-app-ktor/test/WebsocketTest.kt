@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 internal class WebsocketTest {
     @Test
     fun demandListTest() {
-        withTestApplication({ module(testing = true) }) {
+        withTestApplication({ module() }) {
             handleWebSocketConversation("/ws") { incoming, outgoing ->
                 val query = MpRequestDemandList(
                     requestId = "123",
@@ -39,7 +39,7 @@ internal class WebsocketTest {
     }
     @Test
     fun demandListErrorTest() {
-        withTestApplication({ module(testing = true) }) {
+        withTestApplication({ module() }) {
             handleWebSocketConversation("/ws") { incoming, outgoing ->
                 withTimeoutOrNull(250L) {
                     while (true) {

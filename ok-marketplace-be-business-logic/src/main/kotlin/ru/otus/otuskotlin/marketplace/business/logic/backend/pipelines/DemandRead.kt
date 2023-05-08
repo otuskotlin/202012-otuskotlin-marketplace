@@ -7,11 +7,16 @@ import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.QuerySet
 import ru.otus.otuskotlin.marketplace.business.logic.backend.operations.stubs.DemandReadStub
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContext
 import ru.otus.otuskotlin.marketplace.common.backend.context.MpBeContextStatus
+import ru.otus.otuskotlin.marketplace.common.backend.context.MpPermission
+import ru.otus.otuskotlin.marketplace.common.backend.models.IMpError
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpDemandModel
 import ru.otus.otuskotlin.marketplace.common.backend.models.MpError
+import ru.otus.otuskotlin.marketplace.common.backend.models.MpPrincipalModel
 import ru.otus.otuskotlin.marketplace.common.kmp.validation.validators.ValidatorStringNonEmpty
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.IOperation
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.operation
 import ru.otus.otuskotlin.marketplace.pipelines.kmp.pipeline
+import kotlin.math.E
 
 object DemandRead : IOperation<MpBeContext> by pipeline({
     execute(InitializePipeline)
@@ -21,6 +26,30 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
 
     // Обработка стабового запроса
     execute(DemandReadStub)
+
+    // Валидация учетных данных
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING && useAuth }
+        execute {
+            if (principal == MpPrincipalModel.NONE) {
+                errors.add(
+                    MpError(
+                        code = "unauthorized",
+                        group = IMpError.Group.AUTH,
+                        level = IMpError.Level.ERROR,
+                        message = "User is unauthorized"
+                    )
+                )
+                status = MpBeContextStatus.ERROR
+            }
+        }
+    }
+
+    // demandId = "test-demand-1"
+    // userId = "test-user-1"
+    // if (demand.owner.id == userId) {
+    // permissions.add(PERMISSTION_UPDATE)
+    // permissions.add(PERMISSTION_UPDATE)
 
     // Валидация параметров запроса
     validation {
@@ -47,6 +76,41 @@ object DemandRead : IOperation<MpBeContext> by pipeline({
                     code = "demand-repo-read-error",
                     message = t.message?:"")
                 )
+            }
+        }
+    }
+
+
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING && responseDemand.owner.id == principal.id }
+        execute {
+            permissions += MpPermission.READ
+            permissions += MpPermission.UPDATE
+            permissions += MpPermission.DELETE
+        }
+    }
+    operation {
+//        startIf { status == MpBeContextStatus.RUNNING && responseDemand.visibility == PUBLIC }
+        execute {
+            permissions += MpPermission.READ
+        }
+    }
+
+    // применение разрешений
+    operation {
+        startIf { status == MpBeContextStatus.RUNNING && useAuth }
+        execute {
+            if (! permissions.contains(MpPermission.READ)) {
+                errors.add(
+                    MpError(
+                        code = "unauthorized",
+                        group = IMpError.Group.AUTH,
+                        level = IMpError.Level.ERROR,
+                        message = "Operation is not permitted"
+                    )
+                )
+                status = MpBeContextStatus.ERROR
+                responseDemand = MpDemandModel.NONE
             }
         }
     }

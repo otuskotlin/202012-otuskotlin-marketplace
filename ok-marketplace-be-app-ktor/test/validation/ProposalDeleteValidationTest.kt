@@ -16,7 +16,7 @@ class ProposalDeleteValidationTest {
 
     @Test
     fun `non-empty delete must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalDelete) {
                 val body = MpRequestProposalDelete(
                     requestId = "321",
@@ -50,7 +50,7 @@ class ProposalDeleteValidationTest {
 
     @Test
     fun `empty proposal id must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalDelete) {
                 val body = MpRequestProposalDelete(
                     requestId = "321",
@@ -84,7 +84,7 @@ class ProposalDeleteValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.proposalDelete) {
                 val bodyString = "{"
                 setBody(bodyString)

@@ -16,7 +16,7 @@ class DemandListValidationTest {
 
     @Test
     fun `non-empty list must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandList) {
                 val body = MpRequestDemandList(
                     requestId = "321",
@@ -51,7 +51,7 @@ class DemandListValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandList) {
                 val bodyString = "{"
                 setBody(bodyString)

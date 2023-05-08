@@ -16,7 +16,7 @@ class DemandUpdateValidationTest {
 
     @Test
     fun `non-empty update must success`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandUpdate) {
                 val body = MpRequestDemandUpdate(
                     requestId = "321",
@@ -74,7 +74,7 @@ class DemandUpdateValidationTest {
 
     @Test
     fun `empty id or title or description must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandUpdate) {
                 val body = MpRequestDemandUpdate(
                     requestId = "321",
@@ -117,7 +117,7 @@ class DemandUpdateValidationTest {
 
     @Test
     fun `bad json must fail`() {
-        withTestApplication({ module(testing = true)}) {
+        withTestApplication({ module()}) {
             handleRequest(HttpMethod.Post, RestEndpoints.demandUpdate) {
                 val bodyString = "{"
                 setBody(bodyString)
